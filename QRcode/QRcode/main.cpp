@@ -12,8 +12,13 @@ int main(void){
 	cvNamedWindow("result", 1);
 
 	CvCapture* capture = 0;
-	while (!(capture = cvCaptureFromCAM(0))) {
-		printf("Capture failure\n");
+	int cam;
+	cout << "Enter camera number : ";
+	cin >> cam;
+	while (!(capture = cvCaptureFromCAM(cam))) {
+		cout << "Capture failure\n";
+		cout << "Enter camera number : ";
+		cin >> cam;
 	}
 	
 	cout << "running !\n";
