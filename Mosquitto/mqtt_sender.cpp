@@ -2,6 +2,7 @@
 #include <cstring>
 #include <iostream>
 
+#include <stdint.h>
 #include "mqtt_sender.h"
 
 mqtt_sender::mqtt_sender(const char *id, const char *host, int port) : mosquittopp(id)
@@ -11,7 +12,7 @@ mqtt_sender::mqtt_sender(const char *id, const char *host, int port) : mosquitto
 
     /* Connect immediately. This could also be done by calling
      * mqtt_sender->connect(). */
-    connect(host, port, keepalive, clean_session);
+    connect(host, port, keepalive);
 };
 
 void mqtt_sender::send_message(char *msg ) {

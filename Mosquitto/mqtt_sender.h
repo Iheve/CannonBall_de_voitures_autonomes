@@ -2,8 +2,16 @@
 #define MQTT_SENDER_H
 
 #include <mosquittopp.h>
+#include <stdint.h>
 
-class mqtt_sender : public mosquittopp::mosquittopp
+#ifdef __linux__ 
+#define MOSQPP mosquittopp
+#elif _WIN32
+#define MOSQPP mosqpp
+#else
+#endif
+
+class mqtt_sender : public MOSQPP::mosquittopp
 {
 	public:
 		mqtt_sender(const char *id, const char *host, int port);

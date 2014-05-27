@@ -1,12 +1,15 @@
 #include "mqtt_sender.h"
-#include <unistd.h>
 
 int main(int argc, char *argv[])
 {
 	class mqtt_sender *sender;
 	int rc;
 
-	mosquittopp::mosquittopp::lib_init();
+#ifdef __linux__ 
+	MOSQPP::mosquittopp::lib_init();
+#elif _WIN32
+	mosqpp::lib_init();
+#endif
 
 	sender = new mqtt_sender("sender", "localhost", 1883);
 	
@@ -16,10 +19,14 @@ int main(int argc, char *argv[])
 			sender->reconnect();
 		}
         sender->send_message("Dummy message!");
-        sleep(1);
+        _sleep(1000);
 	}
 
-	mosquittopp::mosquittopp::lib_cleanup();
+#ifdef __linux__ 
+	MOSQPP::mosquittopp::lib_cleanup();
+#elif _WIN32
+	mosqpp::lib_cleanup();
+#endif
 
 	return 0;
 }
