@@ -67,7 +67,7 @@ void compute(Image *image, map<string, struct element> *elements, Mat *img) {
 		r.points(pts);
 
 		for (int i = 0; i < 4; i++){
-			line(*img, pts[i], pts[(i + 1) % 4], Scalar(255, 0, 0), 3);
+			line(*img, vp[i], vp[(i + 1) % 4], Scalar(255, 0, 0), 3);
 		}
 		//cout << "pos=" << pos_x << "x" << pos_y << " size=" << r.size.width << "x" << r.size.height << endl;
 
@@ -80,10 +80,13 @@ void compute(Image *image, map<string, struct element> *elements, Mat *img) {
 }
 
 
-void getSteering(map<string, struct element> *elements, int* steering, Mat *img, int width, int height) {
-	int x = (*elements)["Thibaut"].pos.x;
+void getSteering(map<string, struct element> *elements, int* steering, Mat *img, float width, float height, float factor) {
+	float x = (*elements)["Thibaut"].pos.x;
 	if (x != 0) {
 		line(*img, Point(x, 0), Point(x, height), Scalar(255, 0, 0), 3);
+		float xrel = (x - (width / 2)) / (width / 2);
+		float ang = ((atan(xrel) * 180) / 3.1415 + 90) * factor;
+		*steering = ang;
 	}
 
 }
@@ -122,19 +125,17 @@ int main(void){
 
 		// scan the image for barcodes
 		int n = scanner.scan(image);
-		if (n != 0)
-			cout << "Elements detected " << n << endl;
 				
 		compute(&image, &elements, &img);
 		
-		getSteering(&elements, &steering, &img, width, height);
+		getSteering(&elements, &steering, &img, width, height, 1);
 
 		// Show markers on image
 		cvShowImage("result", new IplImage(img));
 		waitKey(20);
 
-		cout << "Elements in map : " << elements.size() << endl;
-		cout << "Following : " << elements["Thibaut"].pos.x << endl;
+		//cout << "Elements in map : " << elements.size() << endl;
+		cout << "Steering : " << steering << endl;
 
 		// clean up
 		image.set_data(NULL, 0);
