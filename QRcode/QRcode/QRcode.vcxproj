@@ -12,6 +12,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Serial.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SerialClass.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{1DEFF36A-294F-4E91-852B-AC16C9204FA9}</ProjectGuid>

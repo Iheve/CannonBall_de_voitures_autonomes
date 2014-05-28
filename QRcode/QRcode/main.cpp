@@ -4,6 +4,7 @@
 #include <iostream>
 #include <map>
 #include <Windows.h>
+#include "SerialClass.h"
 using namespace std;
 using namespace zbar;
 using namespace cv;
@@ -79,7 +80,10 @@ void compute(Image *image, map<string, struct element> *elements, Mat *img) {
 	}
 }
 
-
+/**
+ * update steering
+ * use factor to adjust steering amplitude
+ */
 void getSteering(map<string, struct element> *elements, int* steering, Mat *img, float width, float height, float factor) {
 	float x = (*elements)["Thibaut"].pos.x;
 	if (x != 0) {
@@ -91,11 +95,43 @@ void getSteering(map<string, struct element> *elements, int* steering, Mat *img,
 
 }
 
+void initArduino(Serial** arduin) {
+	*arduin = new Serial("\\\\.\\COM3"); // adjust as needed
+
+	if ((*arduin)->IsConnected())
+		cout << "Connectection to the arduino OK" << endl;
+}
+
+/**
+ * Send steering and throttle angles to the arduino
+ */
+void sendCommand(Serial** arduin, int steering, int throttle) {
+	if ((*arduin)->IsConnected()) {
+		char buff;
+		// Send steering
+		buff = (char)steering;
+		if ((*arduin)->WriteData(&buff, 1)) {
+			cout << "Steering write fail !" << endl;
+			return;
+		}
+		// Send throttle
+		buff = throttle;
+		if ((*arduin)->WriteData(&buff, 1)) {
+			cout << "Throttle write fail !" << endl;
+			return;
+		}
+		cout << "Command sent" << endl;
+	}
+}
+
+
 int main(void){
 
 	CvCapture* capture = 0;
-
 	selectCam(&capture, false);
+
+	Serial* arduin;
+	initArduino(&arduin);
 
 	cvNamedWindow("result", 1);
 
@@ -103,6 +139,7 @@ int main(void){
 	scanner.set_config(ZBAR_NONE, ZBAR_CFG_ENABLE, 1);
 
 	int steering = 90;
+	int throttle = 90;
 
 	map<string, struct element> elements;
 
@@ -134,9 +171,10 @@ int main(void){
 		cvShowImage("result", new IplImage(img));
 		waitKey(20);
 
-		//cout << "Elements in map : " << elements.size() << endl;
+		
 		cout << "Steering : " << steering << endl;
-
+		sendCommand(&arduin, steering, throttle);
+		
 		// clean up
 		image.set_data(NULL, 0);
 	}
