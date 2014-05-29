@@ -5,9 +5,11 @@
 #include <map>
 #include <Windows.h>
 #include "SerialClass.h"
+#include "aruco.h"
 using namespace std;
 using namespace zbar;
 using namespace cv;
+using namespace aruco;
 
 /**
  * Prompt the user to select the webcam number
@@ -15,9 +17,7 @@ using namespace cv;
  * switch eventually to HD
  */
 void selectCam(CvCapture** capture, bool hd) {
-	int cam;
-	cout << "Enter camera number : ";
-	cin >> cam;
+	int cam = 0;
 	while (!(*capture = cvCaptureFromCAM(cam))) {
 		cout << "Capture failure\n";
 		cout << "Enter camera number : ";
@@ -138,6 +138,12 @@ int main(void){
 	ImageScanner scanner;
 	scanner.set_config(ZBAR_NONE, ZBAR_CFG_ENABLE, 1);
 
+	//aruco
+	aruco::CameraParameters CamParam;
+	MarkerDetector MDetector;
+	vector<Marker> Markers;
+	float MarkerSize = -1;
+
 	int steering = 90;
 	int throttle = 90;
 
@@ -165,6 +171,12 @@ int main(void){
 				
 		compute(&image, &elements, &img);
 		
+		MDetector.detect(img, Markers, CamParam, MarkerSize);
+		for (unsigned int i = 0; i < Markers.size(); i++) {
+			cout << Markers[i] << endl;
+			Markers[i].draw(img, Scalar(0, 0, 255), 2);
+		}
+
 		getSteering(&elements, &steering, &img, width, height, 1);
 
 		// Show markers on image
