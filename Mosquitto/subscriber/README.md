@@ -10,4 +10,4 @@ Installation
 
 Usage
 --------
-`node subscriber.js mqtt_host mqtt_port mongo_host'
+`node subscriber.js mqtt_host mqtt_port mongo_host`
