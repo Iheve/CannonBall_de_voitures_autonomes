@@ -24,8 +24,8 @@ void setup()
 
 void loop()
 {
-  
-  int ch1 = pulseIn(inPin, HIGH, 25000); // Read the pulse width of the channel
+  //pulseIn will wait MAX 10 millisecs. Waits for HIGH then LOW and return the time between both of them.
+  int ch1 = pulseIn(inPin, HIGH, 10000); // Read the pulse width of the channel
 
   Serial.print("Channel 1:"); // Print the value of 
   Serial.println(ch1);        // each channel
