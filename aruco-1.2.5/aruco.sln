@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "aruco_calibration", "aruco_calibration\aruco_calibration.vcxproj", "{960605AB-E125-4E97-AE52-AA19CD4656DD}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "aruco_boar_pix2meters", "aruco_boar_pix2meters\aruco_boar_pix2meters.vcxproj", "{4D640D43-149E-4FA1-A5C9-A478CB1389E9}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "aruco_hrm_create_dictionary", "aruco_hrm_create_dictionary\aruco_hrm_create_dictionary.vcxproj", "{9C31D323-B67B-4C4F-A0E6-B445B99D4A05}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "aruco_hrm_create_board", "aruco_hrm_create_board\aruco_hrm_create_board.vcxproj", "{0B38A44F-3A00-4E76-9238-79D3938D86CE}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "aruco_hrm_test", "aruco_hrm_test\aruco_hrm_test.vcxproj", "{4AAE23CF-A25A-4BA2-B508-BBD3B454D84F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "aruco_simple", "aruco_simple\aruco_simple.vcxproj", "{36843F54-598E-456D-A807-355E10258D1B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{960605AB-E125-4E97-AE52-AA19CD4656DD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{960605AB-E125-4E97-AE52-AA19CD4656DD}.Debug|Win32.Build.0 = Debug|Win32
+		{960605AB-E125-4E97-AE52-AA19CD4656DD}.Release|Win32.ActiveCfg = Release|Win32
+		{960605AB-E125-4E97-AE52-AA19CD4656DD}.Release|Win32.Build.0 = Release|Win32
+		{4D640D43-149E-4FA1-A5C9-A478CB1389E9}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4D640D43-149E-4FA1-A5C9-A478CB1389E9}.Debug|Win32.Build.0 = Debug|Win32
+		{4D640D43-149E-4FA1-A5C9-A478CB1389E9}.Release|Win32.ActiveCfg = Release|Win32
+		{4D640D43-149E-4FA1-A5C9-A478CB1389E9}.Release|Win32.Build.0 = Release|Win32
+		{9C31D323-B67B-4C4F-A0E6-B445B99D4A05}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9C31D323-B67B-4C4F-A0E6-B445B99D4A05}.Debug|Win32.Build.0 = Debug|Win32
+		{9C31D323-B67B-4C4F-A0E6-B445B99D4A05}.Release|Win32.ActiveCfg = Release|Win32
+		{9C31D323-B67B-4C4F-A0E6-B445B99D4A05}.Release|Win32.Build.0 = Release|Win32
+		{0B38A44F-3A00-4E76-9238-79D3938D86CE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0B38A44F-3A00-4E76-9238-79D3938D86CE}.Debug|Win32.Build.0 = Debug|Win32
+		{0B38A44F-3A00-4E76-9238-79D3938D86CE}.Release|Win32.ActiveCfg = Release|Win32
+		{0B38A44F-3A00-4E76-9238-79D3938D86CE}.Release|Win32.Build.0 = Release|Win32
+		{4AAE23CF-A25A-4BA2-B508-BBD3B454D84F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4AAE23CF-A25A-4BA2-B508-BBD3B454D84F}.Debug|Win32.Build.0 = Debug|Win32
+		{4AAE23CF-A25A-4BA2-B508-BBD3B454D84F}.Release|Win32.ActiveCfg = Release|Win32
+		{4AAE23CF-A25A-4BA2-B508-BBD3B454D84F}.Release|Win32.Build.0 = Release|Win32
+		{36843F54-598E-456D-A807-355E10258D1B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{36843F54-598E-456D-A807-355E10258D1B}.Debug|Win32.Build.0 = Debug|Win32
+		{36843F54-598E-456D-A807-355E10258D1B}.Release|Win32.ActiveCfg = Release|Win32
+		{36843F54-598E-456D-A807-355E10258D1B}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

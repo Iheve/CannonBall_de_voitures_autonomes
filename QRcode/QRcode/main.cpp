@@ -6,6 +6,8 @@
 #include <Windows.h>
 #include "SerialClass.h"
 #include "aruco.h"
+#include "highlyreliablemarkers.h"
+#include "cvdrawingutils.h"
 using namespace std;
 using namespace zbar;
 using namespace cv;
@@ -48,8 +50,8 @@ void compute(Image *image, map<string, struct element> *elements, Mat *img) {
 		vector<Point> vp;
 		/*
 		cout << "decoded " << symbol->get_type_name()
-			<< " symbol \"" << symbol->get_data() << '"' << " ";
-			*/
+		<< " symbol \"" << symbol->get_data() << '"' << " ";
+		*/
 
 		int n = symbol->get_location_size();
 		int pos_x = 0;
@@ -84,14 +86,25 @@ void compute(Image *image, map<string, struct element> *elements, Mat *img) {
  * update steering
  * use factor to adjust steering amplitude
  */
-void getSteering(map<string, struct element> *elements, int* steering, Mat *img, float width, float height, float factor) {
-	float x = (*elements)["Thibaut"].pos.x;
+void getSteering(vector<Marker>* TheMarkers, int* steering, int width, float factor) {
+	float x = 0;
+	for (std::vector<Marker>::iterator it = (*TheMarkers).begin(); it != (*TheMarkers).end(); it++) {
+		if (it->id == 18244) {
+			//x = it->getCenter().x;
+			//cout << "x:" << it->Rvec.ptr<float>(0)[0] << "y:" << it->Rvec.ptr<float>(0)[1] << "z:" << it->Rvec.ptr<float>(0)[2] << endl;
+			//cv::waitKey(10000);
+			*steering = ((it->Rvec.ptr<float>(0)[2]) * 180 / 3.1415 + 90) * factor;
+			break;
+		}
+	}
+	/*
+	//float x = (*elements)["Thibaut"].pos.x;
 	if (x != 0) {
-		line(*img, Point(x, 0), Point(x, height), Scalar(255, 0, 0), 3);
 		float xrel = (x - (width / 2)) / (width / 2);
 		float ang = ((atan(xrel) * 180) / 3.1415 + 90) * factor;
 		*steering = ang;
 	}
+	*/
 
 }
 
@@ -127,67 +140,83 @@ void sendCommand(Serial** arduin, int steering, int throttle) {
 
 int main(void){
 
-	CvCapture* capture = 0;
-	selectCam(&capture, false);
-
+	int steering = 90;
+	int throttle = 90;
+	
 	Serial* arduin;
 	initArduino(&arduin);
 
-	cvNamedWindow("result", 1);
+	String TheDict = "dict.yml";
+	String TheCamParam = "camparam.yml";
+	float TheMarkerSize = 0.042;
 
-	ImageScanner scanner;
-	scanner.set_config(ZBAR_NONE, ZBAR_CFG_ENABLE, 1);
-
-	//aruco
-	aruco::CameraParameters CamParam;
+	VideoCapture TheVideoCapturer;
+	vector<Marker> TheMarkers;
+	Mat TheInputImage, TheInputImageCopy;
+	CameraParameters TheCameraParameters;
 	MarkerDetector MDetector;
-	vector<Marker> Markers;
-	float MarkerSize = -1;
+	
+	TheVideoCapturer.open(0);
+	
+	if (!TheVideoCapturer.isOpened()) {
+		cerr << "Could not open video" << endl;
+		return -1;
 
-	int steering = 90;
-	int throttle = 90;
-
-	map<string, struct element> elements;
-
-	for (;;) {
-		// Get a new frame
-		IplImage* iplImg = cvQueryFrame(capture);
-		Mat img(iplImg);
-
-		// Grayscale Convertion
-		Mat grayscale;
-		cvtColor(img, grayscale, CV_BGRA2GRAY);
-
-		// Raw data image
-		int width = grayscale.cols;
-		int height = grayscale.rows;
-		uchar *raw = (uchar *)grayscale.data;
-
-		// wrap image data
-		Image image(width, height, "Y800", raw, width * height);
-
-		// scan the image for barcodes
-		int n = scanner.scan(image);
-				
-		compute(&image, &elements, &img);
-		
-		MDetector.detect(img, Markers, CamParam, MarkerSize);
-		for (unsigned int i = 0; i < Markers.size(); i++) {
-			cout << Markers[i] << endl;
-			Markers[i].draw(img, Scalar(0, 0, 255), 2);
-		}
-
-		getSteering(&elements, &steering, &img, width, height, 1);
-
-		// Show markers on image
-		cvShowImage("result", new IplImage(img));
-		waitKey(20);
-
-		
-		cout << "Steering : " << steering << endl;
-		sendCommand(&arduin, steering, throttle);
-		
-		// clean up
-		image.set_data(NULL, 0);
 	}
+
+	Dictionary D;
+	if (D.fromFile(TheDict) == false) {
+		cerr << "Could not open dictionary" << endl;
+		return -1;
+	};
+	if (D.size() == 0) {
+		cerr << "Invalid dictionary" << endl;
+		return -1;
+	};
+
+	HighlyReliableMarkers::loadDictionary(D);
+
+
+	//read first image to get the dimensions
+	TheVideoCapturer >> TheInputImage;
+
+	//read camera parameters if passed
+	TheCameraParameters.readFromXMLFile(TheCamParam);
+	TheCameraParameters.resize(TheInputImage.size());
+
+	//Configure other parameters
+	//if (ThePyrDownLevel > 0)
+	//	MDetector.pyrDown(ThePyrDownLevel);
+
+
+	MDetector.setMakerDetectorFunction(aruco::HighlyReliableMarkers::detect);
+	MDetector.setThresholdParams(21, 7);
+	MDetector.setCornerRefinementMethod(aruco::MarkerDetector::LINES);
+	MDetector.setWarpSize((D[0].n() + 2) * 8);
+	MDetector.setMinMaxSize(0.005, 0.5);
+
+
+	cv::namedWindow("in", 1);
+
+	int index = 0;
+	do {
+		TheVideoCapturer.retrieve(TheInputImage);
+		//Detection of markers in the image passed
+		MDetector.detect(TheInputImage, TheMarkers, TheCameraParameters, TheMarkerSize);
+
+		//print marker info and draw the markers in image
+		TheInputImage.copyTo(TheInputImageCopy);
+		for (unsigned int i = 0; i < TheMarkers.size(); i++) {
+			//cout << TheMarkers[i] << endl;
+			TheMarkers[i].draw(TheInputImageCopy, Scalar(0, 0, 255), 1);
+		}
+		getSteering(&TheMarkers, &steering, TheInputImage.size().width, 1.0);
+		cout << steering << endl;
+		sendCommand(&arduin, steering, throttle);
+
+		//show input with augmented information and  the thresholded image
+		cv::imshow("in", TheInputImageCopy);
+		cv::waitKey(20);
+	} while (TheVideoCapturer.grab());
+
 }

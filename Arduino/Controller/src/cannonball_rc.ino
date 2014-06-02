@@ -4,66 +4,57 @@
 #define BAUDRATE 9600
 
 /* Constants which define pins used by servos */
-#define STEERING_SERVO_PIN (7)
-#define PROPULSION_SERVO_PIN (8)
-
-/* Constants which define pins used by RC channel */
-//#define STERRING_CHANNEL_PIN (5)
-//#define PROPULSION_CHANNEL_PIN (6)
-
-#define INITIAL_SERVO_POSITION (90)
-#define ACCELERATE_STEP (5)
+#define STEERING_SERVO_PIN (5)
+#define THROTTLE_SERVO_PIN (6)
 
 /* Variable declaration */
 Servo SteeringServo;
-Servo PropulsionServo;
-int loop_counter = 0;
+Servo ThrottleServo;
+int steeringTarget=90;
+int throttleTarget=91;
 
+unsigned long time=0;
+unsigned long last_time=0;
+unsigned long period=0;
+boolean emergency = false;
+
+void rc_handler() {
+  //BE CAREFUL, DO NOT PRINT STUFF HERE
+  //Serial.println use interrupts too, thus resulting in a deadlock :(
+
+  time = micros(); //CAREFUL, micro will overflow after 70min (returning 0)
+  period = time - last_time;
+  if (period < 1000) {
+    //We've got an emergency, stop everything
+    emergency = true;
+  }
+  last_time = time;
+}
 void setup() {
     /* Output */
     pinMode(STEERING_SERVO_PIN, OUTPUT);
-    pinMode(PROPULSION_SERVO_PIN, OUTPUT);
+    pinMode(THROTTLE_SERVO_PIN, OUTPUT);
     pinMode(13, OUTPUT);
 
     SteeringServo.attach(STEERING_SERVO_PIN);
-    SteeringServo.write(INITIAL_SERVO_POSITION);
+    ThrottleServo.attach(THROTTLE_SERVO_PIN);
 
-    PropulsionServo.attach(PROPULSION_SERVO_PIN);
-    PropulsionServo.write(INITIAL_SERVO_POSITION);
+    attachInterrupt(1, rc_handler, CHANGE); //1 is pin 3 (0 pin 2)
 
     Serial.begin(BAUDRATE);
     Serial.println("Setup finished !");
 }
 
-byte smoothAccelerate(byte current, byte target) {
-    if (current >= target) {         //Brake
-        current = target;
-    } else if (loop_counter % 1000 == 0) { //Accelerate
-        current = ((current + ACCELERATE_STEP) >= target) ?
-                target : current + ACCELERATE_STEP;
-    }
-
-    return current;
-}
-
 void loop() {
-    byte propulsionCurrent = INITIAL_SERVO_POSITION;
-    byte steeringTarget = INITIAL_SERVO_POSITION,
-         propulsionTarget = INITIAL_SERVO_POSITION;
+    if (Serial.available() >= 2) {
+        steeringTarget = Serial.read();
+        throttleTarget = Serial.read();
+        Serial.flush();
+    }
+    SteeringServo.write(steeringTarget);
+    ThrottleServo.write(throttleTarget);
 
-    for(;;) {
-        /* Get data from serial, wait for 2 bytes */
-        if (Serial.available() >= 2) {
-            steeringTarget = Serial.read();
-            propulsionTarget = Serial.read();
-
-        }
-
-        SteeringServo.write(steeringTarget);
-        PropulsionServo.write(
-                smoothAccelerate(propulsionCurrent, propulsionTarget)
-                );
-
-        ++loop_counter;
+    for (;emergency;) {
+        ThrottleServo.write(110);
     }
 }

@@ -8,35 +8,47 @@
 
 Servo propulsion;
 
-int inPin = 7; 
+//RC Receiver pin 3
 int motorPin = 8; 
-int val = 0;//variable to store the read value
+
+unsigned long time=0;
+unsigned long last_time=0;
+unsigned long period=0;
+
+void rc_handler() {
+  //BE CAREFUL, DO NOT PRINT STUFF HERE
+  //Serial.println use interrupts too, thus resulting in a deadlock :(
+
+  time = micros(); //CAREFUL, micro will overflow after 70min (returning 0)
+  period = time - last_time;
+  if (period < 1000) {
+    //We've got an emergency, stop everything
+    propulsion.write(91);
+  }
+
+  //Currently not working
+  /*
+  else if (period > 1900) {
+    propulsion.write(88);
+  }
+  */
+
+  last_time = time;
+}
 
 void setup()
 {
   Serial.begin(9600);//setup serial
-  pinMode(inPin, INPUT);//sets the digital pin 7 as input
 
   //Let's launch the motor
   propulsion.attach(motorPin);
   propulsion.write(88);
+
+  attachInterrupt(1, rc_handler, CHANGE); //1 is pin 3 (0 pin 2)
 }
 
 void loop()
 {
-  
-  int ch1 = pulseIn(inPin, HIGH, 25000); // Read the pulse width of the channel
-
-  Serial.print("Channel 1:"); // Print the value of 
-  Serial.println(ch1);        // each channel
-
-  if(ch1 < 1700) { //if we accelerate, STOP everything
-    propulsion.write(91); 
-  } 
-  if(ch1 > 2100) { //if we brake, launch the prog again
-    propulsion.write(88); 
-  } 
-
-  delay(100);//For console output
-
+    //debug purpose
+    Serial.println(period);
 }
