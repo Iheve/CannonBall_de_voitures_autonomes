@@ -1,7 +1,7 @@
 #include <Servo.h>
 
 /* Constant used to communicate over the serial */
-#define BAUDRATE 9600
+#define BAUDRATE 115200
 
 /* Constants which define pins used by servos */
 #define STEERING_SERVO_PIN (5)
