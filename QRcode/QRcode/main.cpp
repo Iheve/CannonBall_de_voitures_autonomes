@@ -37,14 +37,6 @@ void selectCam(CvCapture** capture, bool hd) {
 	}
 }
 
-/**
- * update steering
- * use factor to adjust steering amplitude
- */
-void getSteering(vector<Marker>* TheMarkers, int* steering, int* throttle, int width, float factor) {
-
-}
-
 void initArduino(Serial** arduin) {
 	*arduin = new Serial("\\\\.\\COM5"); // adjust as needed
 
@@ -71,15 +63,16 @@ void publish_to_mqtt(char *topic, char *message) {
  */
 void sendCommand(Serial** arduin, int steering, int throttle) {
 	if ((*arduin)->IsConnected()) {
-		char buff;
+		char buff [2];
 		// Send steering
-		buff = (char)(steering);
+		buff[0] = (char)(steering);
+		/*
 		if (!(*arduin)->WriteData(&buff, 1)) {
 			cout << "Steering write fail !" << endl;
-		}
+		}*/
 		// Send throttle
-		buff = (char)(throttle);
-		if (!(*arduin)->WriteData(&buff, 1)) {
+		buff[1] = (char)(throttle);
+		if (!(*arduin)->WriteData(buff, 2)) {
 			cout << "Throttle write fail !" << endl;
 		}
 		cout << "Command sent" << endl;
