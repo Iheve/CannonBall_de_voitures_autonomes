@@ -1,0 +1,195 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[francais]{babel}
+
+\usepackage{graphicx} % Inclusion d'images
+\usepackage{amsfonts} % Symboles maths
+\usepackage{amsmath} % Aligner les équations
+\usepackage{fullpage} % Marges
+\usepackage{xspace} % Espace après macros
+\usepackage{float} % Positionnement des images
+
+\title{Cadre du projet}
+\author{COUTELOU Thibaut - MUGNIER Benjamin - PERRIN Guillaume}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+%\tableofcontents
+
+\section{Objectifs}
+
+\subsection{Objectifs techniques}
+
+L'objectif principal du projet est de rendre une voiture radiocommandée
+autonome (autour d'une tablette Windows 8). Les livrables attendus sont :
+\begin{itemize}
+    \item Sécurité
+    \item Lièvre
+    \item Circuit
+    \item Prise en compte des autres voitures
+    \item Collectes de métriques
+\end{itemize}
+
+Un objectif secondaire est de monter une seconde voiture autour d'un  système
+basé sur Android.
+Cela permettra de comparer les performances entre ces deux systèmes.
+
+\subsubsection{Sécurité}
+
+La sécurité doit être garantie en permanence par une commande d'arrêt
+d'urgence. (Appuyer sur un bouton de la télécommande).
+
+\subsubsection{Lièvre}
+
+La voiture doit être capable de suivre un marqueur.
+
+\subsubsection{Circuit}
+
+La voiture doit être capable de suivre un circuit délimité par des marqueurs.
+
+\subsection{Objectifs de délai}
+
+Le projet doit être terminé le lundi 16 juin.
+La soutenance doit être préparée pour la semaine du 16 juin.
+Une pré-soutenance doit être préparée pour le vendredi 13 juin car Didier
+Donsez n'est pas disponible la semaine suivante
+
+\subsection{Objectif expérimental}
+
+Ce projet est financé par Intel dans le but de mettre au point des "kits
+pédagogiques" qu'Intel pourrai fournir à d'autres universités.
+
+
+
+
+
+
+
+
+
+
+
+\section{Méthodologie}
+TODO
+
+
+
+
+
+
+
+
+
+\section{Ressources}
+
+\subsection{Matériel}
+
+Le matériel à disposition est :
+\begin{itemize}
+    \item Deux voitures radiocommandées
+    \item Une tablette Android
+    \item Une tablette Windows
+    \item Deux arduino
+    \item Deux webcams
+\end{itemize}
+
+Les tablettes sont embarquées sur les voitures raio commandées. Elles font
+tourner un logiciel qui acquière des images par la webcam, et calcul les ordres
+à transmettre aux Arduinos. Les arduinos contrôlent la vitesse de rotation du
+moteur et la position des roues.
+
+Ce matériel est mis a disposition par Intel.
+
+\subsection{Ressources humaines}
+
+Trois étudiants en deuxième année à l'Ensimag travaillent à plein temps sur ce
+projet pendant 3 semaines.
+
+
+
+
+
+
+
+
+
+
+\section{Organisation du projet}
+
+Didier Donsez est le maitre d'ouvrage du projet.
+Le projet est réalisé en association avec Intel et son ingénieur Paul Guermonprez, qui
+fournit du matériel servant à la réalisation celui-ci.
+
+Jules Legros et Benoit Perruche sont deux étudiants de polytech Grenoble qui
+ont travaillé sur ce projet avant nous.
+
+
+
+
+
+
+
+\section{Communication}
+
+\subsection{Interne}
+
+Une réunion est organisée entre les trois membres de l'équipes tous le matins,
+et à chaque fois que cela est nécessaire. Elles sont nécessaires pour mettre en
+commun ce qui a été réalisé et planifier les journées à venir.
+
+\subsection{Rapports journaliers}
+
+Tous les jours, le journal de bord est mis à jour et un mail est envoyé à
+Didier Donsez pour le tenir au courant de l'avancement et des problèmes
+rencontrés.
+
+
+
+
+
+\section{Risques}
+
+\subsection{Portage sur Android}
+
+Le portage de notre solution sur Android peut poser des problèmes à différents
+niveaux :
+\begin{itemize}
+    \item Communication avec l'Arduino.
+    \item Utilisation des bibliothèques (Opencv, aruco)
+    \item Portage du code à proprement parlé.
+\end{itemize}
+
+On peut limiter ce risque en démarrant le portage vers Android le plus tôt
+possible et en utilisant des librairies cross-platform.
+
+\subsection{Performances trop faibles}
+
+Il se peut que les lourds calculs réalisés par la tablette rendent impossible
+le traitement en temps réels.
+
+Pour limiter ce risque, on peut utiliser des bibliothèques légères. Mais cela
+risque de ne pas suffire.
+On peut aussi utiliser des tablettes plus puissantes, si Intel nous les fourni.
+
+
+\section{Indicateurs}
+
+Les indicateurs de réussite du projet sont :
+\begin{itemize}
+    \item La voiture réagit correctement aux marqueurs
+    \item Le circuit est correctement parcouru
+    \item La voiture évite les autres voitures
+    \item Les métriques sont collectées
+    \item Le traitement par la tablette est fluide
+    \item L'équipe est présente à 9h tous les matins (motivation)
+\end{itemize}
+
+
+
+
+\end{document}

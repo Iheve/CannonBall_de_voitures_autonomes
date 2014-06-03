@@ -1,4 +1,4 @@
-ARDUINO_MODEL=nano328 #Can be find with the command 'ino list-models'
+ARDUINO_MODEL=uno #Can be find with the command 'ino list-models'
 
 all:
 	ino build -m $(ARDUINO_MODEL) > /dev/null

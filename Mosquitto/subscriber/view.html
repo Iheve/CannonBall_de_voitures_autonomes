@@ -1,0 +1,56 @@
+<html>
+<head>
+    <title>Real-time metrics through MQTT</title>
+    <script type="text/javascript" src="Chart.min.js"></script>
+    <script type="text/javascript" src="socket.io.js"></script>
+</head>
+<body>
+    <p>Steering value in function of time</p>
+    <canvas id="chart_steering_div" width="800" height="400"></canvas>
+    <p>Throttle value in function of time</p>
+    <canvas id="chart_throttle_div" width="800" height="400"></canvas>
+    <script>
+        var socket = io('http://localhost:1337');
+
+        <!-- Steering -->
+        var ctxSteering = document.getElementById('chart_steering_div').getContext('2d');
+        var arrayLabelsSteering = new Array();
+        var arrayDataSteering = new Array();
+        socket.on('Steering', function(data) {
+                arrayLabelsSteering.push(data.time);
+                arrayDataSteering.push(data.value);
+                if (arrayLabelsSteering.length > 20) {
+                    arrayLabelsSteering.shift();
+                    arrayDataSteering.shift();
+                }
+                new Chart(ctxSteering).Line({
+                        labels: arrayLabelsSteering,
+                        datasets: [{
+                                     data: arrayDataSteering
+                                  }]
+                        }, { datasetFill: false, animation: false });
+                });
+
+        <!-- Throttle -->
+        var ctxThrottle = document.getElementById('chart_throttle_div').getContext('2d');
+        var arrayLabelsThrottle = new Array();
+        var arrayDataThrottle = new Array();
+        socket.on('Throttle', function(data) {
+                console.log("hkjdhskj");
+                arrayLabelsThrottle.push(data.time);
+                arrayDataThrottle.push(data.value);
+                if (arrayLabelsThrottle.length > 20) {
+                    arrayLabelsThrottle.shift();
+                    arrayDataThrottle.shift();
+                }
+                new Chart(ctxThrottle).Line({
+                        labels: arrayLabelsThrottle,
+                        datasets: [{
+                                     data: arrayDataThrottle
+                                  }]
+                        }, { datasetFill: false, animation: false });
+                });
+
+    </script>
+</body>
+</html>
