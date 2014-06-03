@@ -13,6 +13,7 @@ mqtt_sender::mqtt_sender(const char *id, const char *host, int port) : mosquitto
     /* Connect immediately. This could also be done by calling
      * mqtt_sender->connect(). */
     connected = connect_async(host, port, keepalive);
+	loop_start();
 };
 
 void mqtt_sender::send_message(char *topic, char *msg) {
@@ -22,9 +23,5 @@ void mqtt_sender::send_message(char *topic, char *msg) {
 }
 
 void mqtt_sender::publish_to_mqtt(char *topic, char *message) {
-	rc = loop_start();
-	if (rc){
-		reconnect();
-	}
 	send_message(topic, message);
 }

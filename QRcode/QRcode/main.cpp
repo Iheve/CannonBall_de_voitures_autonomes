@@ -46,6 +46,8 @@ void sendMetrics(int steering, int throttle, double laps, double avg) {
 	sender->publish_to_mqtt(TOPIC_THROT, (char*)std::to_string(throttle).c_str());
 	sender->publish_to_mqtt(TOPIC_LAPS, (char*)std::to_string(laps).c_str());
 	sender->publish_to_mqtt(TOPIC_AVG, (char*)std::to_string(avg).c_str());
+	cout << "SENT!" << endl;
+
 }
 
 int main(int argc, char *argv[]) {
