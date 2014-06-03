@@ -9,16 +9,16 @@
 #include "IARabbit.h"
 #include "mqtt_sender.h"
 
-using namespace cv;		
+using namespace cv;
 using namespace aruco;
 
 //Arduino
 Serial* arduin;
-char* port = "\\\\.\\COM5";
+char* serial_port = "\\\\.\\COM5";
 
 //MQTT
 mqtt_sender *sender;
-char* mqtt_host = "localhost";
+char* mqtt_host;
 
 //Current state
 int steering = 90;
@@ -31,16 +31,16 @@ vector<Marker> TheMarkers;
 CameraParameters TheCameraParameters;
 MarkerDetector MDetector;
 Dictionary D;
-String TheDict = "dict.yml";
-String TheCamParam = "camparam.yml";
-float TheMarkerSize = 0.089f;
+String TheDict;
+String TheCamParam;
+float TheMarkerSize;
 
 
 /**
  * Initialization of the arduino
  */
 void initArduino() {
-	arduin = new Serial(port);
+	arduin = new Serial(serial_port);
 
 	if (arduin->IsConnected())
 		std::cout << "Connection to the arduino OK" << std::endl;
@@ -98,7 +98,7 @@ void initAruco() {
  */
 void sendCommand(Serial** arduin, int steering, int throttle) {
 	if ((*arduin)->IsConnected()) {
-		char buff [2];
+		char buff[2];
 		buff[0] = (char)(steering);
 		buff[1] = (char)(throttle);
 		if (!(*arduin)->WriteData(buff, 2)) {
@@ -118,10 +118,42 @@ void sendMetrics(int steering, int throttle, double laps, double avg) {
 	//cout << "SENT!" << endl;
 }
 
+void updateView() {
+	//print marker info and draw the markers in image
+	TheInputImage.copyTo(TheInputImageCopy);
+	for (unsigned int i = 0; i < TheMarkers.size(); i++) {
+		TheMarkers[i].draw(TheInputImageCopy, Scalar(0, 0, 255), 1);
+	}
+	cv::imshow("in", TheInputImageCopy);
+	cv::waitKey(10);
+}
 
+void usage() {
+	std::cout << "Usage : dictionary.yml intrinsics.yml marker_size MQTT_host serial_port" << std::endl;
+	std::cout << "dictionary.yml : Dictinoary of markers used" << std::endl;
+	std::cout << "intrinsics.yml : Camera parameters (calibration)" << std::endl;
+	std::cout << "marker_size : size of the markers in meters" << std::endl;
+	std::cout << "MQTT_host : address of the MQTT broker" << std::endl;
+	std::cout << "serial_port : COM port of the arduino (ex : 'COM5')" << std::endl;
+}
+
+void readParams(int argc, char *argv[]) {
+	if (argc < 6) {
+		usage();
+		Sleep(10000);
+		exit(-1);
+	}
+
+	TheDict = argv[1];
+	TheCamParam = argv[2];
+	TheMarkerSize = (float)atof(argv[3]);
+	mqtt_host = argv[4];
+	serial_port = argv[5];
+}
 
 int main(int argc, char *argv[]) {
-	
+	readParams(argc, argv);
+
 	//Arduino
 	initArduino();
 
@@ -141,7 +173,7 @@ int main(int argc, char *argv[]) {
 		//Calculate processing time
 		index++;
 		laps = (((double)getTickCount() - tick) / getTickFrequency() * 1000);
-		total += (float) laps;
+		total += (float)laps;
 		std::cout << "time enlapsed : " << laps << " ms" << " (avg : " << total / index << ")" << std::endl;
 		tick = (double)getTickCount();
 
@@ -152,12 +184,6 @@ int main(int argc, char *argv[]) {
 		//Detection of markers in the image passed
 		MDetector.detect(TheInputImage, TheMarkers, TheCameraParameters, TheMarkerSize);
 
-		//print marker info and draw the markers in image
-		TheInputImage.copyTo(TheInputImageCopy);
-		for (unsigned int i = 0; i < TheMarkers.size(); i++) {
-			TheMarkers[i].draw(TheInputImageCopy, Scalar(0, 0, 255), 1);
-		}
-
 		//Get steering and throttle from IA
 		ia.getCommand(&TheMarkers, &steering, &throttle, TheInputImage.size().width);
 
@@ -165,11 +191,10 @@ int main(int argc, char *argv[]) {
 		sendCommand(&arduin, steering, throttle);
 
 		//Send metrics to the MQTT brocker
-		sendMetrics(steering, throttle, laps, total/index);
+		sendMetrics(steering, throttle, laps, total / index);
 
 		//show input with augmented information
-		cv::imshow("in", TheInputImageCopy);
-		cv::waitKey(10);
+		updateView();
 	} while (1);
 
 }
