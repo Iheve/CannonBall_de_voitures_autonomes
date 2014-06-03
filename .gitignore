@@ -169,3 +169,6 @@ $RECYCLE.BIN/
 
 *.dll
 *.exe
+
+QRcode/QRcode/include/
+QRcode/QRcode/lib/

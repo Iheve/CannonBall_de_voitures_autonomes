@@ -54,6 +54,15 @@
     <ClCompile Include="subpixelcorner.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="IA.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IARabbit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mqtt_sender.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SerialClass.h">
@@ -96,6 +105,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="subpixelcorner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IA.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IARabbit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mqtt_sender.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

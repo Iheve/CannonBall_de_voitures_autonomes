@@ -8,9 +8,12 @@
 #include "aruco.h"
 #include "highlyreliablemarkers.h"
 #include "cvdrawingutils.h"
+#include "IA.h"
+#include "IARabbit.h"
+#include "mqtt_sender.h"
 using namespace std;
 using namespace zbar;
-using namespace cv;
+using namespace cv; 
 using namespace aruco;
 
 /**
@@ -34,85 +37,25 @@ void selectCam(CvCapture** capture, bool hd) {
 	}
 }
 
-struct element {
-	vector<Point> corners;
-	Point pos;
-	Size2f size;
-};
-
-/**
- * Compute image symbols
- */
-void compute(Image *image, map<string, struct element> *elements, Mat *img) {
-	for (Image::SymbolIterator symbol = (*image).symbol_begin();
-		symbol != (*image).symbol_end();
-		++symbol) {
-		vector<Point> vp;
-		/*
-		cout << "decoded " << symbol->get_type_name()
-		<< " symbol \"" << symbol->get_data() << '"' << " ";
-		*/
-
-		int n = symbol->get_location_size();
-		int pos_x = 0;
-		int pos_y = 0;
-		for (int i = 0; i < n; i++){
-			vp.push_back(Point(symbol->get_location_x(i), symbol->get_location_y(i)));
-			pos_x += symbol->get_location_x(i);
-			pos_y += symbol->get_location_y(i);
-		}
-		pos_x /= n;
-		pos_y /= n;
-
-
-		RotatedRect r = minAreaRect(vp);
-		Point2f pts[4];
-		r.points(pts);
-
-		for (int i = 0; i < 4; i++){
-			line(*img, vp[i], vp[(i + 1) % 4], Scalar(255, 0, 0), 3);
-		}
-		//cout << "pos=" << pos_x << "x" << pos_y << " size=" << r.size.width << "x" << r.size.height << endl;
-
-
-
-		(*elements)[symbol->get_data()].corners = vp;
-		(*elements)[symbol->get_data()].pos = Point(pos_x, pos_y);
-		(*elements)[symbol->get_data()].size = r.size;
-	}
-}
-
-/**
- * update steering
- * use factor to adjust steering amplitude
- */
-void getSteering(vector<Marker>* TheMarkers, int* steering, int width, float factor) {
-	float x = 0;
-	for (std::vector<Marker>::iterator it = (*TheMarkers).begin(); it != (*TheMarkers).end(); it++) {
-		if (it->id == 18244) {
-			//x = it->getCenter().x;
-			//cout << "x:" << it->Rvec.ptr<float>(0)[0] << "y:" << it->Rvec.ptr<float>(0)[1] << "z:" << it->Rvec.ptr<float>(0)[2] << endl;
-			//cv::waitKey(10000);
-			*steering = ((it->Rvec.ptr<float>(0)[2]) * 180 / 3.1415 + 90) * factor;
-			break;
-		}
-	}
-	/*
-	//float x = (*elements)["Thibaut"].pos.x;
-	if (x != 0) {
-		float xrel = (x - (width / 2)) / (width / 2);
-		float ang = ((atan(xrel) * 180) / 3.1415 + 90) * factor;
-		*steering = ang;
-	}
-	*/
-
-}
-
 void initArduino(Serial** arduin) {
-	*arduin = new Serial("\\\\.\\COM3"); // adjust as needed
+	*arduin = new Serial("\\\\.\\COM5"); // adjust as needed
 
 	if ((*arduin)->IsConnected())
-		cout << "Connectection to the arduino OK" << endl;
+		cout << "Connection to the arduino OK" << endl;
+}
+
+class mqtt_sender *sender;
+int rc;
+bool connected = true;
+
+void publish_to_mqtt(char *topic, char *message) {
+	if (connected) {
+		rc = sender->loop_start();
+		if (rc){
+			sender->reconnect();
+		}
+		sender->send_message(topic, message);
+	}
 }
 
 /**
@@ -120,28 +63,51 @@ void initArduino(Serial** arduin) {
  */
 void sendCommand(Serial** arduin, int steering, int throttle) {
 	if ((*arduin)->IsConnected()) {
-		char buff;
+		char buff [2];
 		// Send steering
-		buff = (char)steering;
-		if ((*arduin)->WriteData(&buff, 1)) {
+		buff[0] = (char)(steering);
+		/*
+		if (!(*arduin)->WriteData(&buff, 1)) {
 			cout << "Steering write fail !" << endl;
-			return;
-		}
+		}*/
 		// Send throttle
-		buff = throttle;
-		if ((*arduin)->WriteData(&buff, 1)) {
+		buff[1] = (char)(throttle);
+		if (!(*arduin)->WriteData(buff, 2)) {
 			cout << "Throttle write fail !" << endl;
-			return;
 		}
 		cout << "Command sent" << endl;
 	}
 }
 
+void sendMetrics(int steering, int throttle) {
+	publish_to_mqtt(TOPIC_STEER, (char*)std::to_string(steering).c_str());
+	publish_to_mqtt(TOPIC_THROT, (char*)std::to_string(throttle).c_str());
+	cout << "Metrics sent" << endl;
+}
 
-int main(void){
+int main(int argc, char *argv[]) {
+	mosqpp::lib_init();
+	if (argc >= 2) {
+		cout << "Connecting to " << argv[1] << endl;
+		sender = new mqtt_sender("sender", argv[1], 1883);
+	}
+	else {
+		cout << "Connecting to localhost" << endl;
+		sender = new mqtt_sender("sender", "localhost", 1883);
+	}
+
+	if (!sender) {
+		cout << "WARNING: unable to connect to MQTT, logging disabled." << endl;
+		connected = false;
+	}
+	else {
+		cout << "Connected to MQTT." << endl;
+	}
+
+	publish_to_mqtt("presence", "Hello mqtt");
 
 	int steering = 90;
-	int throttle = 90;
+	int throttle = 91;
 	
 	Serial* arduin;
 	initArduino(&arduin);
@@ -157,7 +123,7 @@ int main(void){
 	MarkerDetector MDetector;
 	
 	TheVideoCapturer.open(0);
-	
+
 	if (!TheVideoCapturer.isOpened()) {
 		cerr << "Could not open video" << endl;
 		return -1;
@@ -198,9 +164,12 @@ int main(void){
 
 	cv::namedWindow("in", 1);
 
+	IARabbit ia;
+
 	int index = 0;
 	do {
 		TheVideoCapturer.retrieve(TheInputImage);
+		TheVideoCapturer.grab();
 		//Detection of markers in the image passed
 		MDetector.detect(TheInputImage, TheMarkers, TheCameraParameters, TheMarkerSize);
 
@@ -210,13 +179,14 @@ int main(void){
 			//cout << TheMarkers[i] << endl;
 			TheMarkers[i].draw(TheInputImageCopy, Scalar(0, 0, 255), 1);
 		}
-		getSteering(&TheMarkers, &steering, TheInputImage.size().width, 1.0);
-		cout << steering << endl;
+		ia.getCommand(&TheMarkers, &steering, &throttle, TheInputImage.size().width);
 		sendCommand(&arduin, steering, throttle);
+
+		sendMetrics(steering, throttle);
 
 		//show input with augmented information and  the thresholded image
 		cv::imshow("in", TheInputImageCopy);
-		cv::waitKey(20);
-	} while (TheVideoCapturer.grab());
+		cv::waitKey(10);
+	} while (1);
 
 }

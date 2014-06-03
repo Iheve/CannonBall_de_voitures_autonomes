@@ -17,6 +17,7 @@ Serial::Serial(char *portName)
 		NULL,
 		OPEN_EXISTING,
 		FILE_ATTRIBUTE_NORMAL,
+		//FILE_FLAG_OVERLAPPED,
 		NULL);
 
 	//Check if the connection was successfull

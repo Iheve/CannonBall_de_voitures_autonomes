@@ -19,9 +19,12 @@
     <ClCompile Include="chromaticmask.cpp" />
     <ClCompile Include="cvdrawingutils.cpp" />
     <ClCompile Include="highlyreliablemarkers.cpp" />
+    <ClCompile Include="IA.cpp" />
+    <ClCompile Include="IARabbit.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="marker.cpp" />
     <ClCompile Include="markerdetector.cpp" />
+    <ClCompile Include="mqtt_sender.cpp" />
     <ClCompile Include="Serial.cpp" />
     <ClCompile Include="subpixelcorner.cpp" />
   </ItemGroup>
@@ -36,8 +39,11 @@
     <ClInclude Include="cvdrawingutils.h" />
     <ClInclude Include="exports.h" />
     <ClInclude Include="highlyreliablemarkers.h" />
+    <ClInclude Include="IA.h" />
+    <ClInclude Include="IARabbit.h" />
     <ClInclude Include="marker.h" />
     <ClInclude Include="markerdetector.h" />
+    <ClInclude Include="mqtt_sender.h" />
     <ClInclude Include="SerialClass.h" />
     <ClInclude Include="subpixelcorner.h" />
   </ItemGroup>
@@ -87,7 +93,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opencv_calib3d248d.lib;opencv_contrib248d.lib;opencv_core248d.lib;opencv_features2d248d.lib;opencv_flann248d.lib;opencv_gpu248d.lib;opencv_highgui248d.lib;opencv_imgproc248d.lib;opencv_legacy248d.lib;opencv_ml248d.lib;opencv_nonfree248d.lib;opencv_objdetect248d.lib;opencv_photo248d.lib;opencv_stitching248d.lib;opencv_superres248d.lib;opencv_ts248d.lib;opencv_video248d.lib;opencv_videostab248d.lib;libzbar-0.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opencv_calib3d248d.lib;opencv_contrib248d.lib;opencv_core248d.lib;opencv_features2d248d.lib;opencv_flann248d.lib;opencv_gpu248d.lib;opencv_highgui248d.lib;opencv_imgproc248d.lib;opencv_legacy248d.lib;opencv_ml248d.lib;opencv_nonfree248d.lib;opencv_objdetect248d.lib;opencv_photo248d.lib;opencv_stitching248d.lib;opencv_superres248d.lib;opencv_ts248d.lib;opencv_video248d.lib;opencv_videostab248d.lib;libzbar-0.lib;mosquitto.lib;mosquittopp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>
       </SubSystem>
       <AdditionalLibraryDirectories>C:\Users\RICM4\Documents\GitHub\CannonBall_de_voitures_autonomes\QRcode\QRcode\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
