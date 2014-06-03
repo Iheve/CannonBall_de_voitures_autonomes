@@ -8,9 +8,10 @@
 #include "aruco.h"
 #include "highlyreliablemarkers.h"
 #include "cvdrawingutils.h"
+#include "mqtt_sender.h"
 using namespace std;
 using namespace zbar;
-using namespace cv;
+using namespace cv; 
 using namespace aruco;
 
 /**
@@ -131,6 +132,20 @@ void initArduino(Serial** arduin) {
 		cout << "Connection to the arduino OK" << endl;
 }
 
+class mqtt_sender *sender;
+int rc;
+bool connected = true;
+
+void publish_to_mqtt(char *topic, char *message) {
+	if (connected) {
+		rc = sender->loop();
+		if (rc){
+			sender->reconnect();
+		}
+		sender->send_message(topic, message);
+	}
+}
+
 /**
  * Send steering and throttle angles to the arduino
  */
@@ -148,11 +163,24 @@ void sendCommand(Serial** arduin, int steering, int throttle) {
 			cout << "Throttle write fail !" << endl;
 		}
 		cout << "Command sent" << endl;
+		publish_to_mqtt(TOPIC_STEER, (char*) std::to_string(steering).c_str());
+		publish_to_mqtt(TOPIC_THROT, (char*) std::to_string(throttle).c_str());
+		cout << "Metric send to server" << endl;
 	}
 }
 
+int main(void) {
+	mosqpp::lib_init();
 
-int main(void){
+	if (!(sender = new mqtt_sender("sender", "localhost", 1883))) {
+		cout << "WARNING: unable to connect to MQTT, logging disabled." << endl;
+		connected = false;
+	}
+	else {
+		cout << "Connected to MQTT." << endl;
+	}
+
+	publish_to_mqtt("presence", "Hello mqtt");
 
 	int steering = 90;
 	int throttle = 91;
