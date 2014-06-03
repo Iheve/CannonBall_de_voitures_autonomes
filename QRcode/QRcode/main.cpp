@@ -1,6 +1,5 @@
 #include <opencv/cv.h>
 #include <opencv/highgui.h>
-#include <zbar.h>
 #include <iostream>
 #include <map>
 #include <Windows.h>
@@ -8,40 +7,17 @@
 #include "aruco.h"
 #include "highlyreliablemarkers.h"
 #include "cvdrawingutils.h"
-#include "IA.h"
 #include "IARabbit.h"
 #include "mqtt_sender.h"
-using namespace std;
-using namespace zbar;
+
 using namespace cv; 
 using namespace aruco;
 
-/**
- * Prompt the user to select the webcam number
- * Most of the time -1, 0, 1 or 2
- * switch eventually to HD
- */
-void selectCam(CvCapture** capture, bool hd) {
-	int cam = 0;
-	while (!(*capture = cvCaptureFromCAM(cam))) {
-		cout << "Capture failure\n";
-		cout << "Enter camera number : ";
-		cin >> cam;
-	}
-
-	if (hd) {
-		cout << "switching to 1920x1080\n";
-		cvSetCaptureProperty(*capture, CV_CAP_PROP_FRAME_WIDTH, 1920);
-		cvSetCaptureProperty(*capture, CV_CAP_PROP_FRAME_HEIGHT, 1080);
-		cout << "running !\n";
-	}
-}
-
-void initArduino(Serial** arduin) {
-	*arduin = new Serial("\\\\.\\COM5"); // adjust as needed
+void initArduino(Serial** arduin, char * port) {
+	*arduin = new Serial(port); // adjust as needed
 
 	if ((*arduin)->IsConnected())
-		cout << "Connection to the arduino OK" << endl;
+		std::cout << "Connection to the arduino OK" << std::endl;
 }
 
 class mqtt_sender *sender;
@@ -64,44 +40,41 @@ void publish_to_mqtt(char *topic, char *message) {
 void sendCommand(Serial** arduin, int steering, int throttle) {
 	if ((*arduin)->IsConnected()) {
 		char buff [2];
-		// Send steering
 		buff[0] = (char)(steering);
-		/*
-		if (!(*arduin)->WriteData(&buff, 1)) {
-			cout << "Steering write fail !" << endl;
-		}*/
-		// Send throttle
 		buff[1] = (char)(throttle);
 		if (!(*arduin)->WriteData(buff, 2)) {
-			cout << "Serial write fail !" << endl;
+			std::cout << "Serial write fail !" << std::endl;
 		}
-		//cout << "Command sent" << endl;
 	}
 }
 
-void sendMetrics(int steering, int throttle) {
+/**
+ * Send metrics to the MQTT broker
+ */
+void sendMetrics(int steering, int throttle, double laps, double avg) {
 	publish_to_mqtt(TOPIC_STEER, (char*)std::to_string(steering).c_str());
 	publish_to_mqtt(TOPIC_THROT, (char*)std::to_string(throttle).c_str());
-	//cout << "Metrics sent" << endl;
+	publish_to_mqtt(TOPIC_LAPS, (char*)std::to_string(laps).c_str());
+	publish_to_mqtt(TOPIC_AVG, (char*)std::to_string(avg).c_str());
 }
 
 int main(int argc, char *argv[]) {
 	mosqpp::lib_init();
 	if (argc >= 2) {
-		cout << "Connecting to " << argv[1] << endl;
+		std::cout << "Connecting to " << argv[1] << std::endl;
 		sender = new mqtt_sender("sender", argv[1], 1883);
 	}
 	else {
-		cout << "Connecting to localhost" << endl;
+		std::cout << "Connecting to localhost" << std::endl;
 		sender = new mqtt_sender("sender", "localhost", 1883);
 	}
 
 	if (!sender) {
-		cout << "WARNING: unable to connect to MQTT, logging disabled." << endl;
+		std::cout << "WARNING: unable to connect to MQTT, logging disabled." << std::endl;
 		connected = false;
 	}
 	else {
-		cout << "Connected to MQTT." << endl;
+		std::cout << "Connected to MQTT." << std::endl;
 	}
 
 	publish_to_mqtt("presence", "Hello mqtt");
@@ -110,7 +83,7 @@ int main(int argc, char *argv[]) {
 	int throttle = 91;
 	
 	Serial* arduin;
-	initArduino(&arduin);
+	initArduino(&arduin, "\\\\.\\COM5");
 
 	String TheDict = "dict.yml";
 	String TheCamParam = "camparam.yml";
@@ -123,20 +96,22 @@ int main(int argc, char *argv[]) {
 	MarkerDetector MDetector;
 	
 	TheVideoCapturer.open(0);
+	TheVideoCapturer.set(CV_CAP_PROP_FRAME_WIDTH, 1920/3);
+	TheVideoCapturer.set(CV_CAP_PROP_FRAME_HEIGHT, 1080/3);
 
 	if (!TheVideoCapturer.isOpened()) {
-		cerr << "Could not open video" << endl;
+		cerr << "Could not open video" << std::endl;
 		return -1;
 
 	}
 
 	Dictionary D;
 	if (D.fromFile(TheDict) == false) {
-		cerr << "Could not open dictionary" << endl;
+		cerr << "Could not open dictionary" << std::endl;
 		return -1;
 	};
 	if (D.size() == 0) {
-		cerr << "Invalid dictionary" << endl;
+		cerr << "Invalid dictionary" << std::endl;
 		return -1;
 	};
 
@@ -161,7 +136,6 @@ int main(int argc, char *argv[]) {
 	MDetector.setWarpSize((D[0].n() + 2) * 8);
 	MDetector.setMinMaxSize(0.005, 0.5);
 
-
 	cv::namedWindow("in", 1);
 
 	IARabbit ia;
@@ -171,30 +145,35 @@ int main(int argc, char *argv[]) {
 	double laps = 0;
 	float total = 0;
 	do {
-
 		index++;
 		laps = (((double)getTickCount() - tick) / getTickFrequency() * 1000);
 		total += laps;
-		cout << "time enlapsed : " << laps << " ms" << " (avg : " << total / index << ")" << endl;
+		std::cout << "time enlapsed : " << laps << " ms" << " (avg : " << total / index << ")" << std::endl;
 		tick = (double)getTickCount();
 
+		//Get a new frame
 		TheVideoCapturer.retrieve(TheInputImage);
 		TheVideoCapturer.grab();
+
 		//Detection of markers in the image passed
 		MDetector.detect(TheInputImage, TheMarkers, TheCameraParameters, TheMarkerSize);
 
 		//print marker info and draw the markers in image
 		TheInputImage.copyTo(TheInputImageCopy);
 		for (unsigned int i = 0; i < TheMarkers.size(); i++) {
-			//cout << TheMarkers[i] << endl;
 			TheMarkers[i].draw(TheInputImageCopy, Scalar(0, 0, 255), 1);
 		}
+
+		//Get steering and throttle from IA
 		ia.getCommand(&TheMarkers, &steering, &throttle, TheInputImage.size().width);
+
+		//Send command on the serial bus
 		sendCommand(&arduin, steering, throttle);
 
-		sendMetrics(steering, throttle);
+		//Send metrics to the MQTT brocker
+		sendMetrics(steering, throttle, laps, total/index);
 
-		//show input with augmented information and  the thresholded image
+		//show input with augmented information
 		cv::imshow("in", TheInputImageCopy);
 		cv::waitKey(10);
 	} while (1);

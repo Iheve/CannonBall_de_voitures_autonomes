@@ -101,7 +101,7 @@ int main(int argc,char **argv)
         //read from camera or from  file
         if (TheInputVideo=="live") {
             TheVideoCapturer.open(0);
-            waitTime=10;
+            //waitTime=10;
         }
         else  TheVideoCapturer.open(TheInputVideo);
         //check video is open

@@ -15,6 +15,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "aruco_hrm_test", "aruco_hrm
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "aruco_simple", "aruco_simple\aruco_simple.vcxproj", "{36843F54-598E-456D-A807-355E10258D1B}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "aruco_create_board", "aruco_create_board\aruco_create_board.vcxproj", "{344B660C-FA98-4558-8220-BC6FF5374D11}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -45,6 +47,10 @@ Global
 		{36843F54-598E-456D-A807-355E10258D1B}.Debug|Win32.Build.0 = Debug|Win32
 		{36843F54-598E-456D-A807-355E10258D1B}.Release|Win32.ActiveCfg = Release|Win32
 		{36843F54-598E-456D-A807-355E10258D1B}.Release|Win32.Build.0 = Release|Win32
+		{344B660C-FA98-4558-8220-BC6FF5374D11}.Debug|Win32.ActiveCfg = Debug|Win32
+		{344B660C-FA98-4558-8220-BC6FF5374D11}.Debug|Win32.Build.0 = Debug|Win32
+		{344B660C-FA98-4558-8220-BC6FF5374D11}.Release|Win32.ActiveCfg = Release|Win32
+		{344B660C-FA98-4558-8220-BC6FF5374D11}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

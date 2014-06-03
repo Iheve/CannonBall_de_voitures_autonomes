@@ -6,6 +6,8 @@
 
 #define TOPIC_STEER "metrics/steering"
 #define TOPIC_THROT "metrics/throttle"
+#define TOPIC_LAPS "metrics/laps"
+#define TOPIC_AVG "metrics/avg"
 
 #if defined(__linux__)
 #define MOSQPP mosquittopp
