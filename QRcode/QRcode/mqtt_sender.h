@@ -20,8 +20,11 @@ class mqtt_sender : public MOSQPP::mosquittopp
     public:
         mqtt_sender(const char *id, const char *host, int port);
         ~mqtt_sender();
+		int rc;
+		bool connected;
 
         void send_message(char *topic, char *msg);
+		void publish_to_mqtt(char *topic, char *message);
 };
 
 #endif
