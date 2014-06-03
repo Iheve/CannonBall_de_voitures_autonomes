@@ -92,10 +92,18 @@ void sendCommand(Serial** arduin, int steering, int throttle) {
 	}
 }
 
-int main(void) {
+int main(int argc, char *argv[]) {
 	mosqpp::lib_init();
+	if (argc == 2) {
+		cout << "Connecting to " << argv[1] << endl;
+		sender = new mqtt_sender("sender", argv[0], 1883);
+	}
+	else {
+		cout << "Connecting to localhost" << endl;
+		sender = new mqtt_sender("sender", "localhost", 1883);
+	}
 
-	if (!(sender = new mqtt_sender("sender", "localhost", 1883))) {
+	if (!sender) {
 		cout << "WARNING: unable to connect to MQTT, logging disabled." << endl;
 		connected = false;
 	}
@@ -122,7 +130,7 @@ int main(void) {
 	MarkerDetector MDetector;
 	
 	TheVideoCapturer.open(0);
-	
+
 	if (!TheVideoCapturer.isOpened()) {
 		cerr << "Could not open video" << endl;
 		return -1;
