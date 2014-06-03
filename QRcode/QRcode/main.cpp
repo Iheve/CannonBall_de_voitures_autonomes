@@ -73,16 +73,16 @@ void sendCommand(Serial** arduin, int steering, int throttle) {
 		// Send throttle
 		buff[1] = (char)(throttle);
 		if (!(*arduin)->WriteData(buff, 2)) {
-			cout << "Throttle write fail !" << endl;
+			cout << "Serial write fail !" << endl;
 		}
-		cout << "Command sent" << endl;
+		//cout << "Command sent" << endl;
 	}
 }
 
 void sendMetrics(int steering, int throttle) {
 	publish_to_mqtt(TOPIC_STEER, (char*)std::to_string(steering).c_str());
 	publish_to_mqtt(TOPIC_THROT, (char*)std::to_string(throttle).c_str());
-	cout << "Metrics sent" << endl;
+	//cout << "Metrics sent" << endl;
 }
 
 int main(int argc, char *argv[]) {
@@ -114,7 +114,7 @@ int main(int argc, char *argv[]) {
 
 	String TheDict = "dict.yml";
 	String TheCamParam = "camparam.yml";
-	float TheMarkerSize = 0.042;
+	float TheMarkerSize = 0.089;
 
 	VideoCapture TheVideoCapturer;
 	vector<Marker> TheMarkers;
@@ -167,7 +167,17 @@ int main(int argc, char *argv[]) {
 	IARabbit ia;
 
 	int index = 0;
+	double tick = (double)getTickCount();
+	double laps = 0;
+	float total = 0;
 	do {
+
+		index++;
+		laps = (((double)getTickCount() - tick) / getTickFrequency() * 1000);
+		total += laps;
+		cout << "time enlapsed : " << laps << " ms" << " (avg : " << total / index << ")" << endl;
+		tick = (double)getTickCount();
+
 		TheVideoCapturer.retrieve(TheInputImage);
 		TheVideoCapturer.grab();
 		//Detection of markers in the image passed

@@ -16,7 +16,7 @@ mqtt_sender::mqtt_sender(const char *id, const char *host, int port) : mosquitto
 };
 
 void mqtt_sender::send_message(char *topic, char *msg) {
-    std::cout << "Sending message.." << std::endl;
+    //std::cout << "Sending message.." << std::endl;
     publish(NULL, topic, strlen(msg)*sizeof(uint8_t), (uint8_t *) msg); //Client
-    std::cout << "Sent!" << std::endl;
+    //std::cout << "Sent!" << std::endl;
 }
