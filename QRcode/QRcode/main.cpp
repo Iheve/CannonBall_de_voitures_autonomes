@@ -9,28 +9,18 @@
 #include "IARabbit.h"
 #include "mqtt_sender.h"
 
-using namespace cv; 
+using namespace cv;		
 using namespace aruco;
+
+std::string mqtt_server = "localhost";
+
+mqtt_sender *sender;
 
 void initArduino(Serial** arduin, char * port) {
 	*arduin = new Serial(port); // adjust as needed
 
 	if ((*arduin)->IsConnected())
 		std::cout << "Connection to the arduino OK" << std::endl;
-}
-
-class mqtt_sender *sender;
-int rc;
-bool connected = true;
-
-void publish_to_mqtt(char *topic, char *message) {
-	if (connected) {
-		rc = sender->loop_start();
-		if (rc){
-			sender->reconnect();
-		}
-		sender->send_message(topic, message);
-	}
 }
 
 /**
@@ -51,10 +41,12 @@ void sendCommand(Serial** arduin, int steering, int throttle) {
  * Send metrics to the MQTT broker
  */
 void sendMetrics(int steering, int throttle, double laps, double avg) {
-	publish_to_mqtt(TOPIC_STEER, (char*)std::to_string(steering).c_str());
-	publish_to_mqtt(TOPIC_THROT, (char*)std::to_string(throttle).c_str());
-	publish_to_mqtt(TOPIC_LAPS, (char*)std::to_string(laps).c_str());
-	publish_to_mqtt(TOPIC_AVG, (char*)std::to_string(avg).c_str());
+	sender->publish_to_mqtt(TOPIC_STEER, (char*)std::to_string(steering).c_str());
+	sender->publish_to_mqtt(TOPIC_THROT, (char*)std::to_string(throttle).c_str());
+	sender->publish_to_mqtt(TOPIC_LAPS, (char*)std::to_string(laps).c_str());
+	sender->publish_to_mqtt(TOPIC_AVG, (char*)std::to_string(avg).c_str());
+	cout << "SENT!" << endl;
+
 }
 
 int main(int argc, char *argv[]) {
@@ -68,15 +60,7 @@ int main(int argc, char *argv[]) {
 		sender = new mqtt_sender("sender", "localhost", 1883);
 	}
 
-	if (!sender) {
-		std::cout << "WARNING: unable to connect to MQTT, logging disabled." << std::endl;
-		connected = false;
-	}
-	else {
-		std::cout << "Connected to MQTT." << std::endl;
-	}
-
-	publish_to_mqtt("presence", "Hello mqtt");
+	sender->publish_to_mqtt("presence", "Hello mqtt");
 
 	int steering = 90;
 	int throttle = 91;
@@ -101,7 +85,6 @@ int main(int argc, char *argv[]) {
 	if (!TheVideoCapturer.isOpened()) {
 		cerr << "Could not open video" << std::endl;
 		return -1;
-
 	}
 
 	Dictionary D;
