@@ -19,6 +19,8 @@
     <ClCompile Include="chromaticmask.cpp" />
     <ClCompile Include="cvdrawingutils.cpp" />
     <ClCompile Include="highlyreliablemarkers.cpp" />
+    <ClCompile Include="IA.cpp" />
+    <ClCompile Include="IARabbit.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="marker.cpp" />
     <ClCompile Include="markerdetector.cpp" />
@@ -36,6 +38,8 @@
     <ClInclude Include="cvdrawingutils.h" />
     <ClInclude Include="exports.h" />
     <ClInclude Include="highlyreliablemarkers.h" />
+    <ClInclude Include="IA.h" />
+    <ClInclude Include="IARabbit.h" />
     <ClInclude Include="marker.h" />
     <ClInclude Include="markerdetector.h" />
     <ClInclude Include="SerialClass.h" />
