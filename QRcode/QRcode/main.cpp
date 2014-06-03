@@ -128,7 +128,7 @@ void initArduino(Serial** arduin) {
 	*arduin = new Serial("\\\\.\\COM5"); // adjust as needed
 
 	if ((*arduin)->IsConnected())
-		cout << "Connectection to the arduino OK" << endl;
+		cout << "Connection to the arduino OK" << endl;
 }
 
 /**
