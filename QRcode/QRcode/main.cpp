@@ -8,12 +8,9 @@
 #include "aruco.h"
 #include "highlyreliablemarkers.h"
 #include "cvdrawingutils.h"
-<<<<<<< HEAD
 #include "IA.h"
 #include "IARabbit.h"
-=======
 #include "mqtt_sender.h"
->>>>>>> 5a1dbd9d0ce869a7ae1ed79033c81727fb5e57ad
 using namespace std;
 using namespace zbar;
 using namespace cv; 
@@ -61,7 +58,7 @@ bool connected = true;
 
 void publish_to_mqtt(char *topic, char *message) {
 	if (connected) {
-		rc = sender->loop();
+		rc = sender->loop_start();
 		if (rc){
 			sender->reconnect();
 		}
@@ -86,17 +83,20 @@ void sendCommand(Serial** arduin, int steering, int throttle) {
 			cout << "Throttle write fail !" << endl;
 		}
 		cout << "Command sent" << endl;
-		publish_to_mqtt(TOPIC_STEER, (char*) std::to_string(steering).c_str());
-		publish_to_mqtt(TOPIC_THROT, (char*) std::to_string(throttle).c_str());
-		cout << "Metric send to server" << endl;
 	}
+}
+
+void sendMetrics(int steering, int throttle) {
+	publish_to_mqtt(TOPIC_STEER, (char*)std::to_string(steering).c_str());
+	publish_to_mqtt(TOPIC_THROT, (char*)std::to_string(throttle).c_str());
+	cout << "Metrics sent" << endl;
 }
 
 int main(int argc, char *argv[]) {
 	mosqpp::lib_init();
-	if (argc == 2) {
+	if (argc >= 2) {
 		cout << "Connecting to " << argv[1] << endl;
-		sender = new mqtt_sender("sender", argv[0], 1883);
+		sender = new mqtt_sender("sender", argv[1], 1883);
 	}
 	else {
 		cout << "Connecting to localhost" << endl;
@@ -188,6 +188,8 @@ int main(int argc, char *argv[]) {
 		}
 		ia.getCommand(&TheMarkers, &steering, &throttle, TheInputImage.size().width);
 		sendCommand(&arduin, steering, throttle);
+
+		sendMetrics(steering, throttle);
 
 		//show input with augmented information and  the thresholded image
 		cv::imshow("in", TheInputImageCopy);

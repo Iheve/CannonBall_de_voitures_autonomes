@@ -12,7 +12,7 @@ mqtt_sender::mqtt_sender(const char *id, const char *host, int port) : mosquitto
 
     /* Connect immediately. This could also be done by calling
      * mqtt_sender->connect(). */
-    connect(host, port, keepalive);
+    connect_async(host, port, keepalive);
 };
 
 void mqtt_sender::send_message(char *topic, char *msg) {
