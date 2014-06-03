@@ -1,7 +1,6 @@
 #include <opencv/cv.h>
 #include <opencv/highgui.h>
 #include <iostream>
-#include <map>
 #include <Windows.h>
 #include "SerialClass.h"
 #include "aruco.h"
@@ -171,7 +170,7 @@ int main(int argc, char *argv[]) {
 		sendCommand(&arduin, steering, throttle);
 
 		//Send metrics to the MQTT brocker
-		sendMetrics(steering, throttle, laps, total/index);
+		//sendMetrics(steering, throttle, laps, total/index);
 
 		//show input with augmented information
 		cv::imshow("in", TheInputImageCopy);
