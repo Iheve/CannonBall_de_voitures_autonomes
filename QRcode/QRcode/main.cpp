@@ -86,14 +86,30 @@ void compute(Image *image, map<string, struct element> *elements, Mat *img) {
  * update steering
  * use factor to adjust steering amplitude
  */
-void getSteering(vector<Marker>* TheMarkers, int* steering, int width, float factor) {
+void getSteering(vector<Marker>* TheMarkers, int* steering, int* throttle, int width, float factor) {
 	float x = 0;
+
+	*throttle = 91;
 	for (std::vector<Marker>::iterator it = (*TheMarkers).begin(); it != (*TheMarkers).end(); it++) {
 		if (it->id == 18244) {
-			//x = it->getCenter().x;
+			x = it->getCenter().x;
+			float xrel = (x - (width / 2)) / (width / 2);
+			float ang = ((atan(xrel) * 180) / 3.1415) * factor + 90;
+			*steering = ang;
+			float d = it->Tvec.ptr<float>(0)[2];
+			if (d > 2.0) {
+				*throttle = 86;
+			}
+			else if (d > 1.0) {
+				*throttle = 87;
+			}
+			else if (d > 0.5) {
+				*throttle = 88;
+			}
+			//cout << "d:" << d<<endl;
 			//cout << "x:" << it->Rvec.ptr<float>(0)[0] << "y:" << it->Rvec.ptr<float>(0)[1] << "z:" << it->Rvec.ptr<float>(0)[2] << endl;
 			//cv::waitKey(10000);
-			*steering = ((it->Rvec.ptr<float>(0)[2]) * 180 / 3.1415 + 90) * factor;
+			//*steering = ((it->Rvec.ptr<float>(0)[2]) * 180 / 3.1415 + 90) * factor;
 			break;
 		}
 	}
@@ -109,7 +125,7 @@ void getSteering(vector<Marker>* TheMarkers, int* steering, int width, float fac
 }
 
 void initArduino(Serial** arduin) {
-	*arduin = new Serial("\\\\.\\COM3"); // adjust as needed
+	*arduin = new Serial("\\\\.\\COM5"); // adjust as needed
 
 	if ((*arduin)->IsConnected())
 		cout << "Connectection to the arduino OK" << endl;
@@ -122,16 +138,14 @@ void sendCommand(Serial** arduin, int steering, int throttle) {
 	if ((*arduin)->IsConnected()) {
 		char buff;
 		// Send steering
-		buff = (char)steering;
-		if ((*arduin)->WriteData(&buff, 1)) {
+		buff = (char)(steering);
+		if (!(*arduin)->WriteData(&buff, 1)) {
 			cout << "Steering write fail !" << endl;
-			return;
 		}
 		// Send throttle
-		buff = throttle;
-		if ((*arduin)->WriteData(&buff, 1)) {
+		buff = (char)(throttle);
+		if (!(*arduin)->WriteData(&buff, 1)) {
 			cout << "Throttle write fail !" << endl;
-			return;
 		}
 		cout << "Command sent" << endl;
 	}
@@ -141,7 +155,7 @@ void sendCommand(Serial** arduin, int steering, int throttle) {
 int main(void){
 
 	int steering = 90;
-	int throttle = 90;
+	int throttle = 91;
 	
 	Serial* arduin;
 	initArduino(&arduin);
@@ -210,8 +224,9 @@ int main(void){
 			//cout << TheMarkers[i] << endl;
 			TheMarkers[i].draw(TheInputImageCopy, Scalar(0, 0, 255), 1);
 		}
-		getSteering(&TheMarkers, &steering, TheInputImage.size().width, 1.0);
-		cout << steering << endl;
+		getSteering(&TheMarkers, &steering, &throttle, TheInputImage.size().width, 0.75);
+		//cout << steering << endl;
+		//sendCommand(&arduin, steering, throttle);
 		sendCommand(&arduin, steering, throttle);
 
 		//show input with augmented information and  the thresholded image
