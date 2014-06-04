@@ -55,14 +55,34 @@ void IAcannonball::getCommand(vector<aruco::Marker>* TheMarkers, int* steering, 
 	frame++;
 	for (std::vector<aruco::Marker>::iterator it = (*TheMarkers).begin(); it != (*TheMarkers).end(); it++) {
 		elements[it->id].marker = *it;
+		if (elements[it->id].lastTimeSeen != 0 && elements[it->id].lastTimeSeen == (frame - 1)){
+			elements[it->id].valid = true;
+		}
+		else {
+			elements[it->id].valid = false;
+		}
 		elements[it->id].lastTimeSeen = frame;
 	}
 
-	if (idle > 100 && !(*TheMarkers).empty()) {
-		while (currentDoor->left != (*TheMarkers)[0].id && currentDoor->right != (*TheMarkers)[0].id) {
-			currentDoor = currentDoor->next;
+	if (idle > 10 && !(*TheMarkers).empty()) {
+		int id = -1;
+		for (std::vector<aruco::Marker>::iterator it = (*TheMarkers).begin(); it != (*TheMarkers).end(); it++) {
+			if (!elements[it->id].valid) {
+				continue;
+			}
+			if (id = -1) {
+				id = it->id;
+			}
+			else if (elements[id].marker.Tvec.ptr<float>(0)[2] > elements[it->id].marker.Tvec.ptr<float>(0)[2]) {
+				id = it->id;
+			}
 		}
-		idle = 0;
+		if (id != -1) {
+			while (currentDoor->left != id && currentDoor->right != id) {
+				currentDoor = currentDoor->next;
+			}
+			idle = 0;
+		}
 	}
 
 	struct element left = elements[currentDoor->left];

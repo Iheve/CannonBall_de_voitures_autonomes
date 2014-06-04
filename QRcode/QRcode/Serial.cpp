@@ -2,7 +2,7 @@
 Used for sending cam datas to the arduino via serial communication*/
 
 
-#include "SerialClass.h"
+#include "Serial.h"
 
 
 Serial::Serial(char *portName)

@@ -34,7 +34,6 @@ void setup() {
     /* Output */
     pinMode(STEERING_SERVO_PIN, OUTPUT);
     pinMode(THROTTLE_SERVO_PIN, OUTPUT);
-    pinMode(13, OUTPUT);
 
     SteeringServo.attach(STEERING_SERVO_PIN);
     ThrottleServo.attach(THROTTLE_SERVO_PIN);
@@ -55,7 +54,7 @@ void loop() {
     ThrottleServo.write(throttleTarget);
 
     if (emergency) {
-        ThrottleServo.write(89);
+        ThrottleServo.write(89);    //Prevent the car to go back
         for (;;)
             ThrottleServo.write(130);
     }

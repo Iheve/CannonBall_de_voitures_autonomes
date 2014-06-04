@@ -1,6 +1,7 @@
 #pragma once
 #include "IA.h"
 #include <map>
+#include <stdbool.h>
 
 struct door {
 	int left;
@@ -19,6 +20,7 @@ private:
 	struct element {
 		aruco::Marker marker;
 		int lastTimeSeen;
+		bool valid;
 	};
 	int frame;
 	int idle;
