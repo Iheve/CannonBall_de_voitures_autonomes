@@ -15,16 +15,31 @@
 #define MOSQPP mosqpp
 #endif
 
+/**
+ * Class which allow to send message throw MQTT protocol
+ * @author Thibaut Coutelou, Benjamin Mugnier, Guillaume Perrin
+ */
 class mqtt_sender : public MOSQPP::mosquittopp
 {
     public:
+        /**
+         * Constructor, create a connection
+         * @param id the sender id
+         * @param host address of the MQTT server
+         * @param port port used by the MQTT server
+         */
         mqtt_sender(const char *id, const char *host, int port);
         ~mqtt_sender();
-		int rc;
-		bool connected;
 
-        void send_message(char *topic, char *msg);
-		void publish_to_mqtt(char *topic, char *message);
+        /**
+         * Send message to the MQTT server, if connected
+         * @param topic the topic in which the message will be send
+         * @param msg message to send
+         */
+        void publish_to_mqtt(char *topic, char *msg);
+
+   private:
+        bool connected;
 };
 
 #endif
