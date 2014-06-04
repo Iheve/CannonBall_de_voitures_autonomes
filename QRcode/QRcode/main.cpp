@@ -8,6 +8,7 @@
 #include "cvdrawingutils.h"
 #include "IARabbit.h"
 #include "IAcannonball.h"
+#include "IAmap.h"
 #include "mqtt_sender.h"
 
 using namespace cv;
@@ -36,7 +37,7 @@ String TheDict;
 String TheCamParam;
 float TheMarkerSize;
 
-enum Runmode{RABBIT,CANNON};
+enum Runmode{RABBIT,CANNON,MAP};
 Runmode run_mode;
 
 
@@ -161,6 +162,9 @@ void readParams(int argc, char *argv[]) {
 	else if (argv6 == "cannon") {
 		run_mode = CANNON;
 	}
+	else if (argv6 == "map") {
+		run_mode = MAP;
+	}
 	else {
 		usage();
 		std::cin.get();
@@ -172,8 +176,11 @@ void choose_run_mode(IA **ia) {
 	if (run_mode == RABBIT) {
 		*ia = new IARabbit();
 	}
-	else {
+	else if (run_mode == CANNON) {
 		*ia = new IAcannonball();
+	}
+	else {
+		*ia = new IAmap();
 	}
 }
 
