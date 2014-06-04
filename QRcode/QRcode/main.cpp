@@ -191,8 +191,9 @@ int main(int argc, char *argv[]) {
 	//Aruco
 	initAruco();
 
-	IA ia;
-	choose_run_mode(ia);
+	//IA ia;
+	//choose_run_mode(ia);
+	IAcannonball ia;
 
 	int index = 0;
 	double tick = (double)getTickCount();
