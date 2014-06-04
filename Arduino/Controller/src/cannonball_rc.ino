@@ -19,16 +19,16 @@ unsigned long period=0;
 boolean emergency = false;
 
 void rc_handler() {
-  //BE CAREFUL, DO NOT PRINT STUFF HERE
-  //Serial.println use interrupts too, thus resulting in a deadlock :(
+    //BE CAREFUL, DO NOT PRINT STUFF HERE
+    //Serial.println use interrupts too, thus resulting in a deadlock :(
 
-  time = micros(); //CAREFUL, micro will overflow after 70min (returning 0)
-  period = time - last_time;
-  if (period < 1000) {
-    //We've got an emergency, stop everything
-    emergency = true;
-  }
-  last_time = time;
+    time = micros(); //CAREFUL, micro will overflow after 70min (returning 0)
+    period = time - last_time;
+    if (period < 1000) {
+        //We've got an emergency, stop everything
+        emergency = true;
+    }
+    last_time = time;
 }
 void setup() {
     /* Output */
@@ -54,7 +54,9 @@ void loop() {
     SteeringServo.write(steeringTarget);
     ThrottleServo.write(throttleTarget);
 
-    for (;emergency;) {
-        ThrottleServo.write(110);
+    if (emergency) {
+        ThrottleServo.write(89);
+        for (;;)
+            ThrottleServo.write(130);
     }
 }
