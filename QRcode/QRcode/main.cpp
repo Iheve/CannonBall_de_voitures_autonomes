@@ -154,10 +154,11 @@ void readParams(int argc, char *argv[]) {
 	TheMarkerSize = (float)atof(argv[3]);
 	mqtt_host = argv[4];
 	serial_port = argv[5];
-	if (strcmp(argv[6], "rabbit")) {
+	std::string argv6 = argv[6];
+	if (argv6 == "rabbit") {
 		run_mode = RABBIT;
 	}
-	else if (strcmp(argv[6], "cannon")) {
+	else if (argv6 == "cannon") {
 		run_mode = CANNON;
 	}
 	else {
@@ -167,14 +168,12 @@ void readParams(int argc, char *argv[]) {
 	}
 }
 
-void choose_run_mode(IA &ia) {
+void choose_run_mode(IA **ia) {
 	if (run_mode == RABBIT) {
-		IARabbit iatmp;
-		ia = iatmp;
+		*ia = new IARabbit();
 	}
 	else {
-		IAcannonball iatmp;
-		ia = iatmp;
+		*ia = new IAcannonball();
 	}
 }
 
@@ -188,11 +187,11 @@ int main(int argc, char *argv[]) {
 	mosqpp::lib_init();
 	initMQTT();
 
+	IA *ia = NULL;
+	choose_run_mode(&ia);
+
 	//Aruco
 	initAruco();
-
-	IA ia;
-	choose_run_mode(ia);
 
 	int index = 0;
 	double tick = (double)getTickCount();
@@ -214,7 +213,7 @@ int main(int argc, char *argv[]) {
 		MDetector.detect(TheInputImage, TheMarkers, TheCameraParameters, TheMarkerSize);
 
 		//Get steering and throttle from IA
-		ia.getCommand(&TheMarkers, &steering, &throttle, TheInputImage.size().width);
+		ia->getCommand(&TheMarkers, &steering, &throttle, TheInputImage.size().width);
 
 		//Send command on the serial bus
 		sendCommand(&arduin, steering, throttle);
