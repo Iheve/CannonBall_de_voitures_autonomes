@@ -7,6 +7,7 @@
 #include "highlyreliablemarkers.h"
 #include "cvdrawingutils.h"
 #include "IARabbit.h"
+#include "IAcannonball.h"
 #include "mqtt_sender.h"
 
 using namespace cv;
@@ -165,6 +166,7 @@ int main(int argc, char *argv[]) {
 	initAruco();
 
 	IARabbit ia;
+	//IAcannonball ia;
 	int index = 0;
 	double tick = (double)getTickCount();
 	double laps = 0;
@@ -174,7 +176,7 @@ int main(int argc, char *argv[]) {
 		index++;
 		laps = (((double)getTickCount() - tick) / getTickFrequency() * 1000);
 		total += (float)laps;
-		std::cout << "time enlapsed : " << laps << " ms" << " (avg : " << total / index << ")" << std::endl;
+		//std::cout << "time enlapsed : " << laps << " ms" << " (avg : " << total / index << ")" << std::endl;
 		tick = (double)getTickCount();
 
 		//Get a new frame
