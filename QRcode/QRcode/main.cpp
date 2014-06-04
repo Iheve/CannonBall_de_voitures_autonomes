@@ -36,6 +36,9 @@ String TheDict;
 String TheCamParam;
 float TheMarkerSize;
 
+enum Runmode{RABBIT,CANNON};
+Runmode run_mode;
+
 
 /**
  * Initialization of the arduino
@@ -130,18 +133,19 @@ void updateView() {
 }
 
 void usage() {
-	std::cout << "Usage : dictionary.yml intrinsics.yml marker_size MQTT_host serial_port" << std::endl;
+	std::cout << "Usage : dictionary.yml intrinsics.yml marker_size MQTT_host serial_port run_mode" << std::endl;
 	std::cout << "dictionary.yml : Dictinoary of markers used" << std::endl;
 	std::cout << "intrinsics.yml : Camera parameters (calibration)" << std::endl;
 	std::cout << "marker_size : size of the markers in meters" << std::endl;
 	std::cout << "MQTT_host : address of the MQTT broker" << std::endl;
 	std::cout << "serial_port : COM port of the arduino (ex : 'COM5')" << std::endl;
+	std::cout << "run mode : either 'rabbit' (follow the marker) or 'cannon' (race)" << std::endl;
 }
 
 void readParams(int argc, char *argv[]) {
-	if (argc < 6) {
+	if (argc < 7) {
 		usage();
-		Sleep(10000);
+		std::cin.get();
 		exit(-1);
 	}
 
@@ -150,6 +154,28 @@ void readParams(int argc, char *argv[]) {
 	TheMarkerSize = (float)atof(argv[3]);
 	mqtt_host = argv[4];
 	serial_port = argv[5];
+	if (argv[6] == "rabbit") {
+		run_mode = RABBIT;
+	}
+	else if (argv[6] == "cannon") {
+		run_mode = CANNON;
+	}
+	else {
+		usage();
+		std::cin.get();
+		exit(-1);
+	}
+}
+
+void choose_run_mode(IA &ia) {
+	if (run_mode == RABBIT) {
+		IARabbit iatmp;
+		ia = iatmp;
+	}
+	else {
+		IAcannonball iatmp;
+		ia = iatmp;
+	}
 }
 
 int main(int argc, char *argv[]) {
@@ -165,8 +191,9 @@ int main(int argc, char *argv[]) {
 	//Aruco
 	initAruco();
 
-	IARabbit ia;
-	//IAcannonball ia;
+	IA ia;
+	choose_run_mode(ia);
+
 	int index = 0;
 	double tick = (double)getTickCount();
 	double laps = 0;
