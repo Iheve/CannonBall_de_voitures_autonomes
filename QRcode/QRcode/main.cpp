@@ -154,10 +154,10 @@ void readParams(int argc, char *argv[]) {
 	TheMarkerSize = (float)atof(argv[3]);
 	mqtt_host = argv[4];
 	serial_port = argv[5];
-	if (argv[6] == "rabbit") {
+	if (strcmp(argv[6], "rabbit")) {
 		run_mode = RABBIT;
 	}
-	else if (argv[6] == "cannon") {
+	else if (strcmp(argv[6], "cannon")) {
 		run_mode = CANNON;
 	}
 	else {
