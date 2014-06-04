@@ -12,6 +12,46 @@
     <script>
         var socket = io('http://localhost:1337');
 
+        function getMinOfArray(numArray) {
+            return Math.min.apply(null, numArray);
+        }
+
+        function getMaxOfArray(numArray) {
+                return Math.max.apply(null, numArray);
+        }
+
+        function deleteOldValues(labels, data) {
+            if (data.length > 20) {
+                labels.shift();
+                data.shift();
+            }
+        }
+
+        function displayChart(context, labels, data, minEqMax, max) {
+                var options;
+                if (minEqMax) {
+                    options = {
+                        scaleOverride: true,
+                        scaleSteps: 3,
+                        scaleStepWidth: 1,
+                        scaleStartValue: max - 2,
+                        datasetFill: false,
+                        animation: false
+                    };
+                } else {
+                    options = {
+                        datasetFill: false,
+                        animation: false
+                    };
+                }
+                new Chart(context).Line({
+                        labels: labels,
+                        datasets: [{
+                                     data: data
+                              }]
+                    }, options);
+        }
+
         <!-- Steering -->
         var ctxSteering = document.getElementById('chart_steering_div').getContext('2d');
         var arrayLabelsSteering = new Array();
@@ -19,37 +59,26 @@
         socket.on('Steering', function(data) {
                 arrayLabelsSteering.push(data.time);
                 arrayDataSteering.push(data.value);
-                if (arrayLabelsSteering.length > 20) {
-                    arrayLabelsSteering.shift();
-                    arrayDataSteering.shift();
-                }
-                new Chart(ctxSteering).Line({
-                        labels: arrayLabelsSteering,
-                        datasets: [{
-                                     data: arrayDataSteering
-                                  }]
-                        }, { datasetFill: false, animation: false });
-                });
+                var min = getMinOfArray(arrayDataSteering);
+                var max = getMaxOfArray(arrayDataSteering);
+                deleteOldValues(arrayLabelsSteering, arrayDataSteering);
+                displayChart(ctxSteering, arrayLabelsSteering, arrayDataSteering,
+                    min==max, max);
+        });
 
         <!-- Throttle -->
         var ctxThrottle = document.getElementById('chart_throttle_div').getContext('2d');
         var arrayLabelsThrottle = new Array();
         var arrayDataThrottle = new Array();
         socket.on('Throttle', function(data) {
-                console.log("hkjdhskj");
                 arrayLabelsThrottle.push(data.time);
                 arrayDataThrottle.push(data.value);
-                if (arrayLabelsThrottle.length > 20) {
-                    arrayLabelsThrottle.shift();
-                    arrayDataThrottle.shift();
-                }
-                new Chart(ctxThrottle).Line({
-                        labels: arrayLabelsThrottle,
-                        datasets: [{
-                                     data: arrayDataThrottle
-                                  }]
-                        }, { datasetFill: false, animation: false });
-                });
+                var min = getMinOfArray(arrayDataThrottle);
+                var max = getMaxOfArray(arrayDataThrottle);
+                deleteOldValues(arrayLabelsThrottle, arrayDataThrottle);
+                displayChart(ctxThrottle, arrayLabelsThrottle, arrayDataThrottle,
+                    min==max, max);
+        });
 
     </script>
 </body>

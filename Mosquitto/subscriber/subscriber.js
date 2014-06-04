@@ -36,6 +36,7 @@ client.subscribe('metrics/accelerometer');
 client.subscribe('metrics/steering');
 client.subscribe('metrics/throttle');
 client.on('message', function(topic, message) {
+    console.log(topic + " " + message);
     if (topic === 'metrics/accelerometer') {
         var split = message.split(':');
         var insert = new Accelerometer({ x: split[0],
