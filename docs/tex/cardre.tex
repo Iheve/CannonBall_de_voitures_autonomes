@@ -52,12 +52,21 @@ La voiture doit être capable de suivre un marqueur.
 
 La voiture doit être capable de suivre un circuit délimité par des marqueurs.
 
+\subsubsection{Prise en compte des autres voitures}
+
+La voiture dois être capable d'éviter ou de suivre d'autres voitures signalées
+par un marqueur.
+
+\subsubsection{Collectes de métriques}
+
+Les métriques (vitesse, direction, ...) doivent être collectées.
+
 \subsection{Objectifs de délai}
 
 Le projet doit être terminé le lundi 16 juin.
 La soutenance doit être préparée pour la semaine du 16 juin.
 Une pré-soutenance doit être préparée pour le vendredi 13 juin car Didier
-Donsez n'est pas disponible la semaine suivante
+Donsez n'est pas disponible la semaine suivante.
 
 \subsection{Objectif expérimental}
 
@@ -75,8 +84,10 @@ pédagogiques" qu'Intel pourrai fournir à d'autres universités.
 
 
 \section{Méthodologie}
-TODO
 
+La méthode de développement choisie est proche de l'agilité :
+Des prototypes de chaque fonction sont développés très rapidement, puis
+intégrés au système, et enfin réécrits de manière plus propre.
 
 
 
@@ -121,12 +132,12 @@ projet pendant 3 semaines.
 
 \section{Organisation du projet}
 
-Didier Donsez est le maitre d'ouvrage du projet.
+Didier Donsez est le référent du projet.
 Le projet est réalisé en association avec Intel et son ingénieur Paul Guermonprez, qui
 fournit du matériel servant à la réalisation celui-ci.
 
 Jules Legros et Benoit Perruche sont deux étudiants de polytech Grenoble qui
-ont travaillé sur ce projet avant nous.
+ont travaillé sur ce projet à l'itération précédente.
 
 
 
@@ -160,7 +171,7 @@ Le portage de notre solution sur Android peut poser des problèmes à différent
 niveaux :
 \begin{itemize}
     \item Communication avec l'Arduino.
-    \item Utilisation des bibliothèques (Opencv, aruco)
+    \item Utilisation des bibliothèques (Opencv, arUco)
     \item Portage du code à proprement parlé.
 \end{itemize}
 
@@ -175,17 +186,21 @@ le traitement en temps réels.
 Pour limiter ce risque, on peut utiliser des bibliothèques légères. Mais cela
 risque de ne pas suffire.
 On peut aussi utiliser des tablettes plus puissantes, si Intel nous les fourni.
+Enfin, on peut réduire la taille de l'image traitée, mais la détection des
+marqueurs risque d'être moins bonne.
 
 
 \section{Indicateurs}
 
 Les indicateurs de réussite du projet sont :
 \begin{itemize}
-    \item La voiture réagit correctement aux marqueurs
-    \item Le circuit est correctement parcouru
-    \item La voiture évite les autres voitures
-    \item Les métriques sont collectées
-    \item Le traitement par la tablette est fluide
+    %\item La voiture réagit correctement aux marqueurs
+    %\item Le circuit est correctement parcouru
+    %\item La voiture évite les autres voitures
+    %\item Les métriques sont collectées
+    \item Les fonctionnalitées attendues sont développées
+    \item Vitesse moyenne de la voiture sur un circuit de référence
+    %\item Le traitement par la tablette est fluide
     \item L'équipe est présente à 9h tous les matins (motivation)
 \end{itemize}
 
