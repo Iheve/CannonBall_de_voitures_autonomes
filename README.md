@@ -1,5 +1,7 @@
 Cannonball RC
 ======================
+Under MIT license
+
 This is a school project based on the work of *Jules Legros* and *Benoit Perruche*.
 You can find it [here](https://github.com/jules0legros/CannonBall_de_voitures_autonomes)
 
