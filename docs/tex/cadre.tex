@@ -11,7 +11,7 @@
 \usepackage{xspace} % Espace après macros
 \usepackage{float} % Positionnement des images
 
-\title{Cadre du projet}
+\title{Cadre du projet - Cannon Ball RC}
 \author{COUTELOU Thibaut - MUGNIER Benjamin - PERRIN Guillaume}
 \date{\today}
 
@@ -26,29 +26,38 @@
 \subsection{Objectifs techniques}
 
 L'objectif principal du projet est de rendre une voiture radio commandée
-autonome (autour d'une tablette Windows 8). Les livrables attendus sont :
+autonome (autour d'une tablette Windows 8). Le livrable comporte 3 objectifs principaux :
 \begin{itemize}
     \item \emph{Sécurité}. Elle doit être garantie en permanence par une commande d'arrêt
-d'urgence. (Appuyer sur un bouton de la télécommande).
+        d'urgence (appui sur un bouton de la télécommande).
     \item \emph{Lièvre}. La voiture doit être capable de suivre un marqueur.
     \item \emph{Circuit}. La voiture doit être capable de parcourir un circuit délimité par des
         marqueurs.
-    \item \emph{Prise en compte des autres voitures}. La voiture doit être
-        capable d'éviter ou de suivre d'autres voitures signalées
+\end{itemize}
+
+\paragraph{}
+Le livrable comporte également des objectifs secondaires :
+\begin{itemize}
+    \item \emph{Portage sur Android}. Rééquiper une voiture et utiliser une tablette
+        Android pour la contrôler au lieu de d'une tablette Windows. Cela permet
+        également de comparer leurs performances.
     \item \emph{Collectes de métriques}. La voiture doit être en mesure d'envoyer à tout instant
         des informations sur sa position, sa direction, sa propulsion, et d'autres
         résultats de capteurs jugés pertinents.
+    \item \emph{Prise en compte des autres voitures}. La voiture doit être
+        capable d'éviter ou de suivre d'autres voitures signalées
 \end{itemize}
 
-Un objectif secondaire est de monter une seconde voiture autour d'un système
-basé sur Android.
-Cela permettra de comparer les performances entre ces deux systèmes.
+\paragraph{}
+Ce projet étant très lié à la recherche, le but est de démontré qu'il est possible de
+traiter des images suffisemment vite pour pouvoir guider une voiture en temps réel. De
+plus, les voitures autonomes sont un pôle de recherche actuel très actif, ce projet
+permet donc de répondre à certaines problématiques.
 
 \subsection{Objectifs de délai}
 
-Le projet doit être terminé le lundi 16 juin.
-La soutenance doit être préparée pour la semaine du 16 juin.
-Une pré-soutenance sera réalisé le vendredi 13 juin car Didier
+Le projet doit être terminé le lundi 16 juin. La soutenance doit être préparée pour la
+semaine du 16 juin.  Une pré-soutenance sera réalisé le vendredi 13 juin car Didier
 Donsez n'est pas disponible la semaine suivante.
 
 \subsection{Objectif expérimental}
@@ -70,8 +79,6 @@ d'urgence.
 
 \section{Ressources}
 
-\subsection{Matériel}
-
 Le matériel à disposition est :
 \begin{itemize}
     \item Deux voitures radiocommandées
@@ -86,33 +93,55 @@ tourner un logiciel qui acquière des images par la webcam, et calcul les ordres
 à transmettre aux Arduinos. Les Arduinos contrôlent la vitesse de rotation du
 moteur et la position des roues.
 
-Ce matériel est mis a disposition par Intel.
+Nous disposons également du matériel du Fablab du bâtiment C, comme la découpeuse laser
+ou l'imprimante 3D.
 
-\subsection{Ressources humaines}
+\section{Planning}
 
-Trois étudiants en deuxième année à l'Ensimag travaillent à plein temps sur ce
-projet pendant 3 semaines.
+Le projet débute par une phase de rétro ingénierie sur l'existant ainsi que la prise en
+main du travail déjà réalisé.
+
+Le projet est ensuite découpé en 2 phases qui sont exécutées en parallèle :
+\begin{itemize}
+    \item Une phase de développement du logiciel pure : comprenant la reconnaissance de
+        marqueurs, l'envoie de données, et le micro contrôleur
+    \item Une phase de développement et de perfectionnement de l'intelligence
+        artificielle utilisée ici pour suivre les différents marqueurs
+\end{itemize}
+
+On notera que la phase de conception est réduite ici au minimum du fait de notre mode de
+fonctionnement agile mais aussi que c'est un projet Fablab et est donc très axé
+prototypage.
+
+La documentation est quand à elle rédigée tout au long du projet, exepté le cahier des
+charges rédigé au tout début. 
+
 
 \section{Organisation du projet}
 
-Didier Donsez est le référent du projet.
+L'équipe projet est constituée de Didier Donsez, le référent du projet, qui constitue
+également le comité de pilotage client.
 Le projet est réalisé en association avec Intel et son ingénieur Paul Guermonprez, qui
-fournit du matériel servant à la réalisation celui-ci.
+fournit du matériel servant à la réalisation celui-ci. Le FabLab du batiment C est tenu
+par Jerôme Maisonnasse qui nous fournit également une expertise technique sur les
+technologies embarquées. Ils constituent l'équipe étendue.
 
 Jules Legros et Benoit Perruche sont deux étudiants de Polytech Grenoble qui
-ont travaillé sur ce projet à l'itération précédente.
+ont travaillé sur ce projet à l'itération précédente. Nous pouvons nous appuyer sur eux
+en cas de besoin pour le développement.
 
 \subsection{Communication interne}
 
 Une réunion est organisée entre les trois membres de l'équipes tous les matins,
-et à chaque fois que cela est nécessaire. Elles sont nécessaires pour mettre en
+et en cas besoin. Elles sont nécessaires pour mettre en
 commun ce qui a été réalisé et planifier les journées à venir.
 
 \subsection{Rapports journaliers}
 
 Tous les jours, le journal de bord est mis à jour et un mail est envoyé à
 Didier Donsez pour le tenir au courant de l'avancement et des problèmes
-rencontrés.
+rencontrés. Une réponse est en général apportée suite à ce mail et nous est très utile
+pour le développement de la journée suivante.
 
 \subsection{Contributions}
 
@@ -122,6 +151,10 @@ sur la plateforme github et se doit d'être commenté et clair. De même, une
 documentation élaborée est de rigueur.
 
 \section{Risques}
+
+Le projet requiert du matériel pour être réalisé, nous sommes donc dépendant de l'arrivée
+de celui pour travailler. Ainsi, nous ne pouvons pas, par exemple, faire des tests en
+plein air sans avoir les plots fabriqués par le Fablab.
 
 \subsection{Portage sur Android}
 
@@ -134,12 +167,15 @@ niveaux :
 \end{itemize}
 
 On peut limiter ce risque en démarrant le portage vers Android le plus tôt
-possible et en utilisant des librairies cross-platform.
+possible et en utilisant des librairies multi plateformes.
+
+Il faut également faire de la recherche (voire même un état de l'art) afin de s'assurer
+que tout ce que nous utilisons à un instant t pourra bien être porté.
 
 \subsection{Performances trop faibles}
 
 Il se peut que les lourds calculs réalisés par la tablette rendent impossible
-le traitement en temps réels.
+le traitement en temps réel.
 
 Pour limiter ce risque, on peut utiliser des bibliothèques légères. Mais cela
 risque de ne pas suffire.
@@ -147,19 +183,34 @@ On peut aussi utiliser des tablettes plus puissantes, si Intel nous les fourni.
 Enfin, on peut réduire la taille de l'image traitée, mais la détection des
 marqueurs risque d'être moins bonne.
 
+\subsection{Aboutissement}
+
+Le projet est à caractère de recherche. Il est voué à être reprit, comme nous l'avons
+fait, par d'autres étudiants afin de le poursuivre. Nous ne sommes donc pas sûr d'avoir
+un résultat final et risquons de bloquer sur un point. Les solutions ne sont pas connues
+d'avance.
 
 \section{Indicateurs}
 
-Les indicateurs de réussite du projet sont :
-\begin{itemize}
-    %\item La voiture réagit correctement aux marqueurs
-    %\item Le circuit est correctement parcouru
-    %\item La voiture évite les autres voitures
-    %\item Les métriques sont collectées
-    \item Les fonctionnalités attendues sont développées
-    \item Vitesse moyenne de la voiture sur un circuit de référence
-    %\item Le traitement par la tablette est fluide
-    \item L'équipe est présente à 9h tous les matins (motivation)
-\end{itemize}
+Les indicateurs d'avancement des livrables sont tout d'abord que les fonctionnalités
+attendues sont développées dans un délai raisonnable.
+
+\paragraph{}
+En ce qui concerne le respect de la démarche, on pourrait envisager un indicateur de
+curiosité. En effet le projet n'étant pas sûr d'aboutir, il faut tester de nombreuses
+pistes quitte à ne pas les suivre. Cette démarche est importante pour que dans l'avenir
+les mêmes erreurs ne soient pas réitérées.
+Ceci est nécessaire pour trouver des solutions. Plus nous testons, plus nous respectons
+la démarche du projet.
+
+\paragraph{}
+La qualité des livrables peut être mesurée par la vitesse moyenne de la voiture sur un
+circuit de référence. Plus la voiture le parcours rapidement et sans erreur, plus le
+logiciel est de qualité.
+
+\paragraph{}
+La motivation de l'équipe est importante dans un projet, nous nous efforçons donc à venir
+à 9 heures tous les matins. Cela permet aussi d'être sur que tout le monde est présent à
+la réunion et que le matériel est bien ramené pour permettre à l'équipe de travailler.
 
 \end{document}
