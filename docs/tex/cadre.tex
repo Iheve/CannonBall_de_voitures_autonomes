@@ -25,65 +25,48 @@
 
 \subsection{Objectifs techniques}
 
-L'objectif principal du projet est de rendre une voiture radiocommandée
+L'objectif principal du projet est de rendre une voiture radio commandée
 autonome (autour d'une tablette Windows 8). Les livrables attendus sont :
 \begin{itemize}
-    \item Sécurité
-    \item Lièvre
-    \item Circuit
-    \item Prise en compte des autres voitures
-    \item Collectes de métriques
+    \item \emph{Sécurité}. Elle doit être garantie en permanence par une commande d'arrêt
+d'urgence. (Appuyer sur un bouton de la télécommande).
+    \item \emph{Lièvre}. La voiture doit être capable de suivre un marqueur.
+    \item \emph{Circuit}. La voiture doit être capable de parcourir un circuit délimité par des
+        marqueurs.
+    \item \emph{Prise en compte des autres voitures}. La voiture doit être
+        capable d'éviter ou de suivre d'autres voitures signalées
+    \item \emph{Collectes de métriques}. La voiture doit être en mesure d'envoyer à tout instant
+        des informations sur sa position, sa direction, sa propulsion, et d'autres
+        résultats de capteurs jugés pertinents.
 \end{itemize}
 
-Un objectif secondaire est de monter une seconde voiture autour d'un  système
+Un objectif secondaire est de monter une seconde voiture autour d'un système
 basé sur Android.
 Cela permettra de comparer les performances entre ces deux systèmes.
-
-\subsubsection{Sécurité}
-
-La sécurité doit être garantie en permanence par une commande d'arrêt
-d'urgence. (Appuyer sur un bouton de la télécommande).
-
-\subsubsection{Lièvre}
-
-La voiture doit être capable de suivre un marqueur.
-
-\subsubsection{Circuit}
-
-La voiture doit être capable de suivre un circuit délimité par des marqueurs.
 
 \subsection{Objectifs de délai}
 
 Le projet doit être terminé le lundi 16 juin.
 La soutenance doit être préparée pour la semaine du 16 juin.
-Une pré-soutenance doit être préparée pour le vendredi 13 juin car Didier
-Donsez n'est pas disponible la semaine suivante
+Une pré-soutenance sera réalisé le vendredi 13 juin car Didier
+Donsez n'est pas disponible la semaine suivante.
 
 \subsection{Objectif expérimental}
 
 Ce projet est financé par Intel dans le but de mettre au point des "kits
 pédagogiques" qu'Intel pourrai fournir à d'autres universités.
 
-
-
-
-
-
-
-
-
-
-
 \section{Méthodologie}
-TODO
 
+La méthode de développement choisie est proche de l'agilité : Des prototypes de
+chaque fonction sont développés très rapidement, puis intégrés au système, et
+enfin réécrits de manière plus propre. De nombreuses tâches sont critiques
+dans ce projet comme tout projet FabLab.
 
-
-
-
-
-
-
+En effet, une tâche qui parait simple comme faire avancer la voiture est en
+réalité liée à de nombreuses autres tâches, à savoir le cablage et
+l'implémentation du microcontrolleur ainsi que l'implémentation du signal
+d'urgence.
 
 \section{Ressources}
 
@@ -94,13 +77,13 @@ Le matériel à disposition est :
     \item Deux voitures radiocommandées
     \item Une tablette Android
     \item Une tablette Windows
-    \item Deux arduino
+    \item Deux Arduinos
     \item Deux webcams
 \end{itemize}
 
-Les tablettes sont embarquées sur les voitures raio commandées. Elles font
+Les tablettes sont embarquées sur les voitures radio commandées. Elles font
 tourner un logiciel qui acquière des images par la webcam, et calcul les ordres
-à transmettre aux Arduinos. Les arduinos contrôlent la vitesse de rotation du
+à transmettre aux Arduinos. Les Arduinos contrôlent la vitesse de rotation du
 moteur et la position des roues.
 
 Ce matériel est mis a disposition par Intel.
@@ -110,35 +93,18 @@ Ce matériel est mis a disposition par Intel.
 Trois étudiants en deuxième année à l'Ensimag travaillent à plein temps sur ce
 projet pendant 3 semaines.
 
-
-
-
-
-
-
-
-
-
 \section{Organisation du projet}
 
-Didier Donsez est le maitre d'ouvrage du projet.
+Didier Donsez est le référent du projet.
 Le projet est réalisé en association avec Intel et son ingénieur Paul Guermonprez, qui
 fournit du matériel servant à la réalisation celui-ci.
 
-Jules Legros et Benoit Perruche sont deux étudiants de polytech Grenoble qui
-ont travaillé sur ce projet avant nous.
+Jules Legros et Benoit Perruche sont deux étudiants de Polytech Grenoble qui
+ont travaillé sur ce projet à l'itération précédente.
 
+\subsection{Communication interne}
 
-
-
-
-
-
-\section{Communication}
-
-\subsection{Interne}
-
-Une réunion est organisée entre les trois membres de l'équipes tous le matins,
+Une réunion est organisée entre les trois membres de l'équipes tous les matins,
 et à chaque fois que cela est nécessaire. Elles sont nécessaires pour mettre en
 commun ce qui a été réalisé et planifier les journées à venir.
 
@@ -148,9 +114,12 @@ Tous les jours, le journal de bord est mis à jour et un mail est envoyé à
 Didier Donsez pour le tenir au courant de l'avancement et des problèmes
 rencontrés.
 
+\subsection{Contributions}
 
-
-
+Le projet se veut open source sous licence MIT (c'est-à-dire que tout ce qui constitue le projet
+doit être accessible et disponible à tous). Le code source est donc disponible
+sur la plateforme github et se doit d'être commenté et clair. De même, une
+documentation élaborée est de rigueur.
 
 \section{Risques}
 
@@ -160,7 +129,7 @@ Le portage de notre solution sur Android peut poser des problèmes à différent
 niveaux :
 \begin{itemize}
     \item Communication avec l'Arduino.
-    \item Utilisation des bibliothèques (Opencv, aruco)
+    \item Utilisation des bibliothèques (Opencv, arUco)
     \item Portage du code à proprement parlé.
 \end{itemize}
 
@@ -175,21 +144,22 @@ le traitement en temps réels.
 Pour limiter ce risque, on peut utiliser des bibliothèques légères. Mais cela
 risque de ne pas suffire.
 On peut aussi utiliser des tablettes plus puissantes, si Intel nous les fourni.
+Enfin, on peut réduire la taille de l'image traitée, mais la détection des
+marqueurs risque d'être moins bonne.
 
 
 \section{Indicateurs}
 
 Les indicateurs de réussite du projet sont :
 \begin{itemize}
-    \item La voiture réagit correctement aux marqueurs
-    \item Le circuit est correctement parcouru
-    \item La voiture évite les autres voitures
-    \item Les métriques sont collectées
-    \item Le traitement par la tablette est fluide
+    %\item La voiture réagit correctement aux marqueurs
+    %\item Le circuit est correctement parcouru
+    %\item La voiture évite les autres voitures
+    %\item Les métriques sont collectées
+    \item Les fonctionnalités attendues sont développées
+    \item Vitesse moyenne de la voiture sur un circuit de référence
+    %\item Le traitement par la tablette est fluide
     \item L'équipe est présente à 9h tous les matins (motivation)
 \end{itemize}
-
-
-
 
 \end{document}

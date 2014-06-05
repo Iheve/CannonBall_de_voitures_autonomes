@@ -50,6 +50,8 @@ void IARabbit::getCommand(vector<aruco::Marker>* TheMarkers, int* steering, int*
 		else if (d > 0.5) {
 			*throttle = 89;
 			*steering = ang * 0.75 + 90;
+		} else {
+			*throttle = 91;
 		}
 		cout << "Update" << endl;
 		cout << "a:" << ang << " d:" << d << endl;

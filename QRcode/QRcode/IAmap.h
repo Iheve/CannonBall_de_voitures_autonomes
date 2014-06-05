@@ -1,30 +1,24 @@
 #pragma once
 #include "IA.h"
 #include <map>
-#include <stdbool.h>
-
-struct door {
-	int left;
-	int right;
-	struct door* next;
-};
-
-class IAcannonball :
+class IAmap :
 	public IA
 {
 public:
-	IAcannonball();
-	~IAcannonball();
+	IAmap();
+	~IAmap();
 	virtual void getCommand(vector<aruco::Marker>* TheMarkers, int* steering, int* throttle, int width);
 private:
 	struct element {
 		aruco::Marker marker;
 		int lastTimeSeen;
-		bool valid;
 	};
 	int frame;
-	int idle;
 	map<int, struct element> elements;
-	struct door* currentDoor;
+	bool processing;
+	bool following;
+	int processing_frame_remaining = 0;
+	int last_marker = -1;
+
 };
 
