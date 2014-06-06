@@ -31,6 +31,8 @@ int main(int argc, char *argv[])
         sprintf(b, "%d", rand() % 180);
         sender->send_message("metrics/steering", b);
         sender->send_message("metrics/throttle", b);
+        sender->send_message("metrics/avg", b);
+        sender->send_message("metrics/mode", "Rabbit");
 #if defined(__linux__) || defined(__APPLE__)
         sleep(1);
 #elif defined(_WIN32)

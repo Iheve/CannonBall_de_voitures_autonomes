@@ -8,6 +8,7 @@
 #define TOPIC_THROT "metrics/throttle"
 #define TOPIC_LAPS "metrics/laps"
 #define TOPIC_AVG "metrics/avg"
+#define TOPIC_MODE "metrics/mode"
 
 #if defined(__linux__)
 #define MOSQPP mosquittopp

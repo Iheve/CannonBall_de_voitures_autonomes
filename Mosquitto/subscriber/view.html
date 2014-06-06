@@ -3,12 +3,33 @@
     <title>Real-time metrics through MQTT</title>
     <script type="text/javascript" src="Chart.min.js"></script>
     <script type="text/javascript" src="socket.io.js"></script>
+    <link href="bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <p>Steering value in function of time</p>
-    <canvas id="chart_steering_div" width="800" height="400"></canvas>
-    <p>Throttle value in function of time</p>
-    <canvas id="chart_throttle_div" width="800" height="400"></canvas>
+    <div class="container">
+        <table class="table">
+            <tr>
+                <td>Mode</td>
+                <td></td>
+                <td id="mode_value" class="text-info">Unknown</td>
+            </tr>
+            <tr>
+                <td style="vertical-align: middle">Steering</td>
+                <td><canvas id="chart_steering_div" width="600" height="100"></canvas></td>
+                <td id="steering_value" style="vertical-align: middle" class="text-info">0</td>
+            </tr>
+            <tr>
+                <td style="vertical-align: middle">Throttle</td>
+                <td><canvas id="chart_throttle_div" width="600" height="100"></canvas></td>
+                <td id="throttle_value" style="vertical-align: middle" class="text-info">0</td>
+            </tr>
+            <tr>
+                <td style="vertical-align: middle">FPS</td>
+                <td><canvas id="chart_fps_div" width="600" height="100"></canvas></td>
+                <td id="fps_value" style="vertical-align: middle" class="text-info">0</td>
+            </tr>
+        </table>
+    </div>
     <script>
         var socket = io('http://localhost:1337');
 
@@ -52,11 +73,17 @@
                     }, options);
         }
 
+        <!-- Mode -->
+        socket.on('Mode', function(data) {
+                document.getElementById('mode_value').innerHTML = data.value;
+         });
+
         <!-- Steering -->
         var ctxSteering = document.getElementById('chart_steering_div').getContext('2d');
         var arrayLabelsSteering = new Array();
         var arrayDataSteering = new Array();
         socket.on('Steering', function(data) {
+                document.getElementById('steering_value').innerHTML = data.value;
                 arrayLabelsSteering.push(data.time);
                 arrayDataSteering.push(data.value);
                 var min = getMinOfArray(arrayDataSteering);
@@ -71,12 +98,28 @@
         var arrayLabelsThrottle = new Array();
         var arrayDataThrottle = new Array();
         socket.on('Throttle', function(data) {
+                document.getElementById('throttle_value').innerHTML = data.value;
                 arrayLabelsThrottle.push(data.time);
                 arrayDataThrottle.push(data.value);
                 var min = getMinOfArray(arrayDataThrottle);
                 var max = getMaxOfArray(arrayDataThrottle);
                 deleteOldValues(arrayLabelsThrottle, arrayDataThrottle);
                 displayChart(ctxThrottle, arrayLabelsThrottle, arrayDataThrottle,
+                    min==max, max);
+        });
+
+        <!-- FPS -->
+        var ctxFPS = document.getElementById('chart_fps_div').getContext('2d');
+        var arrayLabelsFPS = new Array();
+        var arrayDataFPS = new Array();
+        socket.on('FPS', function(data) {
+                document.getElementById('fps_value').innerHTML = data.value.toFixed(2);
+                arrayLabelsFPS.push(data.time);
+                arrayDataFPS.push(data.value);
+                var min = getMinOfArray(arrayDataFPS);
+                var max = getMaxOfArray(arrayDataFPS);
+                deleteOldValues(arrayLabelsFPS, arrayDataFPS);
+                displayChart(ctxFPS, arrayLabelsFPS, arrayDataFPS,
                     min==max, max);
         });
 

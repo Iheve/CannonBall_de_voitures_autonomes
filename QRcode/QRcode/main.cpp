@@ -175,12 +175,15 @@ void readParams(int argc, char *argv[]) {
 void choose_run_mode(IA **ia) {
 	if (run_mode == RABBIT) {
 		*ia = new IARabbit();
+        sender->publish_to_mqtt(TOPIC_MODE, "Rabbit");
 	}
 	else if (run_mode == CANNON) {
 		*ia = new IAcannonball();
+        sender->publish_to_mqtt(TOPIC_MODE, "CannonBall");
 	}
 	else {
 		*ia = new IAmap();
+        sender->publish_to_mqtt(TOPIC_MODE, "Map");
 	}
 }
 

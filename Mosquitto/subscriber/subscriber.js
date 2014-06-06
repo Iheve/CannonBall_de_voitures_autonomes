@@ -15,6 +15,9 @@ var Steering = mongoose.model('Steering', { time: Number, value: Number });
 var SteeringCounter = 0;
 var Throttle = mongoose.model('Throttle', { time: Number, value: Number });
 var ThrottleCounter = 0;
+var FPS = mongoose.model('FPS', { time: Number, value: String });
+var FPSCounter = 0;
+var Mode = mongoose.model('Mode', { value: String });
 
 for (var i = 2; i <= 4; i++) {
     if(!argv[i]) {
@@ -35,6 +38,8 @@ db.on('error', console.error.bind(console, 'connection error:'));
 client.subscribe('metrics/accelerometer');
 client.subscribe('metrics/steering');
 client.subscribe('metrics/throttle');
+client.subscribe('metrics/avg');
+client.subscribe('metrics/mode');
 client.on('message', function(topic, message) {
     console.log(topic + " " + message);
     if (topic === 'metrics/accelerometer') {
@@ -66,6 +71,21 @@ client.on('message', function(topic, message) {
         });
         io.emit('Throttle', { time: ThrottleCounter, value: parseInt(message) });
         ThrottleCounter++;
+    } else if (topic === 'metrics/avg') {
+        var insert = new FPS({ time: FPSCounter, value: (1/parseFloat(message)) * 1000 });
+        insert.save(function (err) {
+            if (err)
+                console.log(err);
+        });
+        io.emit('FPS', { time: FPSCounter, value: (1/parseFloat(message)) * 1000 });
+        FPSCounter++;
+    } else if (topic == 'metrics/mode') {
+        var insert = new Mode({ value: message });
+        insert.save(function (err) {
+            if (err)
+                console.log(err);
+        });
+        io.emit('Mode', { value: message });
     }
 });
 client.options.reconnectPeriod = 60;
