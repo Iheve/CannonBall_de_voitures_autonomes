@@ -30,6 +30,7 @@
 %subsubsection
 %paragraph
 
+%Don't forget : set ts=79
 
 
 
@@ -48,6 +49,46 @@
 \section{How to flash the Arduino ?}
 
 \section{How to get markers ?}
+
+Marker recognition is based on highly reliable markers (hrm) from the arUco
+library.
+
+\subsection{Camera calibration}
+
+First, you need to calibrate the camera. In order to do that,
+\begin{itemize}
+
+    \item Generate a board of markers with \texttt{aruco\_create\_board 4:5
+        boardImageCalibration.png boardConfigurationCalibration.yml}.
+
+    \item Print the png image. Mesure in meters the size of a marker.
+
+    \item Convert the board configuration file from pixel to meters with
+        \texttt{aruco\_boar\_pix2meters boardConfigurationCalibration.yml <size
+        of marker in meters> boardConfigurationCalibrationMeters.yml}
+
+    \item Calibrate the camera with \texttt{aruco\_calibration live
+        boardConfigurationCalibrationMeters.yml cameraParams.yml}
+
+\end{itemize}
+
+\subsection{Creating hrm markers}
+
+You now need to create markers :
+\begin{itemize}
+
+    \item Generate a dictionary of hrm markers with
+        \texttt{aruco\_hrm\_create\_dictionary dict.yml <size of the dictionary> <marker
+        size>}
+
+    \item Generate the board with \texttt{aruco\_hrm\_create\_board dict.yml
+        board.yml board.png heighr width}
+
+    \item Print the board.
+
+\end{itemize}
+
+
 
 \section{How to get mosquitto running ?}
 
