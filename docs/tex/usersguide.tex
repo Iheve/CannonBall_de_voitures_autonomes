@@ -3,31 +3,20 @@
 
 \input{tex/preambule.tex}
 
-\title{Cannonball of RC cars\\Users guide}
+\title{Cannonball of RC cars\\User guide}
 \author{Thibaut Coutelou, Benjamin Mugnier, Guillaume Perrin}
 \date{\today}
 
-\begin{document}
-\maketitle
-\tableofcontents
+\begin{document} \maketitle \tableofcontents
 %\listoffigures
 
 \setlength{\parskip}{3mm}
 
-%\begin{figure}[!ht]
-%    \begin{center}
-%        \includegraphics[width=\textwidth]{img/acteurs}
-%        \caption{Acteurs}
-%        \label{acteurs}
-%    \end{center}
-%\end{figure}
+%\begin{figure}[!ht] \begin{center}
+%\includegraphics[width=\textwidth]{img/acteurs} \caption{Acteurs}
+%\label{acteurs} \end{center} \end{figure}
 
-%Quick reminder of latex :
-%part
-%chapter
-%section
-%subsection
-%subsubsection
+%Quick reminder of latex : part chapter section subsection subsubsection
 %paragraph
 
 %Don't forget : set ts=79
@@ -55,8 +44,7 @@ library.
 
 \subsection{Camera calibration}
 
-First, you need to calibrate the camera. In order to do that,
-\begin{itemize}
+First, you need to calibrate the camera. In order to do that, \begin{itemize}
 
     \item Generate a board of markers with \texttt{aruco\_create\_board 4:5
         boardImageCalibration.png boardConfigurationCalibration.yml}.
@@ -74,12 +62,11 @@ First, you need to calibrate the camera. In order to do that,
 
 \subsection{Creating hrm markers}
 
-You now need to create markers :
-\begin{itemize}
+You now need to create markers : \begin{itemize}
 
     \item Generate a dictionary of hrm markers with
-        \texttt{aruco\_hrm\_create\_dictionary dict.yml <size of the dictionary> <marker
-        size>}
+        \texttt{aruco\_hrm\_create\_dictionary dict.yml <size of the
+        dictionary> <marker size>}
 
     \item Generate the board with \texttt{aruco\_hrm\_create\_board dict.yml
         board.yml board.png heighr width}
@@ -90,7 +77,25 @@ You now need to create markers :
 
 
 
-\section{How to get mosquitto running ?}
+\section{How to get metrics ?} \subsection{Setup a MQTT server}
+
+You need an MQTT server to get the data. We recommend
+Mosquitto\footnote{http://mosquitto.org/download/} which is available for every
+platform.  Note that it's available on Debian via a simple apt-get install
+mosquitto. As Windows, you need to download the server and then restart your
+computer for the service to launch (or ask the service to launch manually),
+this is really important.
+
+Then, you need the tablet to be on the same network as the server. You can
+either create an hotspot via the tablet or the server, or connect both to an
+existing network.  You need to tell the program the server's ip. Please refer
+to the corresponding section.
+
+\subsection{Display metrics in HTML}
+
+\section{How to launch the program ?}
+
+\subsection{Arguments needed}
 
 
 
@@ -98,9 +103,7 @@ You now need to create markers :
 
 
 
-
-
-\chapter{Users guide}
+\chapter{User guide}
 
 \section{Building}
 
