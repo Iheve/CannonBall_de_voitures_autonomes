@@ -1,0 +1,144 @@
+\documentclass[a4paper,11pt]{report}
+%\pagestyle{headings}
+
+\input{tex/preambule.tex}
+
+\title{Cannonball of RC cars\\User guide}
+\author{Thibaut Coutelou, Benjamin Mugnier, Guillaume Perrin}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+%\listoffigures
+
+\setlength{\parskip}{3mm}
+
+%\begin{figure}[!ht]
+%\begin{center}
+%\includegraphics[width=\textwidth]{img/acteurs}
+%\caption{Acteurs}
+%\label{acteurs}
+%\end{center}
+%\end{figure}
+
+%Quick reminder of latex :
+%part
+%chapter
+%section
+%subsection
+%subsubsection
+%paragraph
+
+%Don't forget : set ts=79
+
+
+
+
+
+
+
+\chapter{Quick starter guide}
+
+\section{What do I need ?}
+
+\section{How to plug ?}
+
+Follow instructions on figure \ref{fig:wires}.
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[scale=0.5]{img_static/wires}
+\caption{How to plug}
+\label{fig:wires}
+\end{figure}
+
+\section{How to build the program ?}
+
+\section{How to flash the Arduino ?}
+
+\section{How to get markers ?}
+
+Marker recognition is based on highly reliable markers (hrm) from the arUco
+library.
+
+\subsection{Camera calibration}
+
+First, you need to calibrate the camera. In order to do that, \begin{itemize}
+
+    \item Generate a board of markers with \texttt{aruco\_create\_board 4:5
+        boardImageCalibration.png boardConfigurationCalibration.yml}.
+
+    \item Print the png image. Mesure in meters the size of a marker.
+
+    \item Convert the board configuration file from pixel to meters with
+        \texttt{aruco\_boar\_pix2meters boardConfigurationCalibration.yml <size
+        of marker in meters> boardConfigurationCalibrationMeters.yml}
+
+    \item Calibrate the camera with \texttt{aruco\_calibration live
+        boardConfigurationCalibrationMeters.yml cameraParams.yml}
+
+\end{itemize}
+
+\subsection{Creating hrm markers}
+
+You now need to create markers : \begin{itemize}
+
+    \item Generate a dictionary of hrm markers with
+        \texttt{aruco\_hrm\_create\_dictionary dict.yml <size of the
+        dictionary> <marker size>}
+
+    \item Generate the board with \texttt{aruco\_hrm\_create\_board dict.yml
+        board.yml board.png heighr width}
+
+    \item Print the board.
+
+\end{itemize}
+
+
+
+\section{How to get metrics ?}
+
+\subsection{Setup a MQTT server}
+
+You need an MQTT server to get the data. We recommend
+Mosquitto\footnote{http://mosquitto.org/download/} which is available for every
+platform.  Note that it's available on Debian via a simple apt-get install
+mosquitto. As Windows, you need to download the server and then restart your
+computer for the service to launch (or ask the service to launch manually),
+this is really important.
+
+Then, you need the tablet to be on the same network as the server. You can
+either create an hotspot via the tablet or the server, or connect both to an
+existing network.  You need to tell the program the server's ip. Please refer
+to the corresponding section.
+
+\subsection{Display metrics in HTML}
+
+\section{How to launch the program ?}
+
+\subsection{Arguments needed}
+
+
+
+
+
+
+
+\chapter{User guide}
+
+\section{Building}
+
+\section{Flashing}
+
+\section{Plugging}
+
+\section{Markers}
+
+\section{Monitoring}
+
+\section{Implementing a new artificial intelligence}
+
+\section{Android}
+
+\end{document}

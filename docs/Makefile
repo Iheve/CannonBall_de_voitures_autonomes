@@ -1,15 +1,52 @@
+DIADIR=dia
+IMGDIR=img
 TEXDIR=tex
-TEX=$(shell cd tex && find . -name "*.tex")
-PDF=$(TEX:%.tex=%.pdf)
+PDFDIR=pdf
+COMPDIR=.compil
 
-all: $(PDF)
+DIA=$(wildcard $(DIADIR)/*.dia)
+IMG=$(addprefix $(IMGDIR)/, $(notdir $(DIA:%.dia=%.png)))
+DEP=$(TEXDIR)/preambule.tex
+TEX=$(filter-out $(DEP), $(wildcard $(TEXDIR)/*.tex))
+FILES=$(addprefix $(PDFDIR)/, $(notdir $(TEX:%.tex=%.pdf)))
 
-%.pdf: $(TEXDIR)/%.tex
-	pdflatex $^
+DIRGUARD=mkdir -p $(COMPDIR) $(IMGDIR) $(PDFDIR)
+LATEX=pdflatex -output-directory=$(COMPDIR) $<
 
-.PHONY: clean
+.SECONDARY: $(IMG)
+
+all: $(FILES)
+
+echo:
+	@echo $(IMG)
+	@echo $(DIA)
+	@echo $(DEP)
+	@echo $(TEX)
+	@echo $(FILES)
+
+
+$(IMGDIR)/%.png: $(DIADIR)/%.dia
+	$(DIRGUARD)
+ifeq ($(TUX), true)
+	cp tux.png $@
+else
+	dia -e $@ -t png $<
+endif
+
+$(IMGDIR)/%.pdf: $(DIADIR)/%.dia
+	$(DIRGUARD)
+	dia -s 800x -e $@ -t pdf $<
+
+$(PDFDIR)/%.pdf: $(TEXDIR)/%.tex $(DEP) $(IMG)
+	$(DIRGUARD)
+	$(LATEX) -draft && $(LATEX)
+	mv $(COMPDIR)/$(notdir $@) $@
+
+view: $(FILES)
+	@if ! okular $^ 2> /dev/null; then if ! open $^ 2> /dev/null; then evince $^ 2> /dev/null; fi fi &
+
 clean:
-	rm -rf *.toc *.aux *.log *.out 2> /dev/null
+	rm -rf $(COMPDIR) $(IMGDIR)
 
-proper:
-	rm -rf *.pdf 2> /dev/null
+realclean: clean
+	rm -rf $(PDFDIR)
