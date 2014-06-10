@@ -42,6 +42,22 @@
 
 \section{What do I need ?}
 
+You will need :
+\begin{itemize}
+
+    \item A radio-controlled car (we used the KYOSHO Scorpion XXL-VE).
+
+    \item A webcam (we used the Logitech HD Pro Webcam C920).
+
+    \item An Arduino (we used the Arduino UNO).
+
+    \item A self-powered usb hub (without outlet).
+
+    \item A windows tablet, not running windows RT (we used the Lenovo ThinkPad
+        tablet 2).
+
+\end{itemize}
+
 \section{How to plug ?}
 
 Follow instructions on figure \ref{fig:wires}.
@@ -54,6 +70,42 @@ Follow instructions on figure \ref{fig:wires}.
 \end{figure}
 
 \section{How to build the program ?}
+
+\subsection{Libraries}
+
+First, you need to install OpenCV\footnote{\url{http://opencv.org/}} 2.4.8 and
+Mosquittopp\footnote{\url{http://mosquitto.org/download/}}.
+
+\subsection{Visual Studio 12}
+
+We used Visual Studio 12 to develop and build the program.
+
+Open Visual Studio, create a new project, add all the \texttt{.h} and
+\texttt{.cpp} files.
+
+Open the project properties, go to Project, Properties, C/C++, general,
+additional include directories. Add the path to the include directories of
+mosquittopp and opencv.
+
+Open the project properties, go to Project, Properties, linker, general,
+additional library directories. Add the path to the libraries directories of
+mosquittopp and OpenCV (directory with all the \texttt{.lib} files).
+
+Open the project properties, go to Project, Properties, linker, general, input,
+additional dependencies. Add all of the \texttt[.lib] files of mosquittopp and
+OpenCV.
+
+You should now be able to build the program (Ctrl-Shift-B).
+
+Copy all the \texttt{.dll} files of mosquittopp and OpenCV to the directory of
+the executable.
+
+Create a shortcut to the .exe, edit it to set the arguments.
+
+You should now be able to run the program !
+
+
+
 
 \section{How to flash the Arduino ?}
 
@@ -72,7 +124,8 @@ If you're interesting of the other method, please refer to \ref{sec:Flashing}.
 
 \section{How to get markers ?}
 
-Marker recognition is based on highly reliable markers (hrm) from the arUco
+Marker recognition is based on highly reliable markers (hrm) from the
+arUco\footnote{\url{http://www.uco.es/investiga/grupos/ava/node/26}}
 library.
 
 \subsection{Camera calibration}
