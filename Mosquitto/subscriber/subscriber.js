@@ -10,7 +10,8 @@ var fs = require('fs');
 /* Main program */
 app.listen(1337);
 var argv = process.argv;
-var Accelerometer = mongoose.model('Accelerometer', { x: Number, y: Number, z: Number });
+var Accelerometer = mongoose.model('Accelerometer', { time: Number, x: Number, y: Number, z: Number });
+var AccelerometerCounter = 0;
 var Steering = mongoose.model('Steering', { time: Number, value: Number });
 var SteeringCounter = 0;
 var Throttle = mongoose.model('Throttle', { time: Number, value: Number });
@@ -44,17 +45,20 @@ client.on('message', function(topic, message) {
     console.log(topic + " " + message);
     if (topic === 'metrics/accelerometer') {
         var split = message.split(':');
-        var insert = new Accelerometer({ x: split[0],
+        var insert = new Accelerometer({ time : AccelerometerCounter,
+                                         x: split[0],
                                          y: split[1],
                                          z: split[2] });
         insert.save(function (err) {
             if (err)
                 console.log(err);
         });
-        io.emit('Accelerometer', { x: parseInt(split[0]),
-                                       y: parseInt(split[1]),
-                                       z: parseInt(split[2]) });
+        io.emit('Accelerometer', { time: AccelerometerCounter,
+                                       x: parseFloat(split[0]),
+                                       y: parseFloat(split[1]),
+                                       z: parseFloat(split[2]) });
 
+        AccelerometerCounter++;
     } else if (topic === 'metrics/steering') {
         var insert = new Steering({ time: SteeringCounter, value: message });
         insert.save(function (err) {

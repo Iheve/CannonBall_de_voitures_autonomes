@@ -172,3 +172,5 @@ $RECYCLE.BIN/
 
 QRcode/QRcode/include/
 QRcode/QRcode/lib/
+docs/.compil/
+docs/pdf/

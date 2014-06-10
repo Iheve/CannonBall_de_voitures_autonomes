@@ -28,6 +28,15 @@
                 <td><canvas id="chart_fps_div" width="600" height="100"></canvas></td>
                 <td id="fps_value" style="vertical-align: middle" class="text-info">0</td>
             </tr>
+            <tr>
+                <td style="vertical-align: middle">Accelerometer X/Y/Z</td>
+                <td>
+                    <canvas id="chart_acc_x_div" width="200" height="100"></canvas>
+                    <canvas id="chart_acc_y_div" width="200" height="100"></canvas>
+                    <canvas id="chart_acc_z_div" width="200" height="100"></canvas>
+                </td>
+                <td id="acc_value" style="vertical-align: middle" class="text-info">0</td>
+            </tr>
         </table>
     </div>
     <script>
@@ -41,8 +50,8 @@
                 return Math.max.apply(null, numArray);
         }
 
-        function deleteOldValues(labels, data) {
-            if (data.length > 20) {
+        function deleteOldValues(labels, data, limit) {
+            if (data.length > limit) {
                 labels.shift();
                 data.shift();
             }
@@ -88,7 +97,7 @@
                 arrayDataSteering.push(data.value);
                 var min = getMinOfArray(arrayDataSteering);
                 var max = getMaxOfArray(arrayDataSteering);
-                deleteOldValues(arrayLabelsSteering, arrayDataSteering);
+                deleteOldValues(arrayLabelsSteering, arrayDataSteering, 20);
                 displayChart(ctxSteering, arrayLabelsSteering, arrayDataSteering,
                     min==max, max);
         });
@@ -103,7 +112,7 @@
                 arrayDataThrottle.push(data.value);
                 var min = getMinOfArray(arrayDataThrottle);
                 var max = getMaxOfArray(arrayDataThrottle);
-                deleteOldValues(arrayLabelsThrottle, arrayDataThrottle);
+                deleteOldValues(arrayLabelsThrottle, arrayDataThrottle, 20);
                 displayChart(ctxThrottle, arrayLabelsThrottle, arrayDataThrottle,
                     min==max, max);
         });
@@ -118,10 +127,41 @@
                 arrayDataFPS.push(data.value);
                 var min = getMinOfArray(arrayDataFPS);
                 var max = getMaxOfArray(arrayDataFPS);
-                deleteOldValues(arrayLabelsFPS, arrayDataFPS);
+                deleteOldValues(arrayLabelsFPS, arrayDataFPS, 20);
                 displayChart(ctxFPS, arrayLabelsFPS, arrayDataFPS,
                     min==max, max);
         });
+
+        <!-- Accelerometer -->
+        var ctxAccX = document.getElementById('chart_acc_x_div').getContext('2d');
+        var ctxAccY = document.getElementById('chart_acc_y_div').getContext('2d');
+        var ctxAccZ = document.getElementById('chart_acc_z_div').getContext('2d');
+        var arrayLabelsAcc = new Array();
+        var arrayDataAccX = new Array();
+        var arrayDataAccY = new Array();
+        var arrayDataAccZ = new Array();
+        socket.on('Accelerometer', function(data) {
+                document.getElementById('acc_value').innerHTML = "x : " + data.x + " - y: " + data.y + " - z: " + data.z;
+                arrayLabelsAcc.push(data.time);
+                arrayDataAccX.push(data.x);
+                arrayDataAccY.push(data.y);
+                arrayDataAccZ.push(data.z);
+                var minX = getMinOfArray(arrayDataAccX);
+                var maxX = getMaxOfArray(arrayDataAccX);
+                var minY = getMinOfArray(arrayDataAccY);
+                var maxY = getMaxOfArray(arrayDataAccY);
+                var minZ = getMinOfArray(arrayDataAccZ);
+                var maxZ = getMaxOfArray(arrayDataAccZ);
+                deleteOldValues(arrayLabelsAcc, arrayDataAccX, 8);
+                deleteOldValues(arrayDataAccY, arrayDataAccZ, 8);
+                displayChart(ctxAccX, arrayLabelsAcc, arrayDataAccX,
+                    minX==maxX, maxX);
+                displayChart(ctxAccY, arrayLabelsAcc, arrayDataAccY,
+                    minY==maxY, maxY);
+                displayChart(ctxAccZ, arrayLabelsAcc, arrayDataAccZ,
+                    minZ==maxZ, maxZ);
+        });
+
 
     </script>
 </body>
