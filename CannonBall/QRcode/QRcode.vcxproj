@@ -55,7 +55,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{1DEFF36A-294F-4E91-852B-AC16C9204FA9}</ProjectGuid>
-    <RootNamespace>QRcode</RootNamespace>
+    <RootNamespace>CannonBall</RootNamespace>
+    <ProjectName>CannonBall</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -94,7 +95,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\RICM4\Documents\GitHub\CannonBall_de_voitures_autonomes\QRcode\QRcode\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\RICM4\Documents\GitHub\CannonBall_de_voitures_autonomes\CannonBall\QRcode\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <CompileAsWinRT>true</CompileAsWinRT>
       <MinimalRebuild>false</MinimalRebuild>
@@ -104,7 +105,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>opencv_calib3d248d.lib;opencv_contrib248d.lib;opencv_core248d.lib;opencv_features2d248d.lib;opencv_flann248d.lib;opencv_gpu248d.lib;opencv_highgui248d.lib;opencv_imgproc248d.lib;opencv_legacy248d.lib;opencv_ml248d.lib;opencv_nonfree248d.lib;opencv_objdetect248d.lib;opencv_photo248d.lib;opencv_stitching248d.lib;opencv_superres248d.lib;opencv_ts248d.lib;opencv_video248d.lib;opencv_videostab248d.lib;libzbar-0.lib;mosquitto.lib;mosquittopp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
-      <AdditionalLibraryDirectories>C:\Users\RICM4\Documents\GitHub\CannonBall_de_voitures_autonomes\QRcode\QRcode\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\RICM4\Documents\GitHub\CannonBall_de_voitures_autonomes\CannonBall\QRcode\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -114,7 +115,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\RICM4\Documents\GitHub\CannonBall_de_voitures_autonomes\QRcode\QRcode\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\RICM4\Documents\GitHub\CannonBall_de_voitures_autonomes\CannonBall\QRcode\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <CompileAsWinRT>true</CompileAsWinRT>
       <AdditionalUsingDirectories>C:\Program Files\Microsoft SDKs\Windows\v8.1\ExtensionSDKs\Microsoft.VCLibs\12.0\References\CommonConfiguration\neutral;C:\Program Files\Windows Kits\8.1\References\CommonConfiguration\Neutral;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
@@ -126,7 +127,7 @@
       <AdditionalDependencies>opencv_calib3d248d.lib;opencv_contrib248d.lib;opencv_core248d.lib;opencv_features2d248d.lib;opencv_flann248d.lib;opencv_gpu248d.lib;opencv_highgui248d.lib;opencv_imgproc248d.lib;opencv_legacy248d.lib;opencv_ml248d.lib;opencv_nonfree248d.lib;opencv_objdetect248d.lib;opencv_photo248d.lib;opencv_stitching248d.lib;opencv_superres248d.lib;opencv_ts248d.lib;opencv_video248d.lib;opencv_videostab248d.lib;libzbar-0.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>
       </SubSystem>
-      <AdditionalLibraryDirectories>C:\Users\RICM4\Documents\GitHub\CannonBall_de_voitures_autonomes\QRcode\QRcode\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\RICM4\Documents\GitHub\CannonBall_de_voitures_autonomes\CannonBall\QRcode\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
