@@ -1,4 +1,4 @@
-package com.example.qrcodedroid;
+package fr.ensimag.cannonball;
 
 public class MarkerDetector {
 
