@@ -118,10 +118,10 @@ You now need to create markers : \begin{itemize}
 
 You need an MQTT server to get the data. We recommend
 Mosquitto\footnote{\url{http://mosquitto.org/download/}} which is available for every
-platform.  Note that it's available on Debian via a simple \texttt{apt-get install}
-mosquitto. As Windows, you need to download the server and then restart your
-computer for the service to launch (or ask the service to launch manually),
-this is really important.
+platform. Note that it's available on Debian via a simple \texttt{apt-get install
+mosquitto} and on OSX via \texttt{brew install mosquitto}. As Windows, you need to
+download the server and then restart your computer for the service to launch (or ask the
+service to launch manually), this is really important.
 
 Then, you need the tablet to be on the same network as the server. You can
 either create an hotspot via the tablet or the server, or connect both to an
@@ -130,6 +130,29 @@ to the corresponding section.
 
 \subsection{Display metrics in HTML}
 
+The metrics are retrieve through a Node
+server\footnote{\url{http://nodejs.org/}}. You can download via \texttt{apt-get
+install node} on Debian, \texttt{brew install node} on OSX and on the
+\href{http://nodejs.org}{official website} on Windows. You also need a mongo
+server that you can find on Debian via \texttt{apt-get install mongodb}, on OSX
+via \texttt{brew install mongodb} and for Windows on the
+\href{http://www.mongodb.org/downloads}{official
+website}\footnote{\url{http://www.mongodb.org/downloads}}, you can launch the
+mongodb sever via the command \texttt{mongo --dbpath </path/to/the/db>}.
+
+After install node, you need to install package dependencies by launching the
+command \texttt{npm install} in the \emph{Mosquitto/subscriber} directory. You
+also need to download \emph{Bootstrap 3} on the
+\href{http://getbootstrap.com/}{official
+website}\footnote{\url{http://getbootstrap.com}}, \emph{socket.io client} on
+the \href{http://socket.io/download/}{official
+website}\footnote{\url{http://socket.io/download/}} and \emph{Chart.js} on the
+\href{http://www.chartjs.org/}{official
+website}\footnote{\url{http://www.chartjs.org/}}
+
+You are now able to launch the node server with the command \texttt{node
+subscriber.js mqtt\_server\_address mqtt\_server\_port mongo\_port}. You can
+now display the metrics in the web page \texttt{view.html}.
 
 \section{How to launch the program ?}
 
