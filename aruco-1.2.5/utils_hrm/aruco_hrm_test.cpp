@@ -101,6 +101,8 @@ int main(int argc,char **argv)
         //read from camera or from  file
         if (TheInputVideo=="live") {
             TheVideoCapturer.open(0);
+			TheVideoCapturer.set(CV_CAP_PROP_FRAME_WIDTH, 1920 / 3);
+			TheVideoCapturer.set(CV_CAP_PROP_FRAME_HEIGHT, 1080 / 3);
             //waitTime=10;
         }
         else  TheVideoCapturer.open(TheInputVideo);
