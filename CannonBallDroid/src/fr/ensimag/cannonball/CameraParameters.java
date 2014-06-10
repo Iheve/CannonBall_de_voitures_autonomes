@@ -1,4 +1,4 @@
-package com.example.qrcodedroid;
+package fr.ensimag.cannonball;
 
 import org.opencv.core.Mat;
 import org.opencv.core.Size;

@@ -1,4 +1,4 @@
-package com.example.qrcodedroid;
+package fr.ensimag.cannonball;
 
 import java.util.ArrayList;
 
@@ -9,7 +9,7 @@ public class Dictionary extends ArrayList<MarkerCode>{
 	 * 
 	 */
 	  boolean fromFile(String filename) {
-		    FileStorage fs(filename, cv::FileStorage::READ);
+		    FileStoraqe fs(filename, cv::FileStorage::READ);
 		    int nmarkers, markersize;
 		    
 		    // read number of markers
