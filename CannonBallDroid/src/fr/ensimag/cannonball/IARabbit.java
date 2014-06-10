@@ -1,4 +1,4 @@
-package com.example.qrcodedroid;
+package fr.ensimag.cannonball;
 
 import java.util.ArrayList;
 
@@ -31,7 +31,7 @@ public class IARabbit implements IA {
 
 		if (rabbit.lastTimeSeen == frame) {
 			float xrel = (x - (width / 2)) / (width / 2);
-			//float ang = ((atan(xrel) * 180) / 3.1415) * factor + 90;
+			float ang = ((atan(xrel) * 180) / 3.1415) * factor + 90;
 			float ang = (atan(xrel) * 180) / 3.1415;
 
 			if (d > 2.0) {
