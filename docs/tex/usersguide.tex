@@ -30,7 +30,7 @@
 %subsubsection
 %paragraph
 
-%Don't forget : set ts=79
+%Don't forget : set tw=79
 
 
 
@@ -76,6 +76,7 @@ Marker recognition is based on highly reliable markers (hrm) from the arUco
 library.
 
 \subsection{Camera calibration}
+\label{subsec:cam}
 
 First, you need to calibrate the camera. In order to do that, \begin{itemize}
 
@@ -94,6 +95,7 @@ First, you need to calibrate the camera. In order to do that, \begin{itemize}
 \end{itemize}
 
 \subsection{Creating hrm markers}
+\label{subsec:dic}
 
 You now need to create markers : \begin{itemize}
 
@@ -131,9 +133,24 @@ to the corresponding section.
 
 \section{How to launch the program ?}
 
+The program is launched as usual by double-clicking the .exe, a console will
+prompt. 
+For more informations on how to build the .exe, please refer to ???.
+
 \subsection{Arguments needed}
 
+The executable needs several arguments. Otherwise, it will not launch and
+prompt the program usage.
+The program needs :
 
+\begin{itemize}
+    \item Path to dictionnary.yml, see~\ref{subsec:dic}.
+    \item Path to intrinsics.yml, see~\ref{subsec:cam}.
+    \item Marker size (in meters).
+    \item The MQTT server IP for getting metrics.
+    \item The Arduino serial port, should be something like 'COM5'.
+    \item The mode to run (IA). Should be 'rabbit' to follow a marker, or 'cannon' for race mode.
+\end{itemize}
 
 
 
