@@ -140,13 +140,14 @@ void updateView() {
 }
 
 void usage() {
-	std::cout << "Usage : dictionary.yml intrinsics.yml marker_size MQTT_host serial_port run_mode" << std::endl;
+	std::cout << "Usage : dictionary.yml intrinsics.yml marker_size MQTT_host serial_port run_mode <AI params>" << std::endl;
 	std::cout << "dictionary.yml : Dictinoary of markers used" << std::endl;
 	std::cout << "intrinsics.yml : Camera parameters (calibration)" << std::endl;
 	std::cout << "marker_size : size of the markers in meters" << std::endl;
 	std::cout << "MQTT_host : address of the MQTT broker" << std::endl;
 	std::cout << "serial_port : COM port of the arduino (ex : 'COM5')" << std::endl;
 	std::cout << "run mode : either 'rabbit' (follow the marker) or 'cannon' (race)" << std::endl;
+	std::cout << "AI params : parameters of the artificial intelligence" << std::endl;
 }
 
 void readParams(int argc, char *argv[]) {
@@ -178,13 +179,13 @@ void readParams(int argc, char *argv[]) {
 	}
 }
 
-void choose_run_mode(IA **ia) {
+void choose_run_mode(IA **ia, int argc, char *argv[]) {
 	if (run_mode == RABBIT) {
-		*ia = new IARabbit();
+		*ia = new IARabbit(argc, argv);
         sender->publish_to_mqtt(TOPIC_MODE, "Rabbit");
 	}
 	else if (run_mode == CANNON) {
-		*ia = new IAcannonball();
+		*ia = new IAcannonball(argc, argv);
         sender->publish_to_mqtt(TOPIC_MODE, "CannonBall");
 	}
 	else {
@@ -203,8 +204,9 @@ int main(int argc, char *argv[]) {
 	mosqpp::lib_init();
 	initMQTT();
 
+	//IA
 	IA *ia = NULL;
-	choose_run_mode(&ia);
+	choose_run_mode(&ia, argc-7, &(argv[7]));
 
 	//Aruco
 	initAruco();
