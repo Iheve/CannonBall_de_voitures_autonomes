@@ -42,6 +42,22 @@
 
 \section{What do I need ?}
 
+You will need :
+\begin{itemize}
+
+    \item A radio-controlled car (we used the KYOSHO Scorpion XXL-VE).
+
+    \item A webcam (we used the Logitech HD Pro Webcam C920).
+
+    \item An Arduino (we used the Arduino UNO).
+
+    \item A self-powered usb hub (without outlet).
+
+    \item A windows tablet, not running windows RT (we used the Lenovo ThinkPad
+        tablet 2).
+
+\end{itemize}
+
 \section{How to plug ?}
 
 Follow instructions on figure \ref{fig:wires}.
@@ -54,6 +70,42 @@ Follow instructions on figure \ref{fig:wires}.
 \end{figure}
 
 \section{How to build the program ?}
+
+\subsection{Libraries}
+
+First, you need to install OpenCV\footnote{\url{http://opencv.org/}} 2.4.8 and
+Mosquittopp\footnote{\url{http://mosquitto.org/download/}}.
+
+\subsection{Visual Studio 12}
+
+We used Visual Studio 12 to develop and build the program.
+
+Open Visual Studio, create a new project, add all the \texttt{.h} and
+\texttt{.cpp} files.
+
+Open the project properties, go to Project, Properties, C/C++, general,
+additional include directories. Add the path to the include directories of
+mosquittopp and opencv.
+
+Open the project properties, go to Project, Properties, linker, general,
+additional library directories. Add the path to the libraries directories of
+mosquittopp and OpenCV (directory with all the \texttt{.lib} files).
+
+Open the project properties, go to Project, Properties, linker, general, input,
+additional dependencies. Add all of the \texttt[.lib] files of mosquittopp and
+OpenCV.
+
+You should now be able to build the program (Ctrl-Shift-B).
+
+Copy all the \texttt{.dll} files of mosquittopp and OpenCV to the directory of
+the executable.
+
+Create a shortcut to the .exe, edit it to set the arguments.
+
+You should now be able to run the program !
+
+
+
 
 \section{How to flash the Arduino ?}
 
@@ -72,7 +124,8 @@ If you're interesting of the other method, please refer to \ref{sec:Flashing}.
 
 \section{How to get markers ?}
 
-Marker recognition is based on highly reliable markers (hrm) from the arUco
+Marker recognition is based on highly reliable markers (hrm) from the
+arUco\footnote{\url{http://www.uco.es/investiga/grupos/ava/node/26}}
 library.
 
 \subsection{Camera calibration}
@@ -118,10 +171,10 @@ You now need to create markers : \begin{itemize}
 
 You need an MQTT server to get the data. We recommend
 Mosquitto\footnote{\url{http://mosquitto.org/download/}} which is available for every
-platform.  Note that it's available on Debian via a simple \texttt{apt-get install}
-mosquitto. As Windows, you need to download the server and then restart your
-computer for the service to launch (or ask the service to launch manually),
-this is really important.
+platform. Note that it's available on Debian via a simple \texttt{apt-get install
+mosquitto} and on OSX via \texttt{brew install mosquitto}. As Windows, you need to
+download the server and then restart your computer for the service to launch (or ask the
+service to launch manually), this is really important.
 
 Then, you need the tablet to be on the same network as the server. You can
 either create an hotspot via the tablet or the server, or connect both to an
@@ -130,6 +183,29 @@ to the corresponding section.
 
 \subsection{Display metrics in HTML}
 
+The metrics are retrieve through a Node
+server\footnote{\url{http://nodejs.org/}}. You can download via \texttt{apt-get
+install node} on Debian, \texttt{brew install node} on OSX and on the
+\href{http://nodejs.org}{official website} on Windows. You also need a mongo
+server that you can find on Debian via \texttt{apt-get install mongodb}, on OSX
+via \texttt{brew install mongodb} and for Windows on the
+\href{http://www.mongodb.org/downloads}{official
+website}\footnote{\url{http://www.mongodb.org/downloads}}, you can launch the
+mongodb sever via the command \texttt{mongo --dbpath </path/to/the/db>}.
+
+After install node, you need to install package dependencies by launching the
+command \texttt{npm install} in the \emph{Mosquitto/subscriber} directory. You
+also need to download \emph{Bootstrap 3} on the
+\href{http://getbootstrap.com/}{official
+website}\footnote{\url{http://getbootstrap.com}}, \emph{socket.io client} on
+the \href{http://socket.io/download/}{official
+website}\footnote{\url{http://socket.io/download/}} and \emph{Chart.js} on the
+\href{http://www.chartjs.org/}{official
+website}\footnote{\url{http://www.chartjs.org/}}
+
+You are now able to launch the node server with the command \texttt{node
+subscriber.js mqtt\_server\_address mqtt\_server\_port mongo\_port}. You can
+now display the metrics in the web page \texttt{view.html}.
 
 \section{How to launch the program ?}
 
