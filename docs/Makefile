@@ -43,7 +43,7 @@ $(PDFDIR)/%.pdf: $(TEXDIR)/%.tex $(DEP) $(IMG)
 	mv $(COMPDIR)/$(notdir $@) $@
 
 view: $(FILES)
-	@if ! okular $^ 2> /dev/null; then if ! open $^ 2> /dev/null; then evince $^ 2> /dev/null; fi fi &
+	@if ! okular $^ 2> /dev/null; then if ! zathura $^ 2> /dev/null; then if ! open $^ 2> /dev/null; then evince $^ 2> /dev/null; fi fi fi &
 
 clean:
 	rm -rf $(COMPDIR) $(IMGDIR)
