@@ -9,6 +9,7 @@
 #define TOPIC_LAPS "metrics/laps"
 #define TOPIC_AVG "metrics/avg"
 #define TOPIC_MODE "metrics/mode"
+#define TOPIC_ACCELEROMETER "metrics/accelerometer"
 
 #if defined(__linux__)
 #define MOSQPP mosquittopp
