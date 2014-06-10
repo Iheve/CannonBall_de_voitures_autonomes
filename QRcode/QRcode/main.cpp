@@ -2,7 +2,7 @@
 #include <opencv/highgui.h>
 #include <iostream>
 #include <Windows.h>
-#include "SerialClass.h"
+#include "Serial.h"
 #include "aruco.h"
 #include "highlyreliablemarkers.h"
 #include "cvdrawingutils.h"
@@ -10,6 +10,7 @@
 #include "IAcannonball.h"
 #include "IAmap.h"
 #include "mqtt_sender.h"
+#include "AccelerometerSensor.h"
 
 using namespace cv;
 using namespace aruco;
@@ -115,11 +116,16 @@ void sendCommand(Serial** arduin, int steering, int throttle) {
 /**
  * Send metrics to the MQTT broker
  */
-void sendMetrics(int steering, int throttle, double laps, double avg) {
+void sendMetrics(int steering, int throttle, double laps, double avg, AccelerometerSensor* accelerometer) {
 	sender->publish_to_mqtt(TOPIC_STEER, (char*)std::to_string(steering).c_str());
 	sender->publish_to_mqtt(TOPIC_THROT, (char*)std::to_string(throttle).c_str());
 	sender->publish_to_mqtt(TOPIC_LAPS, (char*)std::to_string(laps).c_str());
 	sender->publish_to_mqtt(TOPIC_AVG, (char*)std::to_string(avg).c_str());
+	sender->publish_to_mqtt(TOPIC_ACCELEROMETER, (char*)(
+							(std::to_string(accelerometer->getX()) + ":" 
+							+ std::to_string(accelerometer->getY()) + ":"
+							+ std::to_string(accelerometer->getZ())).c_str()
+							));
 	//cout << "SENT!" << endl;
 }
 
@@ -203,6 +209,9 @@ int main(int argc, char *argv[]) {
 	//Aruco
 	initAruco();
 
+	//Sensor
+	AccelerometerSensor accelerometer;
+
 	int index = 0;
 	double tick = (double)getTickCount();
 	double laps = 0;
@@ -229,7 +238,7 @@ int main(int argc, char *argv[]) {
 		sendCommand(&arduin, steering, throttle);
 
 		//Send metrics to the MQTT brocker
-		sendMetrics(steering, throttle, laps, total / index);
+		sendMetrics(steering, throttle, laps, total / index, &accelerometer);
 
 		//show input with augmented information
 		updateView();

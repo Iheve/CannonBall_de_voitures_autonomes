@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AccelerometerSensor.cpp" />
     <ClCompile Include="arucofidmarkers.cpp" />
     <ClCompile Include="ar_omp.cpp" />
     <ClCompile Include="board.cpp" />
@@ -20,6 +21,8 @@
     <ClCompile Include="cvdrawingutils.cpp" />
     <ClCompile Include="highlyreliablemarkers.cpp" />
     <ClCompile Include="IA.cpp" />
+    <ClCompile Include="IAcannonball.cpp" />
+    <ClCompile Include="IAmap.cpp" />
     <ClCompile Include="IARabbit.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="marker.cpp" />
@@ -29,6 +32,7 @@
     <ClCompile Include="subpixelcorner.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AccelerometerSensor.h" />
     <ClInclude Include="aruco.h" />
     <ClInclude Include="arucofidmarkers.h" />
     <ClInclude Include="ar_omp.h" />
@@ -40,11 +44,13 @@
     <ClInclude Include="exports.h" />
     <ClInclude Include="highlyreliablemarkers.h" />
     <ClInclude Include="IA.h" />
+    <ClInclude Include="IAcannonball.h" />
+    <ClInclude Include="IAmap.h" />
     <ClInclude Include="IARabbit.h" />
     <ClInclude Include="marker.h" />
     <ClInclude Include="markerdetector.h" />
     <ClInclude Include="mqtt_sender.h" />
-    <ClInclude Include="SerialClass.h" />
+    <ClInclude Include="Serial.h" />
     <ClInclude Include="subpixelcorner.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -90,12 +96,14 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>C:\Users\RICM4\Documents\GitHub\CannonBall_de_voitures_autonomes\QRcode\QRcode\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <CompileAsWinRT>true</CompileAsWinRT>
+      <MinimalRebuild>false</MinimalRebuild>
+      <AdditionalUsingDirectories>C:\Program Files\Microsoft SDKs\Windows\v8.1\ExtensionSDKs\Microsoft.VCLibs\12.0\References\CommonConfiguration\neutral;C:\Program Files\Windows Kits\8.1\References\CommonConfiguration\Neutral;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>opencv_calib3d248d.lib;opencv_contrib248d.lib;opencv_core248d.lib;opencv_features2d248d.lib;opencv_flann248d.lib;opencv_gpu248d.lib;opencv_highgui248d.lib;opencv_imgproc248d.lib;opencv_legacy248d.lib;opencv_ml248d.lib;opencv_nonfree248d.lib;opencv_objdetect248d.lib;opencv_photo248d.lib;opencv_stitching248d.lib;opencv_superres248d.lib;opencv_ts248d.lib;opencv_video248d.lib;opencv_videostab248d.lib;libzbar-0.lib;mosquitto.lib;mosquittopp.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <SubSystem>
-      </SubSystem>
+      <SubSystem>Console</SubSystem>
       <AdditionalLibraryDirectories>C:\Users\RICM4\Documents\GitHub\CannonBall_de_voitures_autonomes\QRcode\QRcode\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -108,6 +116,8 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>C:\Users\RICM4\Documents\GitHub\CannonBall_de_voitures_autonomes\QRcode\QRcode\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <CompileAsWinRT>true</CompileAsWinRT>
+      <AdditionalUsingDirectories>C:\Program Files\Microsoft SDKs\Windows\v8.1\ExtensionSDKs\Microsoft.VCLibs\12.0\References\CommonConfiguration\neutral;C:\Program Files\Windows Kits\8.1\References\CommonConfiguration\Neutral;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
