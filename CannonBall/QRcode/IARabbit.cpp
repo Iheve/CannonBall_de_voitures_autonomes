@@ -1,12 +1,21 @@
 #include "IARabbit.h"
 #include <iostream>
+#include "Windows.h"
 
 using namespace aruco;
 
-IARabbit::IARabbit() :
+IARabbit::IARabbit(int argc, char *argv[]) :
 frame(0)
 {
 	elements.clear();
+	if (argc < 1) {
+		std::cerr << "AI  Rabbit usage : <target>" << std::endl;
+		std::cerr << "<target> : id of the target marker" << std::endl;
+		Sleep(10000);
+		exit(-1);
+	}
+	target = atoi(argv[0]);
+	std::cout << "Following " << target << endl;
 }
 
 
@@ -23,7 +32,7 @@ void IARabbit::getCommand(vector<aruco::Marker>* TheMarkers, int* steering, int*
 		elements[it->id].lastTimeSeen = frame;
 	}
 
-	struct element rabbit = elements[18244];
+	struct element rabbit = elements[target];
 	float x = rabbit.marker.getCenter().x;
 	float d = rabbit.marker.Tvec.ptr<float>(0)[2];
 

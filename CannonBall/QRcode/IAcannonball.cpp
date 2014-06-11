@@ -1,12 +1,13 @@
 #include "IAcannonball.h"
+#include "Windows.h"
 
-void buildDoors(struct door** d, int* IDs, int size) {
+void buildDoors(struct door** d, char *IDs[], int size) {
 	struct door* prev = NULL;
 	struct door* current = (struct door*)malloc(sizeof(struct door));
 	*d = current;
 	for (int i = 0; i < size;) {
-		current->left = IDs[i++];
-		current->right = IDs[i++];
+		current->left = atoi(IDs[i++]);
+		current->right = atoi(IDs[i++]);
 		current->next = (struct door*)malloc(sizeof(struct door));
 		prev = current;
 		current = current->next;
@@ -15,10 +16,17 @@ void buildDoors(struct door** d, int* IDs, int size) {
 	prev->next = *d;
 }
 
-IAcannonball::IAcannonball():
+IAcannonball::IAcannonball(int argc, char *argv[]) :
 frame(0),
 idle(0)
 {
+	if (argc < 2) {
+		std::cerr << "AI  Cannonball usage : leftID1 rightID1 leftID2 rightID2 ..." << std::endl;
+		std::cerr << "leftID1 : id of the left marker of the first door" << std::endl;
+		std::cerr << "rightID1 : id of the right marker of the first door" << std::endl;
+		Sleep(10000);
+		exit(-1);
+	}
 	elements.clear();
 	int  doors[] = {
 		23731, 30339,
@@ -32,7 +40,7 @@ idle(0)
 		37211, 64661,
 		22662, 38006
 	};
-	buildDoors(&currentDoor, doors, 20);
+	buildDoors(&currentDoor, argv, argc);
 }
 
 

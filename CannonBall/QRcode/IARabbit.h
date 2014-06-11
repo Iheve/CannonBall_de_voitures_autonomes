@@ -5,7 +5,7 @@ class IARabbit :
 	public IA
 {
 public:
-	IARabbit();
+	IARabbit(int argc, char *argv[]);
 	~IARabbit();
 	virtual void getCommand(vector<aruco::Marker>* TheMarkers, int* steering, int* throttle, int width);
 private:
@@ -14,6 +14,7 @@ private:
 		int lastTimeSeen;
 	};
 	int frame;
+	int target;
 	map<int, struct element> elements;
 };
 
