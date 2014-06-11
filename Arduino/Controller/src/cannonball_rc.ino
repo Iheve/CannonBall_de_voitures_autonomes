@@ -6,6 +6,7 @@
 /* Constants which define pins used by servos */
 #define STEERING_SERVO_PIN (5)
 #define THROTTLE_SERVO_PIN (6)
+#define LED_PIN (13)
 
 /* Variable declaration */
 Servo SteeringServo;
@@ -34,7 +35,9 @@ void setup() {
     /* Output */
     pinMode(STEERING_SERVO_PIN, OUTPUT);
     pinMode(THROTTLE_SERVO_PIN, OUTPUT);
+    pinMode(LED_PIN, OUTPUT);
 
+    digitalWrite(LED_PIN, LOW);
     SteeringServo.attach(STEERING_SERVO_PIN);
     ThrottleServo.attach(THROTTLE_SERVO_PIN);
 
@@ -54,6 +57,7 @@ void loop() {
     ThrottleServo.write(throttleTarget);
 
     if (emergency) {
+        digitalWrite(13, HIGH);
         ThrottleServo.write(89);    //Prevent the car to go back
         for (;;)
             ThrottleServo.write(130);
