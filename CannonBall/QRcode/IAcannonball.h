@@ -13,7 +13,7 @@ class IAcannonball :
 	public IA
 {
 public:
-	IAcannonball();
+	IAcannonball(int argc, char *argv[]);
 	~IAcannonball();
 	virtual void getCommand(vector<aruco::Marker>* TheMarkers, int* steering, int* throttle, int width);
 private:
