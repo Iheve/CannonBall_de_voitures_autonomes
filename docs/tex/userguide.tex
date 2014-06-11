@@ -53,7 +53,7 @@ You will need :
 
     \item A self-powered usb hub (without outlet).
 
-    \item A windows tablet, not running windows RT (we used the Lenovo ThinkPad
+    \item A Windows tablet, not running windows RT (we used the Lenovo ThinkPad
         tablet 2).
 
 \end{itemize}
@@ -92,7 +92,7 @@ additional library directories. Add the path to the libraries directories of
 mosquittopp and OpenCV (directory with all the \texttt{.lib} files).
 
 Open the project properties, go to Project, Properties, linker, general, input,
-additional dependencies. Add all of the \texttt[.lib] files of mosquittopp and
+additional dependencies. Add all the \texttt[.lib] files of mosquittopp and
 OpenCV.
 
 You should now be able to build the program (Ctrl-Shift-B).
@@ -111,7 +111,7 @@ You should now be able to run the program !
 
 There are two ways to flash the Arduino, the first one (and the simple one) is
 to use the Arduino IDE\footnote{\url{http://arduino.cc/en/Main/Software\#toc1}}. After
-download it, then open the project in.
+download it, open the project in.
 
 In order to flash the Arduino, you need to select the model in \texttt{Tools >
 Board} and the serial port in \texttt{Tools > Serial Port}, this is likely
@@ -157,7 +157,7 @@ You now need to create markers : \begin{itemize}
         dictionary> <marker size>}
 
     \item Generate the board with \texttt{aruco\_hrm\_create\_board dict.yml
-        board.yml board.png heighr width}
+        board.yml board.png height width}
 
     \item Print the board.
 
@@ -177,8 +177,8 @@ download the server and then restart your computer for the service to launch (or
 service to launch manually), this is really important.
 
 Then, you need the tablet to be on the same network as the server. You can
-either create an hotspot via the tablet or the server, or connect both to an
-existing network.  You need to tell the program the server's ip. Please refer
+either create a hotspot via the tablet or the server, or connect both to an
+existing network. You need to tell the program the server's ip. Please refer
 to the corresponding section.
 
 \subsection{Display metrics in HTML}
@@ -223,7 +223,7 @@ The program needs :
     \item Path to dictionnary.yml, see~\ref{subsec:dic}.
     \item Path to intrinsics.yml, see~\ref{subsec:cam}.
     \item Marker size (in meters).
-    \item The MQTT server IP for getting metrics.
+    \item The MQTT server IP for sending metrics.
     \item The Arduino serial port, should be something like 'COM5'.
     \item The mode to run (IA). Should be 'rabbit' to follow a marker, or 'cannon' for race mode.
 \end{itemize}
@@ -245,7 +245,7 @@ The program needs :
 
 \section{Monitoring}
 
-\section{Implementing a new artificial intelligence}
+\section{Implementing new artificial intelligence}
 
 \section{Android}
 
