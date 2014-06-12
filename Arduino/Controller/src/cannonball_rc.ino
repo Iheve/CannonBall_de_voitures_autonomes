@@ -11,25 +11,27 @@
 /* Variable declaration */
 Servo SteeringServo;
 Servo ThrottleServo;
-int steeringTarget=90;
-int throttleTarget=91;
+int steeringTarget = 90;
+int throttleTarget = 91;
 
-unsigned long time=0;
-unsigned long last_time=0;
-unsigned long period=0;
+unsigned long time_rc_handler = 0;
+unsigned long time_data_check = 0;
+unsigned long last_time_data_check = 0;
+unsigned long last_time_rc_handler = 0;
+unsigned long period = 0;
 boolean emergency = false;
 
 void rc_handler() {
     //BE CAREFUL, DO NOT PRINT STUFF HERE
     //Serial.println use interrupts too, thus resulting in a deadlock :(
 
-    time = micros(); //CAREFUL, micro will overflow after 70min (returning 0)
-    period = time - last_time;
+    time_rc_handler = micros(); //CAREFUL, micro will overflow after 70min (returning 0)
+    period = time_rc_handler - last_time_rc_handler;
     if (period < 1000) {
         //We've got an emergency, stop everything
         emergency = true;
     }
-    last_time = time;
+    last_time_rc_handler = time_rc_handler;
 }
 void setup() {
     /* Output */
@@ -48,15 +50,18 @@ void setup() {
 }
 
 void loop() {
+    time_data_check = millis();
+
     if (Serial.available() >= 2) {
         steeringTarget = Serial.read();
         throttleTarget = Serial.read();
         Serial.flush();
+        last_time_data_check = time_data_check;
     }
     SteeringServo.write(steeringTarget);
     ThrottleServo.write(throttleTarget);
 
-    if (emergency) {
+    if (emergency || ((time_data_check - last_time_data_check) > 500) ) {
         digitalWrite(13, HIGH);
         ThrottleServo.write(89);    //Prevent the car to go back
         for (;;)
