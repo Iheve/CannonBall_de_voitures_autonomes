@@ -126,7 +126,22 @@ void sendMetrics(int steering, int throttle, double laps, double avg, Accelerome
 							+ std::to_string(accelerometer->getY()) + ":"
 							+ std::to_string(accelerometer->getZ())).c_str()
 							));
-	//cout << "SENT!" << endl;
+	sender->publish_to_mqtt(TOPIC_NB_MARKERS, (char*)std::to_string(TheMarkers.size()).c_str());
+
+	//find the closest marker
+	float d = -1;
+	for (std::vector<aruco::Marker>::iterator it = TheMarkers.begin(); it != TheMarkers.end(); it++) {
+		if (d == -1) {
+			d = it->Tvec.ptr<float>(0)[2];
+		}
+		else if (it->Tvec.ptr<float>(0)[2] < d) {
+			d = it->Tvec.ptr<float>(0)[2];
+		}
+	}
+
+	sender->publish_to_mqtt(TOPIC_CLOSEST, (char*)std::to_string(d).c_str());
+
+	
 }
 
 void updateView() {
