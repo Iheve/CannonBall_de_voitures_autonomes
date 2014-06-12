@@ -32,3 +32,13 @@ analyses webcam's image to find markers, and computes them based on a customisab
 artificial intelligence. Finally it sends a command to the arduino wich
 controls the steering and throttle of the car. And all of this 10 times per
 seconds.
+
+
+
+
+Why this project ?
+
+Student in robotic and computer science will be able to use this pedagogic kit
+as an experimentation support.
+
+It is also a beautiful demonstration of an application of MQTT.
