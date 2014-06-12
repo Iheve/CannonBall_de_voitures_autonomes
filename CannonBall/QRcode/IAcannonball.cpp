@@ -79,7 +79,7 @@ void IAcannonball::getCommand(vector<aruco::Marker>* TheMarkers, int* steering, 
 			if (!elements[it->id].valid) {
 				continue;
 			}
-			if (id = -1) {
+			if (id == -1) {
 				id = it->id;
 			}
 			else if (elements[id].marker.Tvec.ptr<float>(0)[2] > elements[it->id].marker.Tvec.ptr<float>(0)[2]) {

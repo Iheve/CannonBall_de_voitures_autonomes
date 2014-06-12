@@ -10,6 +10,8 @@
 #define TOPIC_AVG "metrics/avg"
 #define TOPIC_MODE "metrics/mode"
 #define TOPIC_ACCELEROMETER "metrics/accelerometer"
+#define TOPIC_NB_MARKERS "metrics/nb_markers"
+#define TOPIC_CLOSEST "metrics/closest"
 
 #if defined(__linux__)
 #define MOSQPP mosquittopp

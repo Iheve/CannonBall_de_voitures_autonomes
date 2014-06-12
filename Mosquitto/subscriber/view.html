@@ -37,6 +37,16 @@
                 </td>
                 <td id="acc_value" style="vertical-align: middle" class="text-info">0</td>
             </tr>
+            <tr>
+                <td style="vertical-align: middle">Number of markers detected</td>
+                <td><canvas id="chart_nb_markers_div" width="600" height="100"></canvas></td>
+                <td id="nb_markers_value" style="vertical-align: middle" class="text-info">0</td>
+            </tr>
+            <tr>
+                <td style="vertical-align: middle">Distance to the closest marker</td>
+                <td><canvas id="chart_closest_div" width="600" height="100"></canvas></td>
+                <td id="closest_value" style="vertical-align: middle" class="text-info">0</td>
+            </tr>
         </table>
     </div>
     <script>
@@ -162,6 +172,35 @@
                     minZ==maxZ, maxZ);
         });
 
+        <!-- Nb Marker -->
+        var ctxNbMarkers = document.getElementById('chart_nb_markers_div').getContext('2d');
+        var arrayLabelsNbMarkers = new Array();
+        var arrayDataNbMarkers = new Array();
+        socket.on('NbMarkers', function(data) {
+                document.getElementById('nb_markers_value').innerHTML = data.value;
+                arrayLabelsNbMarkers.push(data.time);
+                arrayDataNbMarkers.push(data.value);
+                var min = getMinOfArray(arrayDataNbMarkers);
+                var max = getMaxOfArray(arrayDataNbMarkers);
+                deleteOldValues(arrayLabelsNbMarkers, arrayDataNbMarkers, 20);
+                displayChart(ctxNbMarkers, arrayLabelsNbMarkers, arrayDataNbMarkers,
+                    min==max, max);
+        });
+
+        <!-- Closest -->
+        var ctxClosest = document.getElementById('chart_closest_div').getContext('2d');
+        var arrayLabelsClosest = new Array();
+        var arrayDataClosest = new Array();
+        socket.on('Closest', function(data) {
+                document.getElementById('closest_value').innerHTML = data.value;
+                arrayLabelsClosest.push(data.time);
+                arrayDataClosest.push(data.value);
+                var min = getMinOfArray(arrayDataClosest);
+                var max = getMaxOfArray(arrayDataClosest);
+                deleteOldValues(arrayLabelsClosest, arrayDataClosest, 20);
+                displayChart(ctxClosest, arrayLabelsClosest, arrayDataClosest,
+                    min==max, max);
+        });
 
     </script>
 </body>
