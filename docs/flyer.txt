@@ -1,0 +1,34 @@
+Rabbit mode
+
+The car follows a given moving marker.
+
+
+
+Cannonball
+
+The car follow a circuit delimited by markers.
+
+
+
+
+Markers
+
+Marker recognition is based on highly reliable markers, from the arUco library.
+It gives a precise 3D location of the marker.
+
+Metrics
+
+Visualize in real time values send to servo-motor, data from sensors, distance
+to markers or the number of frame per second. Use the power of MQTT and allow
+us to keep a trace of what the car do and when.
+
+
+
+
+Archi
+
+Transform a radio-controlled car into an autonomous vehicle. A windows 8 tablet
+analyses webcam's image to find markers, and computes them based on a customisable
+artificial intelligence. Finally it sends a command to the arduino wich
+controls the steering and throttle of the car. And all of this 10 times per
+seconds.

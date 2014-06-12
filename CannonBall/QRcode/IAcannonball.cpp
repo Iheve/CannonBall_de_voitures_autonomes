@@ -1,13 +1,17 @@
 #include "IAcannonball.h"
+#include <iostream>
+#include <fstream>
+#include <queue>
 #include "Windows.h"
 
-void buildDoors(struct door** d, char *IDs[], int size) {
+void buildDoors(struct door** d, std::queue<std::pair<int, int>> doors) {
 	struct door* prev = NULL;
 	struct door* current = (struct door*)malloc(sizeof(struct door));
 	*d = current;
-	for (int i = 0; i < size;) {
-		current->left = atoi(IDs[i++]);
-		current->right = atoi(IDs[i++]);
+	for (; !doors.empty() ;) {
+		current->left = doors.front().first;
+		current->right = doors.front().second;
+		doors.pop();
 		current->next = (struct door*)malloc(sizeof(struct door));
 		prev = current;
 		current = current->next;
@@ -20,27 +24,24 @@ IAcannonball::IAcannonball(int argc, char *argv[]) :
 frame(0),
 idle(0)
 {
-	if (argc < 2) {
-		std::cerr << "AI  Cannonball usage : leftID1 rightID1 leftID2 rightID2 ..." << std::endl;
-		std::cerr << "leftID1 : id of the left marker of the first door" << std::endl;
-		std::cerr << "rightID1 : id of the right marker of the first door" << std::endl;
+	if (argc < 1) {
+		std::cerr << "AI  Cannonball usage : doors_file" << std::endl;
 		Sleep(10000);
 		exit(-1);
 	}
 	elements.clear();
-	int  doors[] = {
-		23731, 30339,
-		56039, 27288,
-		44387, 21676,
-		 2248, 18244,
-		59588, 56536,
-		42425, 23647,
-		16473, 17886,
-		11806, 42534,
-		37211, 64661,
-		22662, 38006
-	};
-	buildDoors(&currentDoor, argv, argc);
+	std::queue<std::pair<int, int>> doors;
+	std::ifstream ifs;
+	ifs.open(argv[0]);
+	int left, right;
+	while (!ifs.eof()) {
+		ifs >> left;
+		ifs >> right;
+		if (ifs.good()) {
+			doors.push(std::make_pair(left, right));
+		}
+	}
+	buildDoors(&currentDoor, doors);
 }
 
 
@@ -78,7 +79,7 @@ void IAcannonball::getCommand(vector<aruco::Marker>* TheMarkers, int* steering, 
 			if (!elements[it->id].valid) {
 				continue;
 			}
-			if (id = -1) {
+			if (id == -1) {
 				id = it->id;
 			}
 			else if (elements[id].marker.Tvec.ptr<float>(0)[2] > elements[it->id].marker.Tvec.ptr<float>(0)[2]) {
