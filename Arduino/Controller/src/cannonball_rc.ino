@@ -63,7 +63,8 @@ void loop() {
 
     if (emergency || ((time_data_check - last_time_data_check) > 500) ) {
         digitalWrite(13, HIGH);
-        ThrottleServo.write(89);    //Prevent the car to go back
+        ThrottleServo.write(90);    //Prevent the car to go back
+        delay(100);
         for (;;)
             ThrottleServo.write(130);
     }
