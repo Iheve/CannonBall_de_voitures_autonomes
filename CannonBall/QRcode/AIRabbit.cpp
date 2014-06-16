@@ -1,10 +1,10 @@
-#include "IARabbit.h"
+#include "AIRabbit.h"
 #include <iostream>
 #include "Windows.h"
 
 using namespace aruco;
 
-IARabbit::IARabbit(int argc, char *argv[]) :
+AIRabbit::AIRabbit(int argc, char *argv[]) :
 frame(0)
 {
 	elements.clear();
@@ -19,11 +19,11 @@ frame(0)
 }
 
 
-IARabbit::~IARabbit()
+AIRabbit::~AIRabbit()
 {
 }
 
-void IARabbit::getCommand(vector<aruco::Marker>* TheMarkers, int* steering, int* throttle, int width) {
+void AIRabbit::getCommand(vector<aruco::Marker>* TheMarkers, int* steering, int* throttle, int width) {
 
 	//Update our map
 	frame++;

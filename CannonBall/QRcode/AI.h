@@ -7,13 +7,13 @@
  * Abstract which represent an IA
  * @author Thibaut Coutelou, Benjamin Mugnier, Guillaume Perrin
  */
-class IA
+class AI
 {
     public:
-        IA();
-        ~IA();
+        AI();
+        ~AI();
         /**
-         * Action realized by the IA
+         * Action realized by the AI
          * @param TheMarkers markers found
          * @param steering the new value of the steering
          * @param throttle the new value of the throttle

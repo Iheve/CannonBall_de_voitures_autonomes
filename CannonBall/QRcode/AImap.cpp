@@ -1,17 +1,17 @@
-#include "IAmap.h"
+#include "AImap.h"
 #include <iostream>
 
 using namespace aruco;
 
-IAmap::IAmap()
+AImap::AImap()
 {
-	cout << "IAmap : press enter to start" << endl;
+	cout << "AImap : press enter to start" << endl;
 	std::cin.get();
 	processing = false;
 }
 
 
-IAmap::~IAmap()
+AImap::~AImap()
 {
 }
 
@@ -26,7 +26,7 @@ int  marquers[] = {
 	37211,
 };
 
-void IAmap::getCommand(vector<aruco::Marker>* TheMarkers, int* steering, int* throttle, int width) {
+void AImap::getCommand(vector<aruco::Marker>* TheMarkers, int* steering, int* throttle, int width) {
 	frame++;
 
 	*throttle = 88; // default

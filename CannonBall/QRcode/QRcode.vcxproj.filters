@@ -54,22 +54,22 @@
     <ClCompile Include="subpixelcorner.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="IA.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="IARabbit.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="mqtt_sender.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="IAcannonball.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="IAmap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="AccelerometerSensor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AIcannonball.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AImap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AIRabbit.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -113,25 +113,25 @@
     <ClInclude Include="subpixelcorner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IA.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IARabbit.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="mqtt_sender.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IAcannonball.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IAmap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AccelerometerSensor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Serial.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AIRabbit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AIcannonball.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AImap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

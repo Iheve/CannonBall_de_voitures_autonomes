@@ -1,5 +1,5 @@
 #pragma once
-#include "IA.h"
+#include "AI.h"
 #include <map>
 #include <stdbool.h>
 
@@ -14,12 +14,12 @@ struct door {
  * The doors of the circuit are markers. The markers order is given in a file :
  * left1 right1 left2 right2...
  */
-class IAcannonball :
-	public IA
+class AICannonball :
+	public AI
 {
 public:
-	IAcannonball(int argc, char *argv[]);
-	~IAcannonball();
+	AICannonball(int argc, char *argv[]);
+	~AICannonball();
 	virtual void getCommand(vector<aruco::Marker>* TheMarkers, int* steering, int* throttle, int width);
 private:
 	struct element {

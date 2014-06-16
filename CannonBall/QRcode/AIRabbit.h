@@ -1,12 +1,18 @@
 #pragma once
-#include "IA.h"
+#include "AI.h"
 #include <map>
-class IAmap :
-	public IA
+
+
+/**
+ * This artificial intelligence allow the car to follow a marker : the Rabbit.
+ * The ID of the marker to follow is passed as argument.
+ */
+class AIRabbit :
+	public AI
 {
 public:
-	IAmap();
-	~IAmap();
+	AIRabbit(int argc, char *argv[]);
+	~AIRabbit();
 	virtual void getCommand(vector<aruco::Marker>* TheMarkers, int* steering, int* throttle, int width);
 private:
 	struct element {
@@ -14,11 +20,7 @@ private:
 		int lastTimeSeen;
 	};
 	int frame;
+	int target;
 	map<int, struct element> elements;
-	bool processing;
-	bool following;
-	int processing_frame_remaining = 0;
-	int last_marker = -1;
-
 };
 

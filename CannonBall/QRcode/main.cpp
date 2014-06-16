@@ -6,9 +6,9 @@
 #include "aruco.h"
 #include "highlyreliablemarkers.h"
 #include "cvdrawingutils.h"
-#include "IARabbit.h"
-#include "IAcannonball.h"
-#include "IAmap.h"
+#include "AIRabbit.h"
+#include "AICannonball.h"
+#include "AImap.h"
 #include "mqtt_sender.h"
 #include "AccelerometerSensor.h"
 
@@ -194,17 +194,17 @@ void readParams(int argc, char *argv[]) {
 	}
 }
 
-void choose_run_mode(IA **ia, int argc, char *argv[]) {
+void choose_run_mode(AI **ia, int argc, char *argv[]) {
 	if (run_mode == RABBIT) {
-		*ia = new IARabbit(argc, argv);
+		*ia = new AIRabbit(argc, argv);
         sender->publish_to_mqtt(TOPIC_MODE, "Rabbit");
 	}
 	else if (run_mode == CANNON) {
-		*ia = new IAcannonball(argc, argv);
+		*ia = new AICannonball(argc, argv);
         sender->publish_to_mqtt(TOPIC_MODE, "CannonBall");
 	}
 	else {
-		*ia = new IAmap();
+		*ia = new AImap();
         sender->publish_to_mqtt(TOPIC_MODE, "Map");
 	}
 }
@@ -219,9 +219,9 @@ int main(int argc, char *argv[]) {
 	mosqpp::lib_init();
 	initMQTT();
 
-	//IA
-	IA *ia = NULL;
-	choose_run_mode(&ia, argc-7, &(argv[7]));
+	//AI
+	AI *ai = NULL;
+	choose_run_mode(&ai, argc-7, &(argv[7]));
 
 	//Aruco
 	initAruco();
@@ -248,8 +248,8 @@ int main(int argc, char *argv[]) {
 		//Detection of markers in the image passed
 		MDetector.detect(TheInputImage, TheMarkers, TheCameraParameters, TheMarkerSize);
 
-		//Get steering and throttle from IA
-		ia->getCommand(&TheMarkers, &steering, &throttle, TheInputImage.size().width);
+		//Get steering and throttle from AI
+		ai->getCommand(&TheMarkers, &steering, &throttle, TheInputImage.size().width);
 
 		//Send command on the serial bus
 		sendCommand(&arduin, steering, throttle);

@@ -1,4 +1,4 @@
-#include "IAcannonball.h"
+#include "AICannonball.h"
 #include <iostream>
 #include <fstream>
 #include <queue>
@@ -20,7 +20,7 @@ void buildDoors(struct door** d, std::queue<std::pair<int, int>> doors) {
 	prev->next = *d;
 }
 
-IAcannonball::IAcannonball(int argc, char *argv[]) :
+AICannonball::AICannonball(int argc, char *argv[]) :
 frame(0),
 idle(0)
 {
@@ -45,7 +45,7 @@ idle(0)
 }
 
 
-IAcannonball::~IAcannonball()
+AICannonball::~AICannonball()
 {
 	struct door* current;
 	struct door* next;
@@ -58,7 +58,7 @@ IAcannonball::~IAcannonball()
 
 }
 
-void IAcannonball::getCommand(vector<aruco::Marker>* TheMarkers, int* steering, int* throttle, int width) {
+void AICannonball::getCommand(vector<aruco::Marker>* TheMarkers, int* steering, int* throttle, int width) {
 
 	//Update our map
 	frame++;
