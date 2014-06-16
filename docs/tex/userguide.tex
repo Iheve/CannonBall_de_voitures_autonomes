@@ -318,6 +318,35 @@ marker after, separate by spaces (space or carriage return).
 
 \section{Implementing a new artificial intelligence}
 
+The application is designed to provide an easy way to add a new artificial
+inteligence.
+
+It is based on the strategy pattern. you need to create a new cpp class
+(preferably named IAmy\_ia\_name) which will implement the IA class.
+\begin{verbatim}
+    class IAmy_ia_name : public IA
+\end{verbatim}
+Then, because it implements IA, you need to override getCommand (in cpp this
+kind of function is called pure virtual, virtual meaning undefined and pure
+meaning it has to be redifined in every sub class).
+\begin{verbatim}
+	virtual void getCommand(vector<aruco::Marker>* TheMarkers, int* steering,
+    int* throttle, int width);
+\end{verbatim}
+getCommand will change steering and thrttle values. You can use the marker
+vector (which represents all markers recognized for this frame) to make a
+decision.
+
+Don't forget to add your new IA as program parameters. You'll need to :
+\begin{itemize}
+    \item Add your IA in the IA enum called Runmode at the beginning of the
+        program.
+    \item Add your IA in readParams to change the runmode according to you IA.
+    \item Add your IA in choose\_run\_mode to instanciate it properly.
+\end{itemize}
+You should then be able to pass your IA as argument the same way as rabbit or
+cannon using argument 6.
+
 \section{Android}
 
 The Android project can be find in the \emph{CannonBallDroid} directory.
