@@ -45,7 +45,7 @@ You will need :
 
     \item An Arduino (we used the Arduino UNO).
 
-    \item A self-powered usb hub (without outlet).
+    \item A self-powered USB hub (without outlet).
 
     \item A Windows tablet, not running windows RT (we used the Lenovo ThinkPad
         tablet 2).
@@ -146,10 +146,10 @@ The program needs :
     \item The Arduino serial port, should be something like 'COM5'.
     \item The mode to run (AI). Should be \emph{rabbit} to follow a marker, or
         \emph{cannon} for race mode.
-    \item Additionnal parameters for AI
+    \item Additional parameters for AI
 \end{itemize}
 
-\subsubsection{Additionnal parameters AI}
+\subsubsection{Additional parameters AI}
 
 For the \emph{rabbit} IA, you have to add one parameter, the marker identifier
 to follow.
@@ -211,14 +211,14 @@ which Arduino model you're using, just type ino list-models in a terminal.
 If you don't want to use the MakeFiles, here is a simple guide to compile via
 command line with Ino :
 \begin{itemize}
-    \item To build, use ino build -m 'model' 
-    \item Then you need to upload on the board, use ino upload -m 'model'
-    \item If you want to remove generated files, use ino clean
+    \item To build, use \texttt{ino build -m 'model'}
+    \item Then you need to upload on the board, use \texttt{ino upload -m 'model'}
+    \item If you want to remove generated files, use \texttt{ino clean}
 \end{itemize}
 
 \subsection{Debugging serial communications}
 
-You can use Arduino IDE to display and/or write serial data, juste click on the
+You can use Arduino IDE to display and/or write serial data, just click on the
 serial monitor icon (upper right) to display a terminal.
 
 If you prefer to use ino, you need first to install picocom, then run ino
@@ -235,7 +235,7 @@ RC reciver, which act as a energy spreader.
 That's why you need to plug the Arduino VIN pin to the RC receiver to grab
 energy. Don't forget to also plug the grounds.
 
-Please note that the VIN in Arduino is not trully a IN signal. The Arduino can
+Please note that the VIN in Arduino is not truly a IN signal. The Arduino can
 also provide supply through this pin if the board is supplied elsewhere. For
 instance, if you plug the USB cable and you don't power on the motor, the
 Arduino board will provide energy via the VIN port (leeching from USB), meaning
@@ -255,7 +255,7 @@ after via USB, not the other way.
 Control wires are displayed in green on the schema. They are white wires on the
 board.
 
-Sterring signal PIN should be connected to the PIN 5.
+Steering signal PIN should be connected to the PIN 5.
 Propulsion signal PIN should be connected to the PIN 6.
 
 Be careful when plugging these PIN. The car should be placed on a box, so that
@@ -312,37 +312,37 @@ You now need to create markers : \begin{itemize}
 \label{subsec:doorsfile}
 
 The CannonBall AI requires a configuration in order to know marker identifiers
-which make up the doors.  The file have the following format : it contains a
+which make up the doors. The file has the following format : it contains a
 sequel of identifiers order by the way of the track, left marker first, right
 marker after, separate by spaces (space or carriage return).
 
-\section{Implementing a new artificial intelligence}
+\section{Implementing new artificial intelligence}
 
 The application is designed to provide an easy way to add a new artificial
-inteligence.
+intelligence.
 
-It is based on the strategy pattern. you need to create a new cpp class
+It is based on the strategy pattern. You need to create a new cpp class
 (preferably named IAmy\_ia\_name) which will implement the IA class.
 \begin{verbatim}
     class IAmy_ia_name : public IA
 \end{verbatim}
-Then, because it implements IA, you need to override getCommand (in cpp this
-kind of function is called pure virtual, virtual meaning undefined and pure
-meaning it has to be redifined in every sub class).
+Then, because it implements IA, you need to override \texttt{getCommand} (in
+\emph{cpp} this kind of function is called pure virtual, virtual meaning
+undefined and pure meaning it has to be redifined in every sub class).
 \begin{verbatim}
 	virtual void getCommand(vector<aruco::Marker>* TheMarkers, int* steering,
     int* throttle, int width);
 \end{verbatim}
-getCommand will change steering and thrttle values. You can use the marker
+\texttt{getCommand} will change steering and throttle values. You can use the marker
 vector (which represents all markers recognized for this frame) to make a
 decision.
 
 Don't forget to add your new IA as program parameters. You'll need to :
 \begin{itemize}
-    \item Add your IA in the IA enum called Runmode at the beginning of the
+    \item Add your IA in the IA enumeration called \emph{Runmode} at the beginning of the
         program.
-    \item Add your IA in readParams to change the runmode according to you IA.
-    \item Add your IA in choose\_run\_mode to instanciate it properly.
+    \item Add your IA in \texttt{readParams} to change the runmode according to you IA.
+    \item Add your IA in choose\_run\_mode to instantiate it properly.
 \end{itemize}
 You should then be able to pass your IA as argument the same way as rabbit or
 cannon using argument 6.
