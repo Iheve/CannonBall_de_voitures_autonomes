@@ -61,11 +61,15 @@ void loop() {
     SteeringServo.write(steeringTarget);
     ThrottleServo.write(throttleTarget);
 
-    if (emergency || ((time_data_check - last_time_data_check) > 500) ) {
+    if (emergency || ((time_data_check - last_time_data_check) > 1000) ) {
         digitalWrite(13, HIGH);
-        ThrottleServo.write(90);    //Prevent the car to go back
-        delay(100);
-        for (;;)
-            ThrottleServo.write(130);
+        if (throttleTarget < 89) { //high speed
+            for (;;)
+                ThrottleServo.write(130); //brake
+        }
+        else {
+            for (;;)
+                ThrottleServo.write(91); //only slow down, not to go reverse
+        }
     }
 }
