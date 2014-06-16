@@ -73,6 +73,7 @@ void IAcannonball::getCommand(vector<aruco::Marker>* TheMarkers, int* steering, 
 		elements[it->id].lastTimeSeen = frame;
 	}
 
+    //Find a new marker in view if idle for too long.
 	if (idle > 10 && !(*TheMarkers).empty()) {
 		int id = -1;
 		for (std::vector<aruco::Marker>::iterator it = (*TheMarkers).begin(); it != (*TheMarkers).end(); it++) {
@@ -108,6 +109,7 @@ void IAcannonball::getCommand(vector<aruco::Marker>* TheMarkers, int* steering, 
 	float dNextLeft = nextLeft.marker.Tvec.ptr<float>(0)[2];
 	float dNextRight = nextRight.marker.Tvec.ptr<float>(0)[2];
 
+    //Go to the next door
 	if (((frame - left.lastTimeSeen) > 2 || (frame - right.lastTimeSeen) > 2)
 		&& ((frame - nextLeft.lastTimeSeen) == 0 || (frame - nextRight.lastTimeSeen) == 0)) {
 
@@ -130,6 +132,7 @@ void IAcannonball::getCommand(vector<aruco::Marker>* TheMarkers, int* steering, 
 
 	std::cout << currentDoor->left << "/" << currentDoor->right;
 
+    //No marker ever seen
 	if (left.lastTimeSeen == 0 && right.lastTimeSeen == 0) {
 		idle++;
 		*steering = 90;
@@ -138,6 +141,7 @@ void IAcannonball::getCommand(vector<aruco::Marker>* TheMarkers, int* steering, 
 		return;
 	}
 
+    //We can see both current markers
 	if ((frame - left.lastTimeSeen) == 0 && (frame - right.lastTimeSeen) == 0) {
 		idle = 0;
 		float xrel = ((xLeft + xRight) / 2 - (width / 2)) / (width / 2);
@@ -166,6 +170,7 @@ void IAcannonball::getCommand(vector<aruco::Marker>* TheMarkers, int* steering, 
 		return;
 	}
 
+    //See only left marker
 	if ((frame - left.lastTimeSeen) == 0){
 		idle = 0;
 		float xrel = (xLeft - (width / 2)) / (width / 2);
@@ -193,6 +198,7 @@ void IAcannonball::getCommand(vector<aruco::Marker>* TheMarkers, int* steering, 
 		return;
 	}
 
+    //See only right marker
 	if ((frame - right.lastTimeSeen) == 0){
 		idle = 0;
 		float xrel = (xRight - (width / 2)) / (width / 2);
@@ -220,7 +226,6 @@ void IAcannonball::getCommand(vector<aruco::Marker>* TheMarkers, int* steering, 
 		return;
 	}
 
-	//*steering = 90;
 	*throttle = 91;
 	idle++;
 	std::cout << " Idle" << endl;

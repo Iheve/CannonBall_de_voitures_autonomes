@@ -19,6 +19,10 @@ var ThrottleCounter = 0;
 var FPS = mongoose.model('FPS', { time: Number, value: String });
 var FPSCounter = 0;
 var Mode = mongoose.model('Mode', { value: String });
+var NbMarkers = mongoose.model('NbMarkers', { time: Number, value: Number });
+var NbMarkersCounter = 0;
+var Closest = mongoose.model('Closest', { time: Number, value: Number });
+var ClosestCounter = 0;
 
 for (var i = 2; i <= 4; i++) {
     if(!argv[i]) {
@@ -41,6 +45,8 @@ client.subscribe('metrics/steering');
 client.subscribe('metrics/throttle');
 client.subscribe('metrics/avg');
 client.subscribe('metrics/mode');
+client.subscribe('metrics/nb_markers');
+client.subscribe('metrics/closest');
 client.on('message', function(topic, message) {
     console.log(topic + " " + message);
     if (topic === 'metrics/accelerometer') {
@@ -90,6 +96,22 @@ client.on('message', function(topic, message) {
                 console.log(err);
         });
         io.emit('Mode', { value: message });
+    } else if (topic == 'metrics/nb_markers') {
+        var insert = new NbMarkers({ time: NbMarkersCounter, value: parseInt(message) });
+        insert.save(function (err) {
+            if (err)
+                console.log(err);
+        });
+        io.emit('NbMarkers', { time: NbMarkersCounter, value: parseInt(message) });
+        NbMarkersCounter++;
+    } else if (topic == 'metrics/closest') {
+        var insert = new Closest({ time: ClosestCounter, value: parseFloat(message) });
+        insert.save(function (err) {
+            if (err)
+                console.log(err);
+        });
+        io.emit('Closest', { time: ClosestCounter, value: parseFloat(message) });
+        ClosestCounter++;
     }
 });
 client.options.reconnectPeriod = 60;

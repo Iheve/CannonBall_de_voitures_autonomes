@@ -36,6 +36,7 @@ void IARabbit::getCommand(vector<aruco::Marker>* TheMarkers, int* steering, int*
 	float x = rabbit.marker.getCenter().x;
 	float d = rabbit.marker.Tvec.ptr<float>(0)[2];
 
+    //No marker ever seen
 	if (rabbit.lastTimeSeen == 0) {
 		*steering = 90;
 		*throttle = 91;
@@ -43,6 +44,7 @@ void IARabbit::getCommand(vector<aruco::Marker>* TheMarkers, int* steering, int*
 		return;
 	}
 
+    //Best case : the marker is in view
 	if (rabbit.lastTimeSeen == frame) {
 		float xrel = (x - (width / 2)) / (width / 2);
 		//float ang = ((atan(xrel) * 180) / 3.1415) * factor + 90;
@@ -67,6 +69,7 @@ void IARabbit::getCommand(vector<aruco::Marker>* TheMarkers, int* steering, int*
 		return;
 	}
 
+    //Marker seen less than 3 frames ago
 	if ((frame - rabbit.lastTimeSeen) < 3 && d > 1.5) {
 		if (*steering < 90) {
 			(*steering) += 1;
