@@ -53,7 +53,7 @@ You will need :
 
     \item A self-powered usb hub (without outlet).
 
-    \item A Windows tablet, not running windows RT (we used the Lenovo ThinkPad
+    \item A windows tablet, not running windows RT (we used the Lenovo ThinkPad
         tablet 2).
 
 \end{itemize}
@@ -92,7 +92,7 @@ additional library directories. Add the path to the libraries directories of
 mosquittopp and OpenCV (directory with all the \texttt{.lib} files).
 
 Open the project properties, go to Project, Properties, linker, general, input,
-additional dependencies. Add all the \texttt[.lib] files of mosquittopp and
+additional dependencies. Add all of the \texttt[.lib] files of mosquittopp and
 OpenCV.
 
 You should now be able to build the program (Ctrl-Shift-B).
@@ -111,7 +111,7 @@ You should now be able to run the program !
 
 There are two ways to flash the Arduino, the first one (and the simple one) is
 to use the Arduino IDE\footnote{\url{http://arduino.cc/en/Main/Software\#toc1}}. After
-download it, open the project in.
+download it, then open the project in.
 
 In order to flash the Arduino, you need to select the model in \texttt{Tools >
 Board} and the serial port in \texttt{Tools > Serial Port}, this is likely
@@ -157,7 +157,7 @@ You now need to create markers : \begin{itemize}
         dictionary> <marker size>}
 
     \item Generate the board with \texttt{aruco\_hrm\_create\_board dict.yml
-        board.yml board.png height width}
+        board.yml board.png heighr width}
 
     \item Print the board.
 
@@ -177,8 +177,8 @@ download the server and then restart your computer for the service to launch (or
 service to launch manually), this is really important.
 
 Then, you need the tablet to be on the same network as the server. You can
-either create a hotspot via the tablet or the server, or connect both to an
-existing network. You need to tell the program the server's ip. Please refer
+either create an hotspot via the tablet or the server, or connect both to an
+existing network.  You need to tell the program the server's ip. Please refer
 to the corresponding section.
 
 \subsection{Display metrics in HTML}
@@ -223,7 +223,7 @@ The program needs :
     \item Path to dictionnary.yml, see~\ref{subsec:dic}.
     \item Path to intrinsics.yml, see~\ref{subsec:cam}.
     \item Marker size (in meters).
-    \item The MQTT server IP for sending metrics.
+    \item The MQTT server IP for getting metrics.
     \item The Arduino serial port, should be something like 'COM5'.
     \item The mode to run (IA). Should be 'rabbit' to follow a marker, or 'cannon' for race mode.
 \end{itemize}
@@ -240,12 +240,38 @@ The program needs :
 \label{sec:Flashing} %Need in user quick guide->flash arduino
 
 \section{Plugging}
+To properly plug, please see figure~\ref{fig:wires}.
+
+\subsection{Supply}
+Circuit supply is based on the motor, which itself is plugged to the
+battery. So the circuit is supplied once the motor is turned on, and supply the
+RC reciver, which act as a energy spreader.
+
+That's why you need to plug the Arduino VIN pin to the RC receiver to grab
+energy. Don't forget to also plug the grounds.
+
+Please note that the VIN in Arduino is not trully a IN signal. The Arduino can
+also provide supply through this pin if the board is supplied elsewhere. For
+instance, if you plug the USB cable and you don't power on the motor, the
+Arduino board will provide energy via the VIN port (leeching from USB), meaning
+the circuit will be supplied. But this is not sufficient to supply the whole
+circuit (the motor will start beeping, meaning it doesn't have enough energy to
+run). This is really important and should be avoided.
+
+Don't forget to plug the motor and the steering servo to the receiver for
+supply. Do not plug the signal (white) wires. You can plug supply wires where
+you want on the receiver.
+
+\subsection{Control}
+
+Control wires are displayed in green on the schema. They are white wires on the
+board.
 
 \section{Markers}
 
 \section{Monitoring}
 
-\section{Implementing new artificial intelligence}
+\section{Implementing a new artificial intelligence}
 
 \section{Android}
 
