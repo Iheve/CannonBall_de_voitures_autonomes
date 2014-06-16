@@ -148,7 +148,7 @@ The program needs :
     \item Path to dictionnary.yml, see~\ref{subsec:dic}.
     \item Path to intrinsics.yml, see~\ref{subsec:cam}.
     \item Marker size (in meters).
-    \item The MQTT server IP for sending metrics.
+    \item The MQTT server IP for getting metrics.
     \item The Arduino serial port, should be something like 'COM5'.
     \item The mode to run (IA). Should be 'rabbit' to follow a marker, or 'cannon' for race mode.
 \end{itemize}
@@ -195,6 +195,32 @@ You should now be able to run the program !
 \label{sec:Flashing} %Need in user quick guide->flash arduino
 
 \section{Plugging}
+To properly plug, please see figure~\ref{fig:wires}.
+
+\subsection{Supply}
+Circuit supply is based on the motor, which itself is plugged to the
+battery. So the circuit is supplied once the motor is turned on, and supply the
+RC reciver, which act as a energy spreader.
+
+That's why you need to plug the Arduino VIN pin to the RC receiver to grab
+energy. Don't forget to also plug the grounds.
+
+Please note that the VIN in Arduino is not trully a IN signal. The Arduino can
+also provide supply through this pin if the board is supplied elsewhere. For
+instance, if you plug the USB cable and you don't power on the motor, the
+Arduino board will provide energy via the VIN port (leeching from USB), meaning
+the circuit will be supplied. But this is not sufficient to supply the whole
+circuit (the motor will start beeping, meaning it doesn't have enough energy to
+run). This is really important and should be avoided.
+
+Don't forget to plug the motor and the steering servo to the receiver for
+supply. Do not plug the signal (white) wires. You can plug supply wires where
+you want on the receiver.
+
+\subsection{Control}
+
+Control wires are displayed in green on the schema. They are white wires on the
+board.
 
 \section{Markers}
 
@@ -235,7 +261,7 @@ You now need to create markers : \begin{itemize}
 
 \section{Monitoring}
 
-\section{Implementing new artificial intelligence}
+\section{Implementing a new artificial intelligence}
 
 \section{Android}
 
