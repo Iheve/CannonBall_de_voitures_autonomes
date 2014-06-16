@@ -63,16 +63,17 @@ Follow instructions on figure \ref{fig:wires}.
 \label{fig:wires}
 \end{figure}
 
-Be careful with the L led on the Arduino. If it switch on (orange), then the
-Arduino will not compute any data from the tablet. You need to reset the
-Arduino with the Arduino button. This is in fact the emergency signal, more
-informations on section~\ref{subsec:emergency}.
+Be careful with the L led on the Arduino. If it turns on (orange), then the
+Arduino will not compute any data from the tablet. You need to restart the
+board using the Arduino reset button. This is in fact the emergency signal,
+more informations on section~\ref{subsec:emergency}.
 
 \section{How to flash the Arduino ?}
 
 There are two ways to flash the Arduino, the first one (and the simple one) is
-to use the Arduino IDE\footnote{\url{http://arduino.cc/en/Main/Software\#toc1}}. After
-download, open the project in it.
+to use the Arduino
+IDE\footnote{\url{http://arduino.cc/en/Main/Software\#toc1}}. After download,
+open the project in it.
 
 In order to flash the Arduino, you need to select the model in \texttt{Tools >
 Board} and the serial port in \texttt{Tools > Serial Port}, this is likely
@@ -89,8 +90,8 @@ Marker recognition is based on highly reliable markers (hrm) from the
 arUco\footnote{\url{http://www.uco.es/investiga/grupos/ava/node/26}}
 library.
 
-Go to ressource folder, and print needed markers. In this folder, you'll also
-find yml files needed to run the executables with these markers.
+Go to ressource folder, and print the needed markers. In this folder, you'll
+also find yml files needed to run the executables with these markers.
 
 If you're interested in designing new markers, please refer to the complete guide
 section~\ref{sec:markers}.
