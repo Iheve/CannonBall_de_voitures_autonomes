@@ -69,44 +69,6 @@ Follow instructions on figure \ref{fig:wires}.
 \label{fig:wires}
 \end{figure}
 
-\section{How to build the program ?}
-
-\subsection{Libraries}
-
-First, you need to install OpenCV\footnote{\url{http://opencv.org/}} 2.4.8 and
-Mosquittopp\footnote{\url{http://mosquitto.org/download/}}.
-
-\subsection{Visual Studio 12}
-
-We used Visual Studio 12 to develop and build the program.
-
-Open Visual Studio, create a new project, add all the \texttt{.h} and
-\texttt{.cpp} files.
-
-Open the project properties, go to Project, Properties, C/C++, general,
-additional include directories. Add the path to the include directories of
-mosquittopp and opencv.
-
-Open the project properties, go to Project, Properties, linker, general,
-additional library directories. Add the path to the libraries directories of
-mosquittopp and OpenCV (directory with all the \texttt{.lib} files).
-
-Open the project properties, go to Project, Properties, linker, general, input,
-additional dependencies. Add all the \texttt[.lib] files of mosquittopp and
-OpenCV.
-
-You should now be able to build the program (Ctrl-Shift-B).
-
-Copy all the \texttt{.dll} files of mosquittopp and OpenCV to the directory of
-the executable.
-
-Create a shortcut to the .exe, edit it to set the arguments.
-
-You should now be able to run the program !
-
-
-
-
 \section{How to flash the Arduino ?}
 
 There are two ways to flash the Arduino, the first one (and the simple one) is
@@ -127,43 +89,6 @@ If you're interesting of the other method, please refer to \ref{sec:Flashing}.
 Marker recognition is based on highly reliable markers (hrm) from the
 arUco\footnote{\url{http://www.uco.es/investiga/grupos/ava/node/26}}
 library.
-
-\subsection{Camera calibration}
-\label{subsec:cam}
-
-First, you need to calibrate the camera. In order to do that, \begin{itemize}
-
-    \item Generate a board of markers with \texttt{aruco\_create\_board 4:5
-        boardImageCalibration.png boardConfigurationCalibration.yml}.
-
-    \item Print the png image. Mesure in meters the size of a marker.
-
-    \item Convert the board configuration file from pixel to meters with
-        \texttt{aruco\_boar\_pix2meters boardConfigurationCalibration.yml <size
-        of marker in meters> boardConfigurationCalibrationMeters.yml}
-
-    \item Calibrate the camera with \texttt{aruco\_calibration live
-        boardConfigurationCalibrationMeters.yml cameraParams.yml}
-
-\end{itemize}
-
-\subsection{Creating hrm markers}
-\label{subsec:dic}
-
-You now need to create markers : \begin{itemize}
-
-    \item Generate a dictionary of hrm markers with
-        \texttt{aruco\_hrm\_create\_dictionary dict.yml <size of the
-        dictionary> <marker size>}
-
-    \item Generate the board with \texttt{aruco\_hrm\_create\_board dict.yml
-        board.yml board.png height width}
-
-    \item Print the board.
-
-\end{itemize}
-
-
 
 \section{How to get metrics ?}
 
@@ -229,12 +154,42 @@ The program needs :
 \end{itemize}
 
 
-
-
-
 \chapter{User guide}
 
 \section{Building}
+
+\subsection{Libraries}
+
+First, you need to install OpenCV\footnote{\url{http://opencv.org/}} 2.4.8 and
+Mosquittopp\footnote{\url{http://mosquitto.org/download/}}.
+
+\subsection{Visual Studio 12}
+
+We used Visual Studio 12 to develop and build the program.
+
+Open Visual Studio, create a new project, add all the \texttt{.h} and
+\texttt{.cpp} files.
+
+Open the project properties, go to Project, Properties, C/C++, general,
+additional include directories. Add the path to the include directories of
+mosquittopp and opencv.
+
+Open the project properties, go to Project, Properties, linker, general,
+additional library directories. Add the path to the libraries directories of
+mosquittopp and OpenCV (directory with all the \texttt{.lib} files).
+
+Open the project properties, go to Project, Properties, linker, general, input,
+additional dependencies. Add all the \texttt[.lib] files of mosquittopp and
+OpenCV.
+
+You should now be able to build the program (Ctrl-Shift-B).
+
+Copy all the \texttt{.dll} files of mosquittopp and OpenCV to the directory of
+the executable.
+
+Create a shortcut to the .exe, edit it to set the arguments.
+
+You should now be able to run the program !
 
 \section{Flashing}
 \label{sec:Flashing} %Need in user quick guide->flash arduino
@@ -242,6 +197,41 @@ The program needs :
 \section{Plugging}
 
 \section{Markers}
+
+\subsection{Camera calibration}
+\label{subsec:cam}
+
+First, you need to calibrate the camera. In order to do that, \begin{itemize}
+
+    \item Generate a board of markers with \texttt{aruco\_create\_board 4:5
+        boardImageCalibration.png boardConfigurationCalibration.yml}.
+
+    \item Print the png image. Mesure in meters the size of a marker.
+
+    \item Convert the board configuration file from pixel to meters with
+        \texttt{aruco\_boar\_pix2meters boardConfigurationCalibration.yml <size
+        of marker in meters> boardConfigurationCalibrationMeters.yml}
+
+    \item Calibrate the camera with \texttt{aruco\_calibration live
+        boardConfigurationCalibrationMeters.yml cameraParams.yml}
+
+\end{itemize}
+
+\subsection{Creating hrm markers}
+\label{subsec:dic}
+
+You now need to create markers : \begin{itemize}
+
+    \item Generate a dictionary of hrm markers with
+        \texttt{aruco\_hrm\_create\_dictionary dict.yml <size of the
+        dictionary> <marker size>}
+
+    \item Generate the board with \texttt{aruco\_hrm\_create\_board dict.yml
+        board.yml board.png height width}
+
+    \item Print the board.
+
+\end{itemize}
 
 \section{Monitoring}
 
