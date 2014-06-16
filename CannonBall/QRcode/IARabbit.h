@@ -1,6 +1,12 @@
 #pragma once
 #include "IA.h"
 #include <map>
+
+
+/**
+ * This artificial intelligence allow the car to follow a marker : the Rabbit.
+ * The ID of the marker to follow is passed as argument.
+ */
 class IARabbit :
 	public IA
 {

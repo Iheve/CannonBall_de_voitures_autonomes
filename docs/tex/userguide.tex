@@ -211,10 +211,29 @@ Don't forget to plug the motor and the steering servo to the receiver for
 supply. Do not plug the signal (white) wires. You can plug supply wires where
 you want on the receiver.
 
+Also to avoid any problem, you should first plug the Arduino via VIN and only
+after via USB, not the other way.
+
 \subsection{Control}
 
 Control wires are displayed in green on the schema. They are white wires on the
 board.
+
+Sterring signal PIN should be connected to the PIN 5.
+Propulsion signal PIN should be connected to the PIN 6.
+
+Be careful when plugging these PIN. The car should be placed on a box, so that
+the wheels can spin freely.
+
+\subsubsection{Emergency signal}
+
+Finally, plug the PIN 3 on the motor signal on the receiver. This is the
+emergency signal. If you press the motor button on the radio, the orange led on
+the Arduino will turn on, meaning that the car is in emergency state and will not
+process the data received by the tablet. To go back to normal mode (and turn
+off the led), you need to press the reset button on the Arduino. Please note
+that the car will also go in emergency mode if it didn't receive data for 1
+second.
 
 \section{Markers}
 
