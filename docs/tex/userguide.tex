@@ -198,6 +198,23 @@ You should now be able to run the program !
 \section{Flashing}
 \label{sec:Flashing} %Need in user quick guide->flash arduino
 
+You can flash the Arduino using Arduino IDE as described in the quick start
+guide. However, there is another way to do it via console.
+
+You can use Ino Tool\footnote{\url{http://inotool.org/}}. You'll be then able
+to compile using the provided MakeFiles.
+
+Do not forget to change the value of ARDUINO\_MODEL in the MakeFile. To find
+which Arduino model you're using, just type ino list-models in a terminal.
+
+If you don't want to use the MakeFiles, here is a simple guide to compile via
+command line with Ino :
+\begin{itemize}
+    \item To build, use ino build -m 'model' 
+    \item Then you need to upload on the board, use ino upload -m 'model'
+    \item If you want to remove generated files, use ino clean
+\end{itemize}
+
 \section{Plugging}
 To properly plug, please see figure~\ref{fig:wires}.
 
