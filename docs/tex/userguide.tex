@@ -63,11 +63,16 @@ Follow instructions on figure \ref{fig:wires}.
 \label{fig:wires}
 \end{figure}
 
+Be careful with the L led on the Arduino. If it switch on (orange), then the
+Arduino will not compute any data from the tablet. You need to reset the
+Arduino with the Arduino button. This is in fact the emergency signal, more
+informations on section~\ref{subsec:emergency}.
+
 \section{How to flash the Arduino ?}
 
 There are two ways to flash the Arduino, the first one (and the simple one) is
 to use the Arduino IDE\footnote{\url{http://arduino.cc/en/Main/Software\#toc1}}. After
-download it, open the project in.
+download, open the project in it.
 
 In order to flash the Arduino, you need to select the model in \texttt{Tools >
 Board} and the serial port in \texttt{Tools > Serial Port}, this is likely
@@ -76,7 +81,7 @@ You can now flash the file on Arduino using the shortcut \texttt{upload} or in
 the menu \texttt{File > Upload}. You will see \texttt{Upload done} if everything
 went well.
 
-If you're interesting of the other method, please refer to \ref{sec:Flashing}.
+If you're interesting in the other method, please refer to \ref{sec:Flashing}.
 
 \section{How to get markers ?}
 
@@ -87,7 +92,7 @@ library.
 Go to ressource folder, and print needed markers. In this folder, you'll also
 find yml files needed to run the executables with these markers.
 
-If you interested in designing new markers, please refer to the complete guide
+If you're interested in designing new markers, please refer to the complete guide
 section~\ref{sec:markers}.
 
 \section{How to get metrics ?}
@@ -95,11 +100,12 @@ section~\ref{sec:markers}.
 \subsection{Setup a MQTT server}
 
 You need an MQTT server to get the data. We recommend
-Mosquitto\footnote{\url{http://mosquitto.org/download/}} which is available for every
-platform. Note that it's available on Debian via a simple \texttt{apt-get install
-mosquitto} and on OSX via \texttt{brew install mosquitto}. As Windows, you need to
-download the server and then restart your computer for the service to launch (or ask the
-service to launch manually), this is really important.
+Mosquitto\footnote{\url{http://mosquitto.org/download/}} which is available for
+every platform. Note that it's available on Debian (and derivatives) via a
+simple \texttt{apt-get install mosquitto} and on OSX via \texttt{brew install
+mosquitto}. For Windows, you need to download the server and then restart your
+computer for the service to launch (or ask the service to launch manually),
+this is really important.
 
 Then, you need the tablet to be on the same network as the server. You can
 either create a hotspot via the tablet or the server, or connect both to an
@@ -118,9 +124,9 @@ via \texttt{brew install mongodb} and for Windows on the
 website}\footnote{\url{http://www.mongodb.org/downloads}}, you can launch the
 mongodb sever via the command \texttt{mongo --dbpath </path/to/the/db>}.
 
-After install node, you need to install package dependencies by launching the
-command \texttt{npm install} in the \emph{Mosquitto/subscriber} directory. You
-also need to download \emph{Bootstrap 3} on the
+After installing node, you need to install package dependencies by launching
+the command \texttt{npm install} in the \emph{Mosquitto/subscriber} directory.
+You also need to download \emph{Bootstrap 3} on the
 \href{http://getbootstrap.com/}{official
 website}\footnote{\url{http://getbootstrap.com}}, \emph{socket.io client} on
 the \href{http://socket.io/download/}{official
@@ -157,10 +163,10 @@ The program needs :
 
 \subsubsection{Additional parameters AI}
 
-For the \emph{rabbit} IA, you have to add one parameter, the marker identifier
+For the \emph{rabbit} AI, you have to add one parameter, the marker identifier
 to follow.
 
-For the \emph{cannon} IA, you have to add one parameter, the file containing
+For the \emph{cannon}AII, you have to add one parameter, the file containing
 markers identifier which form the doors. See section \ref{subsec:doorsfile} to
 know how to create the file.
 
@@ -268,6 +274,7 @@ Be careful when plugging these PIN. The car should be placed on a box, so that
 the wheels can spin freely.
 
 \subsubsection{Emergency signal}
+\label{subsec:emergency}
 
 Finally, plug the PIN 3 on the motor signal on the receiver. This is the
 emergency signal. If you press the motor button on the radio, the orange led on
@@ -329,11 +336,11 @@ The application is designed to provide an easy way to add a new artificial
 intelligence.
 
 It is based on the strategy pattern. You need to create a new cpp class
-(preferably named IAmy\_ia\_name) which will implement the IA class.
+(preferably named AImy\_ia\_name) which will implement the AI class.
 \begin{verbatim}
-    class IAmy_ia_name : public IA
+    class AImy_ia_name : public AI
 \end{verbatim}
-Then, because it implements IA, you need to override \texttt{getCommand} (in
+Then, because it implements AI, you need to override \texttt{getCommand} (in
 \emph{cpp} this kind of function is called pure virtual, virtual meaning
 undefined and pure meaning it has to be redifined in every sub class).
 \begin{verbatim}
@@ -344,14 +351,14 @@ undefined and pure meaning it has to be redifined in every sub class).
 vector (which represents all markers recognized for this frame) to make a
 decision.
 
-Don't forget to add your new IA as program parameters. You'll need to :
+Don't forget to add your new AI as program parameters. You'll need to :
 \begin{itemize}
-    \item Add your IA in the IA enumeration called \emph{Runmode} at the beginning of the
+    \item Add your AI in the AI enumeration called \emph{Runmode} at the beginning of the
         program.
-    \item Add your IA in \texttt{readParams} to change the runmode according to you IA.
-    \item Add your IA in choose\_run\_mode to instantiate it properly.
+    \item Add your AI in \texttt{readParams} to change the runmode according to you AI.
+    \item Add your AI in choose\_run\_mode to instantiate it properly.
 \end{itemize}
-You should then be able to pass your IA as argument the same way as rabbit or
+You should then be able to pass your AI as argument the same way as rabbit or
 cannon using argument 6.
 
 \section{Android}
