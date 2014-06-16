@@ -144,9 +144,19 @@ The program needs :
     \item Marker size (in meters).
     \item The MQTT server IP for getting metrics.
     \item The Arduino serial port, should be something like 'COM5'.
-    \item The mode to run (IA). Should be 'rabbit' to follow a marker, or 'cannon' for race mode.
+    \item The mode to run (AI). Should be \emph{rabbit} to follow a marker, or
+        \emph{cannon} for race mode.
+    \item Additionnal parameters for AI
 \end{itemize}
 
+\subsubsection{Additionnal parameters AI}
+
+For the \emph{rabbit} IA, you have to add one parameter, the marker identifier
+to follow.
+
+For the \emph{cannon} IA, you have to add one parameter, the file containing
+markers identifier which form the doors. See section \ref{subsec:doorsfile} to
+know how to create the file.
 
 \chapter{User guide}
 
@@ -187,6 +197,31 @@ You should now be able to run the program !
 
 \section{Flashing}
 \label{sec:Flashing} %Need in user quick guide->flash arduino
+
+You can flash the Arduino using Arduino IDE as described in the quick start
+guide. However, there is another way to do it via console.
+
+You can use Ino Tool\footnote{\url{http://inotool.org/}}. You'll be then able
+to compile using the provided MakeFiles.
+
+Do not forget to change the value of ARDUINO\_MODEL in the MakeFile. To find
+which Arduino model you're using, just type ino list-models in a terminal.
+
+If you don't want to use the MakeFiles, here is a simple guide to compile via
+command line with Ino :
+\begin{itemize}
+    \item To build, use ino build -m 'model' 
+    \item Then you need to upload on the board, use ino upload -m 'model'
+    \item If you want to remove generated files, use ino clean
+\end{itemize}
+
+\subsection{Debugging serial communications}
+
+You can use Arduino IDE to display and/or write serial data, juste click on the
+serial monitor icon (upper right) to display a terminal.
+
+If you prefer to use ino, you need first to install picocom, then run ino
+serial.
 
 \section{Plugging}
 To properly plug, please see figure~\ref{fig:wires}.
@@ -272,6 +307,14 @@ You now need to create markers : \begin{itemize}
 
 \end{itemize}
 
+\subsection{Configuration file for CannonBall AI}
+\label{subsec:doorsfile}
+
+The CannonBall AI requires a configuration in order to know marker identifiers
+which make up the doors.  The file have the following format : it contains a
+sequel of identifiers order by the way of the track, left marker first, right
+marker after, separate by spaces (space or carriage return).
+
 \section{Implementing a new artificial intelligence}
 
 \section{Android}
@@ -285,7 +328,7 @@ The project requires two libraries OpenCV, that you can download on the
 official website and Android Serial
 Library\footnote{\url{https://github.com/mik3y/usb-serial-for-android}}.
 
-The Android port has been inintialized, but a lot of code is commented, you
+The Android port has been initialized, but a lot of code is commented, you
 need to adapt this code for Android in order to finish the port on this
 platform.
 
